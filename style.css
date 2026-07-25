@@ -82,7 +82,7 @@
     "Helvetica Neue", sans-serif;
 
     font-size: inherit;
-    word-spacing: 0.2rem;
+    word-spacing: 0.15rem;
     line-height: 1.25;
     accent-color: var(--accent);
     outline: 1px dashed transparent;
@@ -195,12 +195,14 @@ address { font-style: normal; }
     .bg-2 { animation-duration: 35s; }
     #main aside.desktop { animation-duration: 60s; }
     #main aside.mobile { animation-duration: 50s; }
+    html { scroll-behavior: auto; }
 }
 @media (prefers-reduced-motion: reduce) and (max-width: 640px) {
     .bg { animation-duration: 10.5s; }
     .bg-2 { animation-duration: 21s; }
     #main aside.desktop { animation-duration: 90s; }
     #main aside.mobile { animation-duration: 75s; }
+    html { scroll-behavior: auto; }
 }
 a::before,
 a::after {
