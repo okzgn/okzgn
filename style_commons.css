@@ -352,18 +352,18 @@ button:hover, button:active, button:focus {
     border-top-right-radius: 0;
 }
 
-header, footer, .logo, .logo a, .slash {
+header, footer, nav, .logo, .logo a, .slash {
     display: flex;
     justify-content: center;
     align-items: center;
 }
-header, footer {
+header, nav, footer {
     width: 100%;
     height: 2.5rem;
     flex-shrink: 0;
 }
 
-header {
+header, nav {
     font-weight: bold;
     background-color: var(--softWhite);
     border-bottom: 1px solid var(--shadow);
@@ -375,6 +375,13 @@ header .logo, header .logo img {
 
 header .logo a {
     height: 1.5rem;
+}
+nav { display: none; }
+nav h2 {
+    max-width: calc(100% - 2rem);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 footer {
