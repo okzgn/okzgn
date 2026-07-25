@@ -67,11 +67,11 @@
                 </div>
 
                 <p class="auto-x-padding"><strong>This article is not:</strong> A call to switch your framework or dismiss other techniques—after all, standards have to start somewhere. It also doesn't ignore the massive challenges, serious business and enterprise needs, or the real value of today's tools or methods.</p>
-                <p class="auto-x-padding"><strong>This article's perspective is shaped by this:</strong> As Wasm continues to emerge—and having written code close to the metal (XDP, shared memory, C), delved into low-level systems (protocol flows, RAM interactions, Go), focused on optimizing core operations and identifying high-performance algorithms (BM25, djb2, HNSW), and compared the performance of various runtimes (PHP, Node, Lua, Rust)—<b>I analyzed some modern frontend principles</b> through the same lens.</p>
+                <p class="auto-x-padding"><strong>This article's perspective is shaped by this:</strong> Having written code close to the metal (XDP, shared memory, C), delved into low-level systems (protocol flows, RAM interactions, Go), focused on optimizing core operations and identifying high-performance algorithms (BM25, djb2, HNSW), and compared the performance of various runtimes (PHP, Lua, Node, Wasm, Rust)—<b>I analyzed some modern frontend principles</b> through the same lens.</p>
 
-                <p class="auto-x-padding"><strong>From this viewpoint, to put it simply:</strong> What was mentioned in the first line (regarding what is possible) could be solved, if most modern browsers or JavaScript engines updated to a recent ECMAScript specification with native TypeScript and backward compatibility support.<br> But the proprietary or custom syntaxes that have been invented are not standard JS or TS; they require transpilers, optimizers, compilers, bundlers, and so on (understanding their inner workings and mechanisms is indeed fascinating).</p>
+                <p class="auto-x-padding"><strong>From this viewpoint, to put it simply:</strong> What was mentioned in the first line (regarding what is possible) could be solved if most modern browsers or JavaScript engines updated to a recent ECMAScript specification with native TypeScript and backward compatibility support.<br> But the proprietary or custom syntaxes that have been invented are not standard JS or TS; they require transpilers, optimizers, compilers, bundlers, and so on (understanding their inner workings and mechanisms is indeed fascinating).</p>
 
-                <p class="auto-x-padding"><strong>Proposition:</strong> There are several steps that can be bypassed between the scripting language, the framework, development, bundling, the interpreter, and the end user (all of these points). Steps that do not require updating any ES/TS specifications.</p>
+                <p class="auto-x-padding"><strong>Proposition:</strong> There are several steps that can be bypassed between the scripting language, the framework, development, bundling, the interpreter, and the end user (all of these points), steps that do not require updating any ES/TS specifications.</p>
 
                 <p class="auto-x-padding"><strong>The focus will be on these key points:</strong></p>
                 <div class="auto-x-padding">
@@ -82,15 +82,15 @@
                     </ul>
                 </div>
 
-                <p class="auto-x-padding"><strong>Steps that can be bypassed:</strong></p>
-                <div class="auto-x-padding"><h4>Point 1</h4></div>
+                <p class="auto-x-padding"><strong>Steps that can be bypassed between:</strong></p>
+                <div class="auto-x-padding"><a><strong>Point 1</strong></a></div>
                 <div class="auto-x-padding">
                     <ul class="lines">
                         <li><strong>Context:</strong> For a framework to build dynamic, real-time, or interconnected frontends and UIs, it requires state, reactivity, components, routing, event handling, DOM manipulation, HTTP capabilities, and so on. To achieve this, ECMAScript and Web APIs already provide these features out of the box since ES5, ES6, and ES2016+.</li>
                         <li><strong>Bypass:</strong> Advanced usage of native primitives, baseline widely available features/functions, and APIs, such as <code>Object.defineProperty</code>, <code>XMLHttpRequest</code>, <code>addEventListener</code>, <code>getComputedStyle</code>, <code>fetch</code>, <code>Proxy</code>, <code>WeakMap</code>, <code>Map</code>, <code>MutationObserver</code>, <code>IntersectionObserver</code>, <code>createElement</code>, <code>createDocumentFragment</code>, <code>insertAdjacentElement</code>, <code>subtle.digest</code>, <code>subtle.encrypt</code>, <code>...</code></li>
                     </ul>
                 </div>
-                <div class="auto-x-padding"><h4>Point 2</h4></div>
+                <div class="auto-x-padding"><a><strong>Point 2</strong></a></div>
                 <!--<div class="auto-x-padding">
                     <ul class="lines">
                         <li><strong>Bypass:</strong> </li>
@@ -99,7 +99,7 @@
                 <p class="auto-x-padding"><b>Coming soon...</b></p>
                 <hr>
                 <p class="auto-x-padding"><a href="https://estructura.okzgn.com"><strong>Estructura – Runtime-Type-Driven Multiple Dispatch JS Framework</strong></a></p>
-                <p class="auto-x-padding">I built this to have a solid foundation when coding in JavaScript, due to its well-known native type-related surprises and issues. It's a lightweight runtime solution without dependencies, without TypeScript, without verbosity, and without the limitations of compile-time type checking. It provides the capability to clearly identify any data type, create almost any custom data type, organize them, and use them with the assurance that the dispatcher will always bind the data to its corresponding or predefined types. It was built with maximum optimization and efficiency, offers plenty of flexibility when needed, and was designed with near-universal compatibility in mind (ES3+ compatible).</p>
+                <p class="auto-x-padding">Built to have a solid foundation when coding in JavaScript, overcoming its well-known native type quirks. It's a lightweight runtime solution without dependencies, TypeScript, verbosity, or the limitations of compile-time type checking. It provides the capability to clearly identify any data type, create any custom data type, organize them, and use them with the assurance that the dispatcher will always bind the specified functions to its corresponding or predefined types. It was built with maximum optimization, offers plenty of flexibility when needed, and was designed with near-universal compatibility in mind (ES3/ES5+).</p>
             </article>
 		</div>
 	</main>
