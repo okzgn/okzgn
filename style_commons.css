@@ -460,6 +460,41 @@ main .container {
     margin-bottom: 1rem;
 }
 
+#menu {
+    position: fixed;
+    bottom: 1.25rem;
+    right: 1.25rem;
+    background-color: var(--accentDark3);
+    color: var(--white);
+    outline: 2px solid var(--whiteTransparent);
+    border: none;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0.5rem 1rem var(--shadow2);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.125s;
+    z-index: 99;
+}
+#menu::before, #menu::after {
+    display: none;
+}
+#menu.show {
+    opacity: 1;
+    visibility: visible;
+}
+#menu:hover,
+#menu:active,
+#menu:focus {
+    transform: translateY(-3px);
+}
+#menu:focus-visible { outline-color: var(--blueDark); }
+
 @media screen and (max-width: 960px) {
     main .container {
         width: 80%;
@@ -483,7 +518,6 @@ main .container {
         --softShadow2: var(--ghostBlueWhite3);
         --softSilver: var(--white);
         --shadow: var(--ghostBlueWhite2);
-        --accentDark2: var(--themeColor2);
     }
 
     *, ::after, ::before { scrollbar-color: var(--realBlue) transparent; }
@@ -491,12 +525,16 @@ main .container {
     ::-webkit-scrollbar-track { background: transparent; }
 
     :active, :focus { outline-color: var(--ghostBlueWhite); }
-    a:focus-visible, button:focus-visible, input:focus-visible { outline-color: var(--white); }
+    a:focus-visible, button:focus-visible, input:focus-visible, #menu:focus-visible { outline-color: var(--white); }
 
     ::selection { background: var(--realBlue); color: var(--white); }
     ::placeholder { color: var(--white); opacity: 0.5; }
 
     body { background-color: var(--realBlack); }
+
+    #menu {
+        background-color: var(--blueDark3);
+    }
 
     .bg {
         background: linear-gradient(-45deg, var(--realBlueDark) 49.9%, var(--realBlue) 50.1%);
@@ -507,8 +545,10 @@ main .container {
 
     .card::after { background: linear-gradient(0deg, var(--softShadow), transparent); }
 
+
     .cta-button { background: linear-gradient(to right, var(--accentDark3), var(--accentDark2)); }
     .cta-button:hover, .cta-button:focus, .cta-button:active { background: linear-gradient(to right, var(--accentDark3), var(--accentDark2) 50%, var(--accentDark)); }
+
     .cta-blue-button, button { background: linear-gradient(to right, var(--blueDark3), var(--blueDark2)) !important; }
     .cta-blue-button:hover, .cta-blue-button:active, .cta-blue-button:focus,
     button:hover, button:active, button:focus {

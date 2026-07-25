@@ -1048,18 +1048,16 @@ footer {
     transition: all 0.125s;
     z-index: 99;
 }
-
 #menu.show {
     opacity: 1;
     visibility: visible;
 }
-
 #menu:hover,
 #menu:active,
 #menu:focus {
     transform: translateY(-3px);
 }
-
+#menu:focus-visible { outline-color: var(--blueDark); }
 @media (prefers-color-scheme: dark) {
     :root {
         --bg: var(--black);
@@ -1087,7 +1085,7 @@ footer {
 
     body { background: var(--realBlack); }
 
-    a:focus-visible, button:focus-visible, input:focus-visible {
+    a:focus-visible, button:focus-visible, input:focus-visible, #menu:focus-visible {
         outline-color: var(--white);
     }
 
