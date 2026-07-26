@@ -222,6 +222,8 @@ code {
     font-size: 0.9rem;
     color: var(--black);
     text-indent: 0;
+    margin: 1px 0;
+    display: inline-block;
 }
 a, input, textarea, button, input[type="submit"] {
     transition: all 0.25s;
@@ -242,6 +244,7 @@ a::after, button::after { border-left-color: transparent; }
 .no-default, .no-default-arrow {
     background: none;
     padding: 0;
+    display: inline-block;
 }
 
 .no-default-arrow::before, .no-default-arrow::after {
@@ -432,6 +435,10 @@ main, .paragraphs {
 .lines {
     list-style: none;
 }
+.lines li ul {
+    margin-top: 0.5rem;
+    padding-left: 1rem !important;
+}
 .lines li {
     text-indent: 1rem;
     margin-bottom: 0.5rem;
@@ -452,6 +459,15 @@ main, .paragraphs {
     background: var(--black);
     left: -1rem;
     overflow: hidden;
+}
+.lines li *:not(li) { text-indent: 0; }
+
+.rounded-box {
+    border: 1px solid var(--softShadow);
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+    border-radius: 1rem;
 }
 
 main {
@@ -549,6 +565,8 @@ main .container {
     }
 
     a, code { background: var(--softWhite); }
+
+    .rounded-box { border-color: var(--softWhite); }
 
     .card::after { background: linear-gradient(0deg, var(--softShadow), transparent); }
 
