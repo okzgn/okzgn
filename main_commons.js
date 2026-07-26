@@ -7,21 +7,30 @@ document.addEventListener('DOMContentLoaded', function () {
   var navTitle = document.querySelector('h2.nav-title');
   var navMainTitle = document.querySelector('h1.main-title');
 
-  function showOrHideMenu(target) {
+  function scrollOperation(target) {
+    var state = false;
+
+    function showOrHide() {
+      var scroll = target[target === window ? 'scrollY' : 'scrollTop'];
+      if (scroll > 100) {
+        menuButton.classList.add('show');
+        navContainer.classList.add('show');
+        navTitle.textContent = navMainTitle.textContent;
+      }
+      else if (scroll < 80) {
+        menuButton.classList.remove('show');
+        navContainer.classList.remove('show');
+        navTitle.textContent = '';
+      }
+
+      state = false;
+    }
+
     return function () {
-      clearTimeout(showOrHideMenu.timeout);
-      showOrHideMenu.timeout = setTimeout(function () {
-        if (target[target === window ? 'scrollY' : 'scrollTop'] > 96) {
-          menuButton.classList.add('show');
-          navContainer.style.display = 'flex';
-          navTitle.textContent = navMainTitle.textContent;
-        }
-        else {
-          menuButton.classList.remove('show');
-          navContainer.style.display = 'none';
-          navTitle.textContent = '';
-        }
-      }, 500);
+      if (!state) {
+        state = true;
+        requestAnimationFrame(showOrHide);
+      }
     }
   }
 
@@ -30,8 +39,8 @@ document.addEventListener('DOMContentLoaded', function () {
     scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  window.addEventListener('scroll', showOrHideMenu(window));
-  scrollContainer.addEventListener('scroll', showOrHideMenu(scrollContainer));
+  window.addEventListener('scroll', scrollOperation(window), { passive: true });
+  scrollContainer.addEventListener('scroll', scrollOperation(scrollContainer), { passive: true });
 
   menuButton.addEventListener('click', function(event) {
     event.preventDefault();

@@ -379,7 +379,17 @@ header .logo, header .logo img {
 header .logo a {
     height: 1.5rem;
 }
-nav { display: none; }
+
+nav {
+    height: 0;
+    transition: 1s all;
+    opacity: 0;
+}
+nav.show {
+    height: 2.5rem;
+    opacity: 1;
+}
+
 nav h2 {
     max-width: calc(100% - 2rem);
     overflow: hidden;
