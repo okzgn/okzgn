@@ -3,10 +3,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var upButton = document.getElementById('up');
   var scrollContainer = document.querySelector('main');
+
   var nav = document.querySelector('nav');
   var navTitle = document.querySelector('.nav-title');
+  var prevTitle = navTitle ? navTitle.textContent : '';
+
   var menu = document.getElementById('menu');
-  var mainTitle = document.querySelector('.main-title');
+  var mainTitle = document.querySelector('.main-title'), mainTitle = mainTitle ? mainTitle.textContent : '';
 
   function scrollOperation(target) {
     var state = false;
@@ -15,13 +18,11 @@ document.addEventListener('DOMContentLoaded', function () {
       var scroll = target[target === window ? 'scrollY' : 'scrollTop'];
       if (scroll > 100) {
         upButton.classList.add('show');
-        navTitle.classList.add('collapse');
-        navTitle.textContent = mainTitle.textContent;
+        navTitle.textContent = mainTitle;
       }
       else if (scroll < 80) {
         upButton.classList.remove('show');
-        navTitle.classList.remove('collapse');
-        navTitle.textContent = '';
+        navTitle.textContent = prevTitle;
       }
 
       state = false;

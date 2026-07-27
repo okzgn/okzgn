@@ -9,10 +9,12 @@
 	<link rel="canonical" href="https://okzgn.com/articles/why-not-build-frontend-frameworks-on-raw-html-css-or-js/">
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="It's possible: No endless dependencies, no dev environment setup, no build step, no Web Components required, minimal boilerplate, minimal lock-in. Raw HTML, CSS and JS have everything needed, are web standards, unlike custom syntaxes.">
+	<meta name="description" content="It's possible: No endless dependencies, no dev environment setup, no build step, no Web Components required, minimal boilerplate, minimal lock-in. Raw HTML, CSS and JS have everything needed and are web standards, unlike custom syntaxes.">
 	<meta name="robots" content="index, follow, max-image-preview:large">
 	<meta name="author" content="OKZGN">
+
 	<meta property="article:published_time" content="2026-07-26T12:00:00Z">
+	<meta property="article:author" content="Elías Francisco Alvarado Soshina">
 
 	<meta name="theme-color" content="#ffdbb8" media="(prefers-color-scheme: light)">
 	<meta name="theme-color" content="#000d1a" media="(prefers-color-scheme: dark)">
@@ -21,16 +23,16 @@
 	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self'; child-src 'none'; style-src 'self'; script-src 'self'">
 
 	<meta property="og:title" content="Why not build frontend frameworks on raw HTML, CSS or JS? | OKZGN">
-	<meta property="og:description" content="It's possible: No endless dependencies, no dev environment setup, no build step, no Web Components required, minimal boilerplate, minimal lock-in. Raw HTML, CSS and JS have everything needed, are web standards, unlike custom syntaxes.">
+	<meta property="og:description" content="It's possible: No endless dependencies, no dev environment setup, no build step, no Web Components required, minimal boilerplate, minimal lock-in. Raw HTML, CSS and JS have everything needed and are web standards, unlike custom syntaxes.">
 	<meta property="og:image" content="https://okzgn.com/landscape.png">
 	<meta property="og:url" content="https://okzgn.com/articles/why-not-build-frontend-frameworks-on-raw-html-css-or-js/">
 	<meta property="og:site_name" content="OKZGN">
-	<meta property="og:type" content="website">
+	<meta property="og:type" content="article">
 	<meta property="og:locale" content="en_US">
 
 	<meta name="twitter:card" content="summary_large_image">
 	<meta name="twitter:title" content="Why not build frontend frameworks on raw HTML, CSS or JS? | OKZGN">
-	<meta name="twitter:description" content="It's possible: No endless dependencies, no dev environment setup, no build step, no Web Components required, minimal boilerplate, minimal lock-in. Raw HTML, CSS and JS have everything needed, are web standards, unlike custom syntaxes.">
+	<meta name="twitter:description" content="It's possible: No endless dependencies, no dev environment setup, no build step, no Web Components required, minimal boilerplate, minimal lock-in. Raw HTML, CSS and JS have everything needed and are web standards, unlike custom syntaxes.">
 	<meta name="twitter:image" content="https://okzgn.com/landscape.png">
 
 	<link rel="preload" href="../../inter_variable.woff2" as="font" type="font/woff2" crossorigin>
@@ -39,6 +41,41 @@
 
 	<script src="../../main_commons.js" defer></script>
 	<script src="./main.js" defer></script>
+
+	<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okzgn.com/articles/why-not-build-frontend-frameworks-on-raw-html-css-or-js/"
+  },
+  "headline": "Why not build frontend frameworks on raw HTML, CSS or JS?",
+  "description": "It's possible: No endless dependencies, no dev environment setup, no build step, no Web Components required, minimal boilerplate, minimal lock-in. Raw HTML, CSS and JS have everything needed and are web standards, unlike custom syntaxes.",
+  "image": "https://okzgn.com/landscape.png",
+  "url": "https://okzgn.com/articles/why-not-build-frontend-frameworks-on-raw-html-css-or-js/",
+  "datePublished": "2026-07-26T12:00:00Z",
+  "dateModified": "2026-07-26T12:00:00Z",
+  "inLanguage": "en",
+  "author": {
+    "@type": "Person",
+  	"name": "Elías Francisco Alvarado Soshina",
+  	"url": "https://okzgn.com",
+  	"jobTitle": "Applied AI, Platform & Software Developer",
+  	"sameAs": ["https://github.com/okzgn", "https://www.npmjs.com/~elias_a_soshina"]
+  },
+  "publisher": {
+    "@type": "Organization",
+  	"name": "OKZGN",
+  	"url": "https://okzgn.com",
+  	"logo": {
+  	  "@type": "ImageObject",
+  	  "url": "https://okzgn.com/icon.png"
+  	}
+  }
+}
+	</script>
+
 </head>
 <body>
 	<header>
@@ -46,79 +83,78 @@
 		<div class="slash auto-font-size-4"><a class="no-default-arrow" href="https://okzgn.com/#articles">Articles</a></div>
 	</header>
 	<nav>
-	    <h2 class="nav-title"></h2>
+	    <div class="nav-title">Table of Contents</div>
 		<button id="menu" class="no-arrow" aria-label="Open menu" aria-expanded="false"></button>
 	</nav>
 	<main>
 		<div class="container auto-x-tiny-padding">
 		    <h1 class="main-title auto-font-size auto-padding">Why not build frontend frameworks on raw HTML, CSS or JS?</h1>
-            <article class="card paragraphs">
-                <p class="auto-x-padding"><strong>It's possible:</strong> No endless dependencies, no dev environment setup, no build step, no Web Components required, minimal boilerplate, minimal lock-in.</p>
-                <p class="auto-x-padding"><strong>Raw HTML, CSS and JS have everything needed and are web standards, unlike custom syntaxes.</strong></p>
-                <div class="auto-x-padding">
-                    <p><strong>Some of the benefits include:</strong></p>
-                    <ul role="list" class="lines">
-                        <li>Bundle size proportional to the logic.</li>
-                        <li>Consistent hydration.</li>
-                        <li>No unnecessary breaking changes.</li>
-                        <li>Much less black-box reactivity.</li>
-                        <li>Lower risk of supply chain attacks.</li>
-                        <li>Native semantic accessibility.</li>
-                        <li>SEO-friendly and better indexing.</li>
-                        <li>No niches, transferable web standards learned.</li>
-                    </ul>
+            <article class="card">
+                <div class="auto-x-padding paragraphs">
+                    <h2 class="auto-font-size-2">It's possible:</h2>
+                    <p>No endless dependencies, no dev environment setup, no build step, no Web Components required, minimal boilerplate, minimal lock-in.</p>
+                    <p><strong>Raw HTML, CSS and JS have everything needed and are web standards, unlike custom syntaxes.</strong></p>
+                    <h2 class="auto-font-size-2">Some of the benefits include:</h2>
+                    <div>
+                        <ul role="list" class="lines lines-condensed">
+                            <li>Bundle size proportional to the logic.</li>
+                            <li>Consistent hydration.</li>
+                            <li>No unnecessary breaking changes.</li>
+                            <li>Much less black-box reactivity.</li>
+                            <li>Lower risk of supply chain attacks.</li>
+                            <li>Native semantic accessibility.</li>
+                            <li>SEO-friendly and better indexing.</li>
+                            <li>No niches, transferable web standards learned.</li>
+                        </ul>
+                    </div>
+                    <h2 class="auto-font-size-2">This article is not:</h2>
+                    <p>A call to switch your framework or dismiss other techniques—after all, today's custom syntaxes may be tomorrow's standards. It also doesn't ignore the massive challenges, serious business and enterprise needs, or the real value of today's tools or methods.</p>
+                    <h2 class="auto-font-size-2">This article's perspective is shaped by this:</h2>
+                    <p>Having written code close to the metal (XDP, shared memory, C), delved into low-level systems (protocol flows, RAM interactions, Go), focused on optimizing core operations and identifying high-performance algorithms (BM25, djb2, HNSW), and compared the performance of various runtimes (PHP, Lua, Node, Wasm, Rust)—<strong>I analyzed some modern frontend principles</strong> through the same lens.</p>
+                    <h2 class="auto-font-size-2">From this viewpoint, to put it simply:</h2>
+                    <p>What was mentioned in the first line (regarding what is possible) could be solved if most modern browsers or JavaScript engines updated to a recent ECMAScript specification with native TypeScript and backward compatibility support.<br> But the proprietary or custom syntaxes that have been invented are not standard JS or TS; they require transpilers, optimizers, compilers, bundlers, and so on (understanding their inner workings and mechanisms is indeed fascinating).</p>
+                    <h2 class="auto-font-size-2">Proposition:</h2>
+                    <p>There are several steps that can be bypassed—between the scripting language, the framework, development, bundling, the interpreter, and the end user—without requiring any updates to ES/TS specifications.</p>
+                    <h2 class="auto-font-size-2">The focus will be on these key points:</h2>
+                    <div>
+                        <ul role="list" class="lines">
+                            <li><strong>Point 1:</strong> JavaScript/TypeScript as the scripting language that does the actual work and creates the upper framework.</li>
+                            <li><strong>Point 2:</strong> The framework, which helps avoid repetitive boilerplate, making the work with the scripting language easier and more efficient.</li>
+                            <li><strong>Point 3:</strong> Developing interrelated or independent components using the framework to further abstract logic, reduce repetitive code, and reuse processes.</li>
+                        </ul>
+                    </div>
+                    <h2 class="auto-font-size-2">Steps that can be bypassed between:</h2>
+                    <h3 class="auto-font-size-3">Point 1</h3>
+                    <div>
+                        <ul role="list" class="lines">
+                            <li><strong>Context:</strong><br> For a framework to build dynamic, real-time, or interconnected frontends and UIs, it requires state, reactivity, components, routing, event handling, DOM manipulation, HTTP capabilities, and so on. To achieve this, ECMAScript and Web APIs already provide these features out of the box since ES5, ES6, and ES2016+.</li>
+                            <li><strong>Bypass:</strong><br> Advanced usage of native primitives, baseline widely available features/functions, and APIs, such as the following.
+                                <ul role="list">
+                                    <li><strong>State & Reactivity:</strong><br><em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/reactive/"><strong>Reactive</strong></a> (ES6+), using:</em>
+                                        <div class="rounded-box"><code>Proxy</code>, <code>Object.defineProperty</code>, <code>Map</code>, <code>Set</code>, <code>WeakMap</code>, <code>...</code></div>
+                                    </li>
+                                    <li><strong>DOM, Events & Templating:</strong><br><em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/dom/"><strong>DOM</strong></a>, <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/events/"><strong>Events</strong></a> & <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/handlers/"><strong>Handlers</strong></a> (ES5, ES6+), using:</em>
+                                        <div class="rounded-box"><code>MutationObserver</code>, <code>IntersectionObserver</code>, <code>document.querySelector</code>, <code>document.createTreeWalker</code>, <code>NodeFilter</code>, <code>HTMLTemplateElement</code>, <code>DocumentFragment</code>, <code>document.createComment</code>, <code>Node.prototype.cloneNode</code>, <code>addEventListener</code>, <code>window.getComputedStyle</code>, <code>...</code></div>
+                                    </li>
+                                    <li><strong>Routing & Navigation:</strong><br><em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/routing/"><strong>Routing</strong></a> (ES6+), using:</em>
+                                        <div class="rounded-box"><code>history.pushState</code>, <code>history.replaceState</code>, <code>window.onpopstate</code>, <code>URL</code>, <code>window.location</code>, <code>structuredClone</code>, <code>...</code></div>
+                                    </li>
+                                    <li><strong>Asynchronous & Orchestration:</strong><br><em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/http/"><strong>HTTP</strong></a> & <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/components/"><strong>Components</strong></a> (ES3, ES6+), using:</em>
+                                        <div class="rounded-box"><code>queueMicrotask</code>, <code>Promise</code>, <code>XMLHttpRequest</code>, <code>fetch</code>, <code>Blob</code>, <code>URL.createObjectURL</code>, <code>URL.revokeObjectURL</code>, <code>...</code></div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <h3 class="auto-font-size-3">Point 2</h3>
+                    <!--<div>
+                        <ul role="list" class="lines">
+                            <li><strong>Bypass:</strong> </li>
+                        </ul>
+                        </div>-->
+                    <p><b>Coming soon...</b></p>
+                    <h3 class="auto-font-size-3">Point 3</h3>
                 </div>
-
-                <p class="auto-x-padding"><strong>This article is not:</strong> A call to switch your framework or dismiss other techniques—after all, today's custom syntaxes may be tomorrow's standards. It also doesn't ignore the massive challenges, serious business and enterprise needs, or the real value of today's tools or methods.</p>
-                <p class="auto-x-padding"><strong>This article's perspective is shaped by this:</strong> Having written code close to the metal (XDP, shared memory, C), delved into low-level systems (protocol flows, RAM interactions, Go), focused on optimizing core operations and identifying high-performance algorithms (BM25, djb2, HNSW), and compared the performance of various runtimes (PHP, Lua, Node, Wasm, Rust)—<b>I analyzed some modern frontend principles</b> through the same lens.</p>
-
-                <p class="auto-x-padding"><strong>From this viewpoint, to put it simply:</strong> What was mentioned in the first line (regarding what is possible) could be solved if most modern browsers or JavaScript engines updated to a recent ECMAScript specification with native TypeScript and backward compatibility support.<br> But the proprietary or custom syntaxes that have been invented are not standard JS or TS; they require transpilers, optimizers, compilers, bundlers, and so on (understanding their inner workings and mechanisms is indeed fascinating).</p>
-
-                <p class="auto-x-padding"><strong>Proposition:</strong> There are several steps that can be bypassed—between the scripting language, the framework, development, bundling, the interpreter, and the end user—without requiring any updates to ES/TS specifications.</p>
-
-                <p class="auto-x-padding"><strong>The focus will be on these key points:</strong></p>
-                <div class="auto-x-padding">
-                    <ul role="list" class="lines">
-                        <li><b>Point 1:</b> JavaScript/TypeScript as the scripting language that does the actual work and creates the upper framework.</li>
-                        <li><b>Point 2:</b> The framework, which helps avoid repetitive boilerplate, making the work with the scripting language easier and more efficient.</li>
-                        <li><b>Point 3:</b> Developing interrelated or independent components using the framework to further abstract logic, reduce repetitive code, and reuse processes.</li>
-                    </ul>
-                </div>
-
-                <p class="auto-x-padding"><strong>Steps that can be bypassed between:</strong></p>
-                <h2 class="auto-x-padding"><code><strong>Point 1</strong></code></h2>
-                <div class="auto-x-padding">
-                    <ul role="list" class="lines">
-                        <li><strong>Context:</strong><br> For a framework to build dynamic, real-time, or interconnected frontends and UIs, it requires state, reactivity, components, routing, event handling, DOM manipulation, HTTP capabilities, and so on. To achieve this, ECMAScript and Web APIs already provide these features out of the box since ES5, ES6, and ES2016+.</li>
-                        <li><strong>Bypass:</strong><br> Advanced usage of native primitives, baseline widely available features/functions, and APIs, such as the following.
-                            <ul role="list">
-                                <li><strong>State & Reactivity:</strong><br><em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/reactive/"><strong>Reactive</strong></a> (ES6+), using:</em>
-                                    <div class="rounded-box"><code>Proxy</code>, <code>Object.defineProperty</code>, <code>Map</code>, <code>Set</code>, <code>WeakMap</code>, <code>...</code></div>
-                                </li>
-                                <li><strong>DOM, Events & Templating:</strong><br><em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/dom/"><strong>DOM</strong></a>, <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/events/"><strong>Events</strong></a> & <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/handlers/"><strong>Handlers</strong></a> (ES5, ES6+), using:</em>
-                                    <div class="rounded-box"><code>MutationObserver</code>, <code>IntersectionObserver</code>, <code>document.querySelector</code>, <code>document.createTreeWalker</code>, <code>NodeFilter</code>, <code>HTMLTemplateElement</code>, <code>DocumentFragment</code>, <code>document.createComment</code>, <code>Node.prototype.cloneNode</code>, <code>addEventListener</code>, <code>window.getComputedStyle</code>, <code>...</code></div>
-                                </li>
-                                <li><strong>Routing & Navigation:</strong><br><em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/routing/"><strong>Routing</strong></a> (ES6+), using:</em>
-                                    <div class="rounded-box"><code>history.pushState</code>, <code>history.replaceState</code>, <code>window.onpopstate</code>, <code>URL</code>, <code>window.location</code>, <code>structuredClone</code>, <code>...</code></div>
-                                </li>
-                                <li><strong>Asynchronous & Orchestration:</strong><br><em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/http/"><strong>HTTP</strong></a> & <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/components/"><strong>Components</strong></a> (ES3, ES6+), using:</em>
-                                    <div class="rounded-box"><code>queueMicrotask</code>, <code>Promise</code>, <code>XMLHttpRequest</code>, <code>fetch</code>, <code>Blob</code>, <code>URL.createObjectURL</code>, <code>URL.revokeObjectURL</code>, <code>...</code></div>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-                <h2 class="auto-x-padding"><code><strong>Point 2</strong></code></h2>
-                <!--<div class="auto-x-padding">
-                    <ul role="list" class="lines">
-                        <li><strong>Bypass:</strong> </li>
-                    </ul>
-                    </div>-->
-                <p class="auto-x-padding"><b>Coming soon...</b></p>
-                <h2 class="auto-x-padding"><code><strong>Point 3</strong></code></h2>
-                <!--<hr>
-                <p class="auto-x-padding"><a href="https://estructura.okzgn.com"><strong>Estructura – Runtime-Type-Driven Multiple Dispatch JS Framework</strong></a></p>
-                <p class="auto-x-padding">Built to have a solid foundation when coding in JavaScript, overcoming its well-known native type quirks. It's a lightweight runtime solution without dependencies, TypeScript, verbosity, or the limitations of compile-time type checking. It provides the capability to clearly identify any data type, create any custom data type, organize them, and use them with the assurance that the dispatcher will always bind the specified functions to its corresponding or predefined types. It was built with maximum optimization, offers plenty of flexibility when needed, and was designed with near-universal compatibility in mind (ES3/ES5+).</p>-->
             </article>
 		</div>
 	</main>
