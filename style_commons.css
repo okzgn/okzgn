@@ -225,6 +225,12 @@ code {
     margin: 1px 0;
     display: inline-block;
 }
+
+code strong {
+    font-size: 1.25rem;
+    color: var(--blue);
+}
+
 a, input, textarea, button, input[type="submit"] {
     transition: all 0.25s;
 }
@@ -380,21 +386,48 @@ header .logo a {
     height: 1.5rem;
 }
 
-nav {
-    height: 0;
-    transition: 1s all;
-    opacity: 0;
-}
-nav.show {
-    height: 2.5rem;
-    opacity: 1;
+nav, nav * {
+    transition: 0.25s all;
 }
 
-nav h2 {
-    max-width: calc(100% - 2rem);
+nav.expanded {
+    height: 15rem;
+}
+
+.nav-title {
+    max-width: calc(100% - 6rem);
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+}
+
+nav.expanded #menu::before {
+    transform: rotate(-45deg);
+    top: 0.1875rem;
+}
+
+nav.expanded #menu::after {
+    transform: rotate(45deg);
+    top: -0.1875rem;
+}
+
+.nav-title.collapse {
+    margin-right: 1rem;
+}
+
+#menu {
+    flex-flow: column;
+    padding: 0.5rem;
+}
+
+#menu::before, #menu::after {
+    content: '';
+    display: block;
+    width: 0.75rem;
+    height: 0.125rem;
+    margin: 0.125rem 0;
+    background: var(--white);
+    position: relative;
 }
 
 footer {
@@ -493,7 +526,7 @@ main .container {
     margin-bottom: 1rem;
 }
 
-#menu {
+#up {
     position: fixed;
     bottom: 1.25rem;
     right: 1.25rem;
@@ -514,19 +547,19 @@ main .container {
     transition: all 0.125s;
     z-index: 99;
 }
-#menu::before, #menu::after {
+#up::before, #up::after {
     display: none;
 }
-#menu.show {
+#up.show {
     opacity: 1;
     visibility: visible;
 }
-#menu:hover,
-#menu:active,
-#menu:focus {
+#up:hover,
+#up:active,
+#up:focus {
     transform: translateY(-3px);
 }
-#menu:focus-visible { outline-color: var(--blueDark); }
+#up:focus-visible { outline-color: var(--blueDark); }
 
 @media screen and (max-width: 960px) {
     main .container {
@@ -558,14 +591,14 @@ main .container {
     ::-webkit-scrollbar-track { background: transparent; }
 
     :active, :focus { outline-color: var(--ghostBlueWhite); }
-    a:focus-visible, button:focus-visible, input:focus-visible, #menu:focus-visible { outline-color: var(--white); }
+    a:focus-visible, button:focus-visible, input:focus-visible, #up:focus-visible { outline-color: var(--white); }
 
     ::selection { background: var(--realBlue); color: var(--white); }
     ::placeholder { color: var(--white); opacity: 0.5; }
 
     body { background-color: var(--realBlack); }
 
-    #menu {
+    #up {
         background-color: var(--blueDark3);
     }
 

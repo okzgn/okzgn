@@ -1,11 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
   console.log('Main commons ready.');
 
-  var menuButton = document.getElementById('menu');
+  var upButton = document.getElementById('up');
   var scrollContainer = document.querySelector('main');
-  var navContainer = document.querySelector('nav');
-  var navTitle = document.querySelector('h2.nav-title');
-  var navMainTitle = document.querySelector('h1.main-title');
+  var nav = document.querySelector('nav');
+  var navTitle = document.querySelector('.nav-title');
+  var menu = document.getElementById('menu');
+  var mainTitle = document.querySelector('.main-title');
 
   function scrollOperation(target) {
     var state = false;
@@ -13,13 +14,13 @@ document.addEventListener('DOMContentLoaded', function () {
     function showOrHide() {
       var scroll = target[target === window ? 'scrollY' : 'scrollTop'];
       if (scroll > 100) {
-        menuButton.classList.add('show');
-        navContainer.classList.add('show');
-        navTitle.textContent = navMainTitle.textContent;
+        upButton.classList.add('show');
+        navTitle.classList.add('collapse');
+        navTitle.textContent = mainTitle.textContent;
       }
       else if (scroll < 80) {
-        menuButton.classList.remove('show');
-        navContainer.classList.remove('show');
+        upButton.classList.remove('show');
+        navTitle.classList.remove('collapse');
         navTitle.textContent = '';
       }
 
@@ -42,8 +43,18 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener('scroll', scrollOperation(window), { passive: true });
   scrollContainer.addEventListener('scroll', scrollOperation(scrollContainer), { passive: true });
 
-  menuButton.addEventListener('click', function(event) {
+  upButton.addEventListener('click', function(event) {
     event.preventDefault();
     returnToTop();
+  });
+
+  menu.addEventListener('click', function (event) {
+    var ariaExpanded = menu.getAttribute('aria-expanded');
+    if (ariaExpanded === 'false') {
+      menu.setAttribute('aria-expanded', 'true');
+      return nav.classList.add('expanded');
+    }
+    menu.setAttribute('aria-expanded', 'false');
+    nav.classList.remove('expanded');
   });
 });
