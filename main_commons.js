@@ -17,8 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
     !navTitle ||
     !menu ||
     !mainTitle ||
-    !menuList ||
-    !points
+    !menuList
   ) {
     return console.info('There is an element that cannot be found.');
   }
@@ -84,15 +83,63 @@ document.addEventListener('DOMContentLoaded', function () {
       _thresholds.push(Number(threshold.toFixed(2)));
     }
 
-    var _handler = new IntersectionObserver(function (intersections) {
+    var
+      _handlerElements = new WeakMap(),
+      _handler = new IntersectionObserver(function (intersections) {
+
       intersections.forEach(function (entry, index, array) {
-        if (!entry.isIntersecting) { return hideFn.call(entry.target, entry); }
-        var _index = entry.intersectionRect,
-          _array = ((_index.width * _index.height) / (window.innerWidth * window.innerHeight));
-        if (entry.intersectionRatio > 0.74 || _array > 0.74) { return showFn.call(entry.target, 75, _index); }
-        else if (entry.intersectionRatio > 0.49 || _array > 0.49) { return showFn.call(entry.target, 50, _index); }
-        else if (entry.intersectionRatio > 0.24 || _array > 0.24) { return showFn.call(entry.target, 25, _index); }
-        hideFn.call(entry.target);
+        if (!_handlerElements.has(entry.target)) {
+          _handlerElements.set(entry.target, { x: 0, y: 0 });
+        }
+
+        var
+          previous = _handlerElements.get(entry.target),
+          previousX = previous.x,
+          previousY = previous.y,
+          currentXDirection = 'unknown',
+          currentYDirection = 'unknown',
+          currentX = entry.boundingClientRect.x,
+          currentY = entry.boundingClientRect.y;
+
+        if (currentX < previousX) {
+          currentXDirection = 'right';
+        }
+        else if (currentX > previousX) {
+          currentXDirection = 'left';
+        }
+
+        if (currentY < previousY) {
+          currentYDirection = 'down';
+        }
+        else if (currentY > previousY) {
+          currentYDirection = 'up';
+        }
+
+        if (entry.isIntersecting) {
+          var
+            _index = entry.intersectionRect,
+            _array = ((_index.width * _index.height) / (window.innerWidth * window.innerHeight));
+
+            if (entry.intersectionRatio > 0.74 || _array > 0.74) {
+              showFn.call(entry.target, currentXDirection, currentYDirection, 75, _index, entry);
+            }
+            else if (entry.intersectionRatio > 0.49 || _array > 0.49) {
+              showFn.call(entry.target, currentXDirection, currentYDirection, 50, _index, entry);
+            }
+            else if (entry.intersectionRatio > 0.24 || _array > 0.24) {
+              showFn.call(entry.target, currentXDirection, currentYDirection, 25, _index, entry);
+            }
+            else {
+              hideFn.call(entry.target, currentXDirection, currentYDirection, entry);
+            }
+        }
+        else {
+          hideFn.call(entry.target, currentXDirection, currentYDirection, entry);
+        }
+
+        previousX = currentX;
+        previousY = currentY;
+        _handlerElements.set(entry.target, { x: previousX, y: previousY });
       });
     }, { threshold: _thresholds });
 
@@ -156,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function () {
       menu.setAttribute('aria-label', 'Close menu');
 
       var selectedAnchors = iterateByCond(anchors, function () { return this.classList.contains('cta-blue-button'); });
-      console.log(selectedAnchors); if (selectedAnchors) {
+      if (selectedAnchors) {
         scrollSituate(menuListContainer, selectedAnchors.current);
       }
       return nav.classList.add('expanded');
@@ -192,19 +239,19 @@ document.addEventListener('DOMContentLoaded', function () {
     menuListItemLink.addEventListener('click', menuOperation);
   });
 
-  var
-    anchors = document.querySelectorAll('nav .menu-list a');
+  var anchors = document.querySelectorAll('nav .menu-list a');
+  if (!anchors.length) { return console.error('There is no anchors.'); }
 
-  if (!anchors) { return console.error('There is no anchors.'); }
-
+  var observerShow, observerHide;
   observer(points,
-    function show(visibleRatio) {
+    function show(scrollXDirection, scrollYDirection, visibleRatio) {
       var id = this.id;
-      console.log('show', id);
-      clearTimeout(show.timeout);
-      show.timeout = setTimeout(function () {
+      console.log('show', scrollXDirection, scrollYDirection, id);
+      clearTimeout(observerShow);
+      observerShow = setTimeout(function () {
         var elements = iterateByCond(anchors, function () { return this.getAttribute('href') === '#' + id; });
         if (!elements) { return; }
+
         elements.current.classList.add('cta-blue-button');
         elements.prev.forEach(function (element) {
           element.classList.add('cta-blue-button');
@@ -214,19 +261,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     },
 
-    function hide() {
+    function hide(scrollXDirection, scrollYDirection, intersectionEntry) {
       var id = this.id;
-      console.log('hide', id);
-      clearTimeout(hide.timeout);
-      hide.timeout = setTimeout(function () {
+      console.log('hide', scrollXDirection, scrollYDirection, id);
+      clearTimeout(observerHide);
+      observerHide = setTimeout(function () {
         var elements = iterateByCond(anchors, function () { return this.getAttribute('href') === '#' + id; });
         if (!elements) { return; }
-        elements.current.classList.remove('cta-blue-button');
-        elements.next.forEach(function (element) {
-          element.classList.remove('cta-blue-button');
-        });
-        if (elements.prev.length) {
-          scrollSituate(menuListContainer, elements.prev[elements.prev.length - 1]);
+
+        if (scrollYDirection === 'up') {
+          elements.current.classList.remove('cta-blue-button');
+          elements.next.forEach(function (element) {
+            element.classList.remove('cta-blue-button');
+          });
+
+          if (elements.prev.length) {
+            scrollSituate(menuListContainer, elements.prev[elements.prev.length - 1]);
+          }
         }
       }, 200);
     }
