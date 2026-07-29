@@ -562,6 +562,7 @@ main {
     align-self: center;
     width: 60%;
     margin-bottom: 1rem;
+    max-width: 1024px;
 }
 
 #up {
@@ -611,7 +612,7 @@ main {
 }
 @media (prefers-color-scheme: dark) {
     :root {
-        --bg: var(--black);
+        --bg: var(--realBlack);
         --gray: var(--almostWhite);
         --black: var(--white);
         --blue: var(--blueLight3);
@@ -633,8 +634,6 @@ main {
 
     ::selection { background: var(--realBlue); color: var(--white); }
     ::placeholder { color: var(--white); opacity: 0.5; }
-
-    body { background-color: var(--realBlack); }
 
     #up {
         background-color: var(--blueDark3);

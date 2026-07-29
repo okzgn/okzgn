@@ -38,11 +38,9 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function returnToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
     scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  window.addEventListener('scroll', scrollOperation(window), { passive: true });
   scrollContainer.addEventListener('scroll', scrollOperation(scrollContainer), { passive: true });
 
   upButton.addEventListener('click', function(event) {
@@ -54,16 +52,18 @@ document.addEventListener('DOMContentLoaded', function () {
     var ariaExpanded = menu.getAttribute('aria-expanded');
     if (ariaExpanded === 'false') {
       menu.setAttribute('aria-expanded', 'true');
+      menu.setAttribute('aria-label', 'Close menu');
       return nav.classList.add('expanded');
     }
     menu.setAttribute('aria-expanded', 'false');
+    menu.setAttribute('aria-label', 'Open menu');
     nav.classList.remove('expanded');
   });
 
   var menuList = document.querySelector('nav .menu-list ol');
   var points = document.querySelectorAll('h2, h3, h4, h5, h6');
   points.forEach(function (point) {
-    var anchor = point.id || point.textContent.replace(/[^a-zA-Z0-9]/g, '-').replace(/^\-|\-$/g, '').toLowerCase();
+    var anchor = point.id || point.textContent.replace(/['"\(\)\[\]]/g, '').replace(/[^a-zA-Z0-9]/g, '-').replace(/^\-|\-$/g, '').toLowerCase();
     var visibleAnchor = point.textContent.replace(/^[^a-zA-Z0-9]|[^a-zA-Z0-9]$/g, '');
 
     point.id = anchor;
@@ -74,5 +74,9 @@ document.addEventListener('DOMContentLoaded', function () {
     menuListItemLink.textContent = visibleAnchor;
     menuListItem.appendChild(menuListItemLink);
     menuList.appendChild(menuListItem);
+
+    menuListItemLink.addEventListener('click', function (event) {
+      menu.click();
+    })
   });
 });
