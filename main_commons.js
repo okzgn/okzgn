@@ -1,15 +1,28 @@
 document.addEventListener('DOMContentLoaded', function () {
-  console.log('Main commons ready.');
+  var
+    upButton = document.getElementById('up'),
+    scrollContainer = document.querySelector('main'),
+    nav = document.querySelector('nav'),
+    navTitle = document.querySelector('.nav-title'),
+    menu = document.getElementById('menu'),
+    mainTitle = document.querySelector('.main-title'),
+    menuList = document.querySelector('nav .menu-list ol'),
+    points = document.querySelectorAll('h2, h3, h4, h5, h6');
 
-  var upButton = document.getElementById('up');
-  var scrollContainer = document.querySelector('main');
+  if (
+    !upButton ||
+    !scrollContainer ||
+    !nav ||
+    !navTitle ||
+    !menu ||
+    !mainTitle ||
+    !menuList ||
+    !points
+  ) {
+    return console.info('There is an element that cannot be found.');
+  }
 
-  var nav = document.querySelector('nav');
-  var navTitle = document.querySelector('.nav-title');
   var prevTitle = navTitle ? navTitle.textContent : '';
-
-  var menu = document.getElementById('menu');
-  var mainTitle = document.querySelector('.main-title');
   mainTitle = mainTitle ? mainTitle.textContent : '';
 
   function scrollOperation(target) {
@@ -41,14 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
     scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  scrollContainer.addEventListener('scroll', scrollOperation(scrollContainer), { passive: true });
-
-  upButton.addEventListener('click', function(event) {
-    event.preventDefault();
-    returnToTop();
-  });
-
-  menu.addEventListener('click', function (event) {
+  function menuOperation(event) {
     var ariaExpanded = menu.getAttribute('aria-expanded');
     if (ariaExpanded === 'false') {
       menu.setAttribute('aria-expanded', 'true');
@@ -58,10 +64,17 @@ document.addEventListener('DOMContentLoaded', function () {
     menu.setAttribute('aria-expanded', 'false');
     menu.setAttribute('aria-label', 'Open menu');
     nav.classList.remove('expanded');
+  }
+
+  scrollContainer.addEventListener('scroll', scrollOperation(scrollContainer), { passive: true });
+
+  upButton.addEventListener('click', function(event) {
+    event.preventDefault();
+    returnToTop();
   });
 
-  var menuList = document.querySelector('nav .menu-list ol');
-  var points = document.querySelectorAll('h2, h3, h4, h5, h6');
+  menu.addEventListener('click', menuOperation);
+
   points.forEach(function (point) {
     var anchor = point.id || point.textContent.replace(/['"\(\)\[\]]/g, '').replace(/[^a-zA-Z0-9]/g, '-').replace(/^\-|\-$/g, '').toLowerCase();
     var visibleAnchor = point.textContent.replace(/^[^a-zA-Z0-9]|[^a-zA-Z0-9]$/g, '');
@@ -75,8 +88,6 @@ document.addEventListener('DOMContentLoaded', function () {
     menuListItem.appendChild(menuListItemLink);
     menuList.appendChild(menuListItem);
 
-    menuListItemLink.addEventListener('click', function (event) {
-      menu.click();
-    })
+    menuListItemLink.addEventListener('click', menuOperation);
   });
 });

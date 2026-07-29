@@ -217,9 +217,10 @@ sup {
     border: 1px solid var(--shadow);
 }
 
+a { user-select: none; }
+
 a, code {
     color: var(--blue);
-    user-select: none;
     text-decoration: none;
     display: inline-flex;
     background: var(--softShadow);
@@ -411,7 +412,7 @@ nav.expanded {
     height: 15rem;
     flex-wrap: wrap;
     align-items: flex-start;
-    box-shadow: 0 0.25rem 0.5rem var(--shadow2);
+    box-shadow: 0 0.5rem 1rem var(--shadow2);
 }
 
 nav.expanded .menu-list {
