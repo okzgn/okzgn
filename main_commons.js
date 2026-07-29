@@ -78,10 +78,13 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    var _thresholds = [];
-    for (var threshold = 0; threshold <= 1; threshold += 0.02) {
-      _thresholds.push(Number(threshold.toFixed(2)));
-    }
+    var _thresholds = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];
+    /*
+      // Advanced thresholds:
+      for (var threshold = 0; threshold <= 1; threshold += 0.01) {
+        _thresholds.push(Number(threshold.toFixed(2)));
+      }
+    */
 
     var
       _handlerElements = new WeakMap(),
