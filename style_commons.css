@@ -206,6 +206,17 @@ button, input[type="submit"] { cursor: pointer; }
     html { scroll-behavior: auto; }
 }
 
+sup {
+    font-size: 0.7rem;
+    font-weight: bold;
+    display: inline-block;
+    padding: 0 0.25rem;
+    margin: 0 0.25rem;
+    background: var(--softWhite);
+    border-radius: 0.5rem;
+    border: 1px solid var(--shadow);
+}
+
 a, code {
     color: var(--blue);
     user-select: none;
@@ -390,16 +401,36 @@ nav, nav * {
     transition: 0.25s all;
 }
 
-nav.expanded {
-    height: 15rem;
+nav {
+    box-shadow: 0 0.0625rem 0.125rem var(--shadow2);
 }
 
-.nav-title {
-    max-width: calc(100% - 6rem);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-right: 1rem;
+nav .menu-list { display: none; }
+
+nav.expanded {
+    height: 15rem;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    box-shadow: 0 0.25rem 0.5rem var(--shadow2);
+}
+
+nav.expanded .menu-list {
+    width: 100%;
+    height: 11.5rem;
+    display: flex;
+    justify-content: center;
+    overflow-y: auto;
+}
+
+nav.expanded .menu-list ol {
+    margin: auto 0; /* Flexbox centering breaks scroll fix */
+    display: flex;
+    flex-flow: column;
+    /*list-style: decimal;*/
+}
+
+nav.expanded .menu-list ol li {
+    margin-bottom: 0.5rem;
 }
 
 nav.expanded #menu::before {
@@ -410,6 +441,14 @@ nav.expanded #menu::before {
 nav.expanded #menu::after {
     transform: rotate(45deg);
     top: -0.1875rem;
+}
+
+.nav-title {
+    max-width: calc(100% - 6rem);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 1rem;
 }
 
 #menu {
@@ -427,9 +466,11 @@ nav.expanded #menu::after {
     position: relative;
 }
 
+.nav-title, #menu { align-self: center; }
+
 footer {
-    /*background-color: var(--softShadow2);
-    border-top: 1px solid var(--shadow);*/
+    background-color: var(--softShadow2);
+    border-top: 1px solid var(--shadow);
     font-size: 0.85rem;
     gap: 0.5rem;
 }
@@ -487,8 +528,6 @@ main, .paragraphs {
     position: relative;
     display: inline-block;
     width: 1rem;
-}
-.lines li::before {
     height: 0.125rem;
     margin-bottom: 0.25rem;
     margin-top: 0.25rem;
@@ -519,7 +558,7 @@ main {
     overflow-y: auto;
 }
 
-main .container {
+.container {
     align-self: center;
     width: 60%;
     margin-bottom: 1rem;
@@ -561,12 +600,12 @@ main .container {
 #up:focus-visible { outline-color: var(--blueDark); }
 
 @media screen and (max-width: 960px) {
-    main .container {
+    .container {
         width: 80%;
     }
 }
 @media screen and (max-width: 640px) {
-    main .container {
+    .container {
         width: 100%;
     }
 }
@@ -616,7 +655,7 @@ main .container {
     .cta-button { background: linear-gradient(to right, var(--accentDark3), var(--accentDark2)); }
     .cta-button:hover, .cta-button:focus, .cta-button:active { background: linear-gradient(to right, var(--accentDark3), var(--accentDark2) 50%, var(--accentDark)); }
 
-    .cta-blue-button, button { background: linear-gradient(to right, var(--blueDark3), var(--blueDark2)) !important; }
+    .cta-blue-button, button { background: linear-gradient(to right, var(--blueDark3), var(--blueDark2)); }
     .cta-blue-button:hover, .cta-blue-button:active, .cta-blue-button:focus,
     button:hover, button:active, button:focus {
         background: linear-gradient(to right, var(--blueDark3), var(--blueDark2) 50%, var(--realBlueLight));

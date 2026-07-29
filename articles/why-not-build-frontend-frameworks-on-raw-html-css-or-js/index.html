@@ -85,6 +85,7 @@
 	<nav>
 	    <div class="nav-title">Table of Contents</div>
 		<button id="menu" class="no-arrow" aria-label="Open menu" aria-expanded="false"></button>
+		<div class="menu-list auto-x-tiny-padding"><ol class="container auto-x-padding"></ol></div>
 	</nav>
 	<main>
 		<div class="container auto-x-tiny-padding">
@@ -114,7 +115,7 @@
                     <h2 class="auto-font-size-2">From this viewpoint, to put it simply:</h2>
                     <p>What was mentioned in the first line (regarding what is possible) could be solved if most modern browsers or JavaScript engines updated to a recent ECMAScript specification with native TypeScript and backward compatibility support.<br> But the proprietary or custom syntaxes that have been invented are not standard JS or TS; they require transpilers, optimizers, compilers, bundlers, and so on (understanding their inner workings and mechanisms is indeed fascinating).</p>
                     <h2 class="auto-font-size-2">Proposition:</h2>
-                    <p>There are several steps that can be bypassed—between the scripting language, the framework, development, bundling, the interpreter, and the end user—without requiring any updates to ES/TS specifications.</p>
+                    <p><strong>There are several steps that can be bypassed between</strong> the scripting language, the framework, development, bundling, the interpreter, and the end user, without requiring any updates to ES/TS specifications.</p>
                     <h2 class="auto-font-size-2">The focus will be on these key points:</h2>
                     <div>
                         <ul role="list" class="lines">
@@ -127,24 +128,25 @@
                     <h3 class="auto-font-size-3">Point 1</h3>
                     <div>
                         <ul role="list" class="lines">
-                            <li><strong>Context:</strong><br> For a framework to build dynamic, real-time, or interconnected frontends and UIs, it requires state, reactivity, components, routing, event handling, DOM manipulation, HTTP capabilities, and so on. To achieve this, ECMAScript and Web APIs already provide these features out of the box since ES5, ES6, and ES2016+.</li>
+                            <li><strong>Context:</strong><br> For a framework to build dynamic, real-time, or interconnected frontends and UIs, it requires state, reactivity, components, routing, event handling, DOM manipulation, HTTP capabilities, and so on. To achieve this, ECMAScript and Web APIs already provide these features out of the box since ES5, ES6, ES2016+ and DOM Level 1-4.</li>
                             <li><strong>Bypass:</strong><br> Advanced usage of native primitives, baseline widely available features/functions, and APIs, such as the following.
                                 <ul role="list">
-                                    <li><strong>State & Reactivity:</strong><br><em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/reactive/"><strong>Reactive</strong></a> (ES6+), using:</em>
+                                    <li><strong>State & Reactivity:</strong><br><em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/reactive/"><strong>Reactive</strong></a><a class="no-default-arrow" href="#A"><sup>A</sup></a> using ES6+:</em>
                                         <div class="rounded-box"><code>Proxy</code>, <code>Object.defineProperty</code>, <code>Map</code>, <code>Set</code>, <code>WeakMap</code>, <code>...</code></div>
                                     </li>
-                                    <li><strong>DOM, Events & Templating:</strong><br><em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/dom/"><strong>DOM</strong></a>, <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/events/"><strong>Events</strong></a> & <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/handlers/"><strong>Handlers</strong></a> (ES5, ES6+), using:</em>
+                                    <li><strong>DOM, Events & Templating:</strong><br><em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/dom/"><strong>DOM</strong></a><a class="no-default-arrow" href="#A"><sup>A</sup></a>, <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/events/"><strong>Events</strong></a><a class="no-default-arrow" href="#A"><sup>A</sup></a> & <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/handlers/"><strong>Handlers</strong></a><a class="no-default-arrow" href="#A"><sup>A</sup></a> using ES6+:</em>
                                         <div class="rounded-box"><code>MutationObserver</code>, <code>IntersectionObserver</code>, <code>document.querySelector</code>, <code>document.createTreeWalker</code>, <code>NodeFilter</code>, <code>HTMLTemplateElement</code>, <code>DocumentFragment</code>, <code>document.createComment</code>, <code>Node.prototype.cloneNode</code>, <code>addEventListener</code>, <code>window.getComputedStyle</code>, <code>...</code></div>
                                     </li>
-                                    <li><strong>Routing & Navigation:</strong><br><em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/routing/"><strong>Routing</strong></a> (ES6+), using:</em>
+                                    <li><strong>Routing & Navigation:</strong><br><em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/routing/"><strong>Routing</strong></a><a class="no-default-arrow" href="#A"><sup>A</sup></a> using ES6+:</em>
                                         <div class="rounded-box"><code>history.pushState</code>, <code>history.replaceState</code>, <code>window.onpopstate</code>, <code>URL</code>, <code>window.location</code>, <code>structuredClone</code>, <code>...</code></div>
                                     </li>
-                                    <li><strong>Asynchronous & Orchestration:</strong><br><em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/http/"><strong>HTTP</strong></a> & <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/components/"><strong>Components</strong></a> (ES3, ES6+), using:</em>
+                                    <li><strong>Asynchronous & Orchestration:</strong><br><em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/http/"><strong>HTTP</strong></a><a class="no-default-arrow" href="#A"><sup>A</sup></a> & <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/components/"><strong>Components</strong></a><a class="no-default-arrow" href="#A"><sup>A</sup></a> using ES6+:</em>
                                         <div class="rounded-box"><code>queueMicrotask</code>, <code>Promise</code>, <code>XMLHttpRequest</code>, <code>fetch</code>, <code>Blob</code>, <code>URL.createObjectURL</code>, <code>URL.revokeObjectURL</code>, <code>...</code></div>
                                     </li>
                                 </ul>
                             </li>
                         </ul>
+                        <em id="A"><a class="no-default-arrow" href="#A"><sup>A</sup></a>An extension of the <a class="no-default-arrow" href="https://estructura.okzgn.com/">main framework implementation</a> using ES3+.</em>
                     </div>
                     <h3 class="auto-font-size-3">Point 2</h3>
                     <!--<div>

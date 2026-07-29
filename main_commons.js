@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', function () {
   var prevTitle = navTitle ? navTitle.textContent : '';
 
   var menu = document.getElementById('menu');
-  var mainTitle = document.querySelector('.main-title'), mainTitle = mainTitle ? mainTitle.textContent : '';
+  var mainTitle = document.querySelector('.main-title');
+  mainTitle = mainTitle ? mainTitle.textContent : '';
 
   function scrollOperation(target) {
     var state = false;
@@ -57,5 +58,21 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     menu.setAttribute('aria-expanded', 'false');
     nav.classList.remove('expanded');
+  });
+
+  var menuList = document.querySelector('nav .menu-list ol');
+  var points = document.querySelectorAll('h2, h3, h4, h5, h6');
+  points.forEach(function (point) {
+    var anchor = point.id || point.textContent.replace(/[^a-zA-Z0-9]/g, '-').replace(/^\-|\-$/g, '').toLowerCase();
+    var visibleAnchor = point.textContent.replace(/^[^a-zA-Z0-9]|[^a-zA-Z0-9]$/g, '');
+
+    point.id = anchor;
+
+    var menuListItem = document.createElement('li');
+    var menuListItemLink = document.createElement('a');
+    menuListItemLink.href = '#' + anchor;
+    menuListItemLink.textContent = visibleAnchor;
+    menuListItem.appendChild(menuListItemLink);
+    menuList.appendChild(menuListItem);
   });
 });
