@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function () {
       menuState(true);
       menu.setAttribute('aria-label', 'Close menu');
 
-      var selectedAnchors = iterateByCond(anchors, function () { return this.classList.contains('cta-blue-button'); });
+      var selectedAnchors = iterateByCond(anchors, function () { return this.classList.contains('cta-button'); });
       if (selectedAnchors) {
         scrollSituate(menuListContainer, selectedAnchors.current);
       }
@@ -256,9 +256,9 @@ document.addEventListener('DOMContentLoaded', function () {
         var elements = iterateByCond(anchors, function () { return this.getAttribute('href') === '#' + id; });
         if (!elements) { return; }
 
-        elements.current.classList.add('cta-blue-button');
+        elements.current.classList.add('cta-button');
         elements.prev.forEach(function (element) {
-          element.classList.add('cta-blue-button');
+          element.classList.add('cta-button');
         });
         scrollSituate(menuListContainer, elements.current);
       }, 200);
@@ -274,9 +274,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!elements) { return; }
 
         if (scrollYDirection === 'up') {
-          elements.current.classList.remove('cta-blue-button');
+          elements.current.classList.remove('cta-button');
           elements.next.forEach(function (element) {
-            element.classList.remove('cta-blue-button');
+            element.classList.remove('cta-button');
           });
 
           if (elements.prev.length) {
