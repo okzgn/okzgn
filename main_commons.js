@@ -250,7 +250,8 @@ document.addEventListener('DOMContentLoaded', function () {
   observer(points,
     function show(scrollXDirection, scrollYDirection, visibleRatio) {
       var id = this.id;
-      console.log('show', scrollXDirection, scrollYDirection, id);
+      //console.log('show', scrollXDirection, scrollYDirection, id);
+
       clearTimeout(observerShow);
       observerShow = setTimeout(function () {
         var elements = iterateByCond(anchors, function () { return this.getAttribute('href') === '#' + id; });
@@ -267,7 +268,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function hide(scrollXDirection, scrollYDirection, intersectionEntry) {
       var id = this.id;
-      console.log('hide', scrollXDirection, scrollYDirection, id);
+      //console.log('hide', scrollXDirection, scrollYDirection, id);
+
       clearTimeout(observerHide);
       observerHide = setTimeout(function () {
         var elements = iterateByCond(anchors, function () { return this.getAttribute('href') === '#' + id; });
