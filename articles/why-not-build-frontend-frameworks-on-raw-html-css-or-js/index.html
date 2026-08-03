@@ -13,7 +13,7 @@
 	<meta name="robots" content="index, follow, max-image-preview:large">
 	<meta name="author" content="OKZGN">
 
-	<meta property="article:published_time" content="2026-07-26T12:00:00Z">
+	<meta property="article:published_time" content="2026-08-03T12:00:00Z">
 	<meta property="article:author" content="Elías Francisco Alvarado Soshina">
 
 	<meta name="theme-color" content="#ffdbb8" media="(prefers-color-scheme: light)">
@@ -55,8 +55,8 @@
   "description": "It is possible: No endless dependencies, no dev environment setup, no build step, no Web Components required, minimal boilerplate, minimal lock-in. Raw HTML, CSS and JS have everything needed and are web standards, unlike custom syntaxes.",
   "image": "https://okzgn.com/landscape.png",
   "url": "https://okzgn.com/articles/why-not-build-frontend-frameworks-on-raw-html-css-or-js/",
-  "datePublished": "2026-07-26T12:00:00Z",
-  "dateModified": "2026-07-26T12:00:00Z",
+  "datePublished": "2026-08-03T12:00:00Z",
+  "dateModified": "2026-08-03T12:00:00Z",
   "inLanguage": "en",
   "author": {
     "@type": "Person",
@@ -116,7 +116,7 @@
                     <h2 class="auto-font-size-2">Simplified solution:</h2>
                     <p>What was mentioned in the first line (regarding what is possible) could be solved if most modern browsers or JavaScript engines updated to a recent ECMAScript specification with native TypeScript and backward compatibility support.<br> But the proprietary or custom syntaxes that have been invented are not standard JS or TS; they require transpilers, optimizers, compilers, bundlers, and so on (understanding their inner workings and mechanisms is indeed fascinating).</p>
                     <h2 class="auto-font-size-2">Proposition:</h2>
-                    <p><strong>There are several steps that can be bypassed between</strong> the scripting language, the framework, and development (covered up to here in this article, without requiring any updates to ES/TS specifications), and bundling, the interpreter, and the end user (which follow in a future article, where additional tooling is optional).</p>
+                    <p><strong>There are several steps that can be bypassed between</strong> the scripting language, the framework, and development (covered up to here in this article, without requiring any updates to ES/TS specifications), and bundling, the interpreter, and the end user (which follow in an upcoming article, where additional tooling is optional).</p>
                     <h2 class="auto-font-size-2">Focus points:</h2>
                     <div>
                         <ul role="list" class="lines">
@@ -132,35 +132,77 @@
                             <li><strong>Context:</strong><br> For a framework to build dynamic, real-time, or interconnected frontends and UIs, it requires state, reactivity, components, routing, event handling, DOM manipulation, HTTP capabilities, and so on. To achieve this, ECMAScript and Web APIs natively provide these features since ES5, ES6, ES2016+ and DOM Level 1-4.</li>
                             <li><strong>Bypass:</strong><br> Advanced usage of native primitives, baseline widely available features/functions, and APIs, such as the following.
                                 <ul role="list">
-                                    <li><h4>State & Reactivity:</h4>
+                                    <li><h4>State & Reactivity:</h4><br>
                                         <em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/reactive/"><strong>Reactive</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> using ES6+:</em>
                                         <div class="rounded-box"><code>Proxy</code>, <code>Object.defineProperty</code>, <code>Map</code>, <code>Set</code>, <code>WeakMap</code>, <code>...</code></div>
                                     </li>
-                                    <li><h4>DOM, Events & Templating:</h4>
+                                    <li><h4>DOM, Events & Templating:</h4><br>
                                         <em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/dom/"><strong>DOM</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a>, <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/events/"><strong>Events</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> & <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/handlers/"><strong>Handlers</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> using ES6+:</em>
                                         <div class="rounded-box"><code>MutationObserver</code>, <code>IntersectionObserver</code>, <code>document.querySelector</code>, <code>document.createTreeWalker</code>, <code>NodeFilter</code>, <code>HTMLTemplateElement</code>, <code>DocumentFragment</code>, <code>document.createComment</code>, <code>Node.prototype.cloneNode</code>, <code>addEventListener</code>, <code>window.getComputedStyle</code>, <code>...</code></div>
                                     </li>
-                                    <li><h4>Routing & Navigation:</h4>
+                                    <li><h4>Routing & Navigation:</h4><br>
                                         <em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/routing/"><strong>Routing</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> using ES6+:</em>
                                         <div class="rounded-box"><code>history.pushState</code>, <code>history.replaceState</code>, <code>window.onpopstate</code>, <code>URL</code>, <code>window.location</code>, <code>structuredClone</code>, <code>...</code></div>
                                     </li>
-                                    <li><h4>Asynchronous & Orchestration:</h4>
+                                    <li><h4>Asynchronous & Orchestration:</h4><br>
                                         <em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/http/"><strong>HTTP</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> & <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/components/"><strong>Components</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> using ES6+:</em>
                                         <div class="rounded-box"><code>queueMicrotask</code>, <code>Promise</code>, <code>XMLHttpRequest</code>, <code>fetch</code>, <code>Blob</code>, <code>URL.createObjectURL</code>, <code>URL.revokeObjectURL</code>, <code>...</code></div>
                                     </li>
                                 </ul>
                             </li>
                         </ul>
-                        <em id="EXT"><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a>An extension of the <a class="no-default-arrow" href="https://estructura.okzgn.com/">main framework implementation</a> using ES3+.</em>
                     </div>
                     <h3 class="auto-font-size-3">Point 2</h3>
                     <div>
                         <ul role="list" class="lines">
-                            <li><strong>Context:</strong><br> Recurring UI development problems are solved through well-organized, reusable components; efficient centralized or decentralized state management; synchronized, granular DOM updates; routing control without page reloads, coordinated with the UI; and conventions that facilitate interoperable collaboration. That can be achieved seamlessly and accordingly, using native HTML, in-memory JS-scoped data, batched event-based DOM reactivity, isolated and complete routing lifecycle interfaces, and standards-compliant HTML, CSS, and JS conventions with minimal guidelines.</li>
-                            <li><strong>Bypass:</strong><br> Coming soon...</li>
+                            <li><strong>Context:</strong><br> Recurring UI development problems are solved through well-organized, reusable components (no Web Components required); efficient centralized or decentralized state management; synchronized, granular DOM updates; routing control without page reloads, coordinated with the UI; and conventions that facilitate interoperable collaboration. That can be achieved seamlessly and accordingly, using native HTML, in-memory JS-scoped data, batched event-based DOM reactivity, isolated and complete routing lifecycle interfaces, and standards-compliant HTML, CSS, and JS conventions with minimal guidelines.</li>
+                            <li><h4>Well-organized, reusable components:</h4><br>
+                                <ul role="list">
+                                    <li><strong>Specific context:</strong></li>
+                                    <li><strong>Bypass:</strong>
+                                        <div class="rounded-box"><code>Coming soon ...</code></div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><h4>Efficient centralized or decentralized state management:</h4><br>
+                                <ul role="list">
+                                    <li><strong>Specific context:</strong></li>
+                                    <li><strong>Bypass:</strong>
+                                        <div class="rounded-box"><code>Coming soon ...</code></div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><h4>Synchronized, granular DOM updates:</h4><br>
+                                <ul role="list">
+                                    <li><strong>Specific context:</strong></li>
+                                    <li><strong>Bypass:</strong>
+                                        <div class="rounded-box"><code>Coming soon ...</code></div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><h4>Routing control without page reloads, coordinated with the UI:</h4><br>
+                                <ul role="list">
+                                    <li><strong>Specific context:</strong></li>
+                                    <li><strong>Bypass:</strong>
+                                        <div class="rounded-box"><code>Coming soon ...</code></div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><h4>Conventions that facilitate interoperable collaboration:</h4><br>
+                                <ul role="list">
+                                    <li><strong>Specific context:</strong></li>
+                                    <li><strong>Bypass:</strong>
+                                        <div class="rounded-box"><code>Coming soon ...</code></div>
+                                    </li>
+                                </ul>
+                            </li>
                         </ul>
                     </div>
                     <h3 class="auto-font-size-3">Point 3</h3>
+                    <h2 class="auto-font-size-2">Upcoming article:</h2>
+                    <p><strong>Key points and bypasses covered in the next article:</strong> bundling (point 4), the interpreter (point 5), and the end user (point 6), where additional tooling is optional.</p>
+                    <hr>
+                    <em id="EXT" aria-label="Extension footnote"><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a>An extension of the main <a class="no-default-arrow" href="https://estructura.okzgn.com/">Runtime-Type-Driven Multiple Dispatch JS Framework</a> implementation as a TypeScript alternative using ES3+.</em>
                 </div>
             </article>
 		</div>

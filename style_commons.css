@@ -514,6 +514,10 @@ main, .paragraphs {
     display: block;
 }
 
+.paragraphs ul li h4, .paragraphs ul li h5, .paragraphs ul li h6 {
+    display: inline-block !important;
+}
+
 .lines {
     list-style: none;
 }
