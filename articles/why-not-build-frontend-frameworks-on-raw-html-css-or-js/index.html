@@ -13,7 +13,7 @@
 	<meta name="robots" content="index, follow, max-image-preview:large">
 	<meta name="author" content="OKZGN">
 
-	<meta property="article:published_time" content="2026-08-03T12:00:00Z">
+	<meta property="article:published_time" content="2026-08-17T12:00:00Z">
 	<meta property="article:author" content="Elías Francisco Alvarado Soshina">
 
 	<meta name="theme-color" content="#ffdbb8" media="(prefers-color-scheme: light)">
@@ -55,8 +55,8 @@
   "description": "It is possible: No endless dependencies, no dev environment setup, no build step, no Web Components required, minimal boilerplate, minimal lock-in. Raw HTML, CSS and JS have everything needed and are web standards, unlike custom syntaxes.",
   "image": "https://okzgn.com/landscape.png",
   "url": "https://okzgn.com/articles/why-not-build-frontend-frameworks-on-raw-html-css-or-js/",
-  "datePublished": "2026-08-03T12:00:00Z",
-  "dateModified": "2026-08-03T12:00:00Z",
+  "datePublished": "2026-08-17T12:00:00Z",
+  "dateModified": "2026-08-17T12:00:00Z",
   "inLanguage": "en",
   "author": {
     "@type": "Person",
@@ -116,7 +116,7 @@
                     <h2 class="auto-font-size-2">Simplified solution:</h2>
                     <p>What was mentioned in the first line (regarding what is possible) could be solved if most modern browsers or JavaScript engines updated to a recent ECMAScript specification with native TypeScript and backward compatibility support.<br> But the proprietary or custom syntaxes that have been invented are not standard JS or TS; they require transpilers, optimizers, compilers, bundlers, and so on (understanding their inner workings and mechanisms is indeed fascinating).</p>
                     <h2 class="auto-font-size-2">Proposition:</h2>
-                    <p><strong>There are several steps that can be bypassed BETWEEN</strong> the scripting language, the framework, and development (covered up to here in this article, without requiring any updates to ES/TS specifications), and bundling, the interpreter, and the end user (which follow in an upcoming article, where additional tooling is optional).</p>
+                    <p><strong>There are several steps that can be bypassed BETWEEN the scripting language, the framework, and development</strong> (covered up to here in this article, without requiring any updates to ES/TS specifications), and bundling, the interpreter, and the end user (which follow in an upcoming article, where additional tooling is optional).</p>
                     <h2 class="auto-font-size-2">Focus points:</h2>
                     <div>
                         <ul role="list" class="lines">
@@ -133,20 +133,19 @@
                             <li><strong>Bypass:</strong><br> Advanced usage of native primitives, baseline widely available features/functions, and APIs, such as the following.
                                 <ul role="list">
                                     <li><h4>State & Reactivity:</h4><br>
-                                        <em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/reactive/"><strong>Reactive</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> using ES6+:</em>
                                         <div class="rounded-box"><code>Proxy</code>, <code>Object.defineProperty</code>, <code>Map</code>, <code>Set</code>, <code>WeakMap</code>, <code>...</code></div>
+                                        <em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/reactive/"><strong>Reactive</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> using ES6+.</em>
                                     </li>
                                     <li><h4>DOM, Events & Templating:</h4><br>
-                                        <em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/dom/"><strong>DOM</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a>, <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/events/"><strong>Events</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> & <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/handlers/"><strong>Handlers</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> using ES6+:</em>
                                         <div class="rounded-box"><code>MutationObserver</code>, <code>IntersectionObserver</code>, <code>document.querySelector</code>, <code>document.createTreeWalker</code>, <code>NodeFilter</code>, <code>HTMLTemplateElement</code>, <code>DocumentFragment</code>, <code>document.createComment</code>, <code>Node.prototype.cloneNode</code>, <code>Node.prototype.addEventListener</code>, <code>window.getComputedStyle</code>, <code>...</code></div>
+                                        <em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/dom/"><strong>DOM</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a>, <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/events/"><strong>Events</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> & <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/handlers/"><strong>Handlers</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> using ES6+.</em>
                                     </li>
                                     <li><h4>Routing & Navigation:</h4><br>
-                                        <em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/routing/"><strong>Routing</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> using ES6+:</em>
                                         <div class="rounded-box"><code>history.pushState</code>, <code>history.replaceState</code>, <code>window.onpopstate</code>, <code>URL</code>, <code>window.location</code>, <code>structuredClone</code>, <code>...</code></div>
+                                        <em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/routing/"><strong>Routing</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> using ES6+.</em>
                                     </li>
                                     <li><h4>Asynchronous & Orchestration:</h4><br>
-                                        <em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/http/"><strong>HTTP</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> & <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/components/"><strong>Components</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> using ES6+:</em>
-                                        <div class="rounded-box"><code>queueMicrotask</code>, <code>Promise</code>, <code>XMLHttpRequest</code>, <code>fetch</code>, <code>Blob</code>, <code>URL.createObjectURL</code>, <code>URL.revokeObjectURL</code>, <code>...</code></div>
+                                        <div class="rounded-box"><code>queueMicrotask</code>, <code>Promise</code>, <code>XMLHttpRequest</code>, <code>fetch</code>, <code>Blob</code>, <code>URL.createObjectURL</code>, <code>URL.revokeObjectURL</code>, <code>...</code></div><em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/http/"><strong>HTTP</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> & <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/components/"><strong>Components</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> using ES6+.</em>
                                     </li>
                                 </ul>
                             </li>
@@ -155,7 +154,7 @@
                     <h3 class="auto-font-size-3">Point 2</h3>
                     <div>
                         <ul role="list" class="lines">
-                            <li><strong>Context:</strong><br> Recurring UI development problems are solved through well-organized, reusable components (no Web Components required); efficient centralized or decentralized state management; synchronized, granular DOM updates; routing control without page reloads, coordinated with the UI; and conventions that facilitate interoperable collaboration. That can be achieved seamlessly and accordingly, using native HTML, in-memory JS-scoped data, batched event-based DOM reactivity, isolated and complete routing lifecycle interfaces, and standards-compliant HTML, CSS, and JS conventions with minimal guidelines.</li>
+                            <li><strong>Context:</strong><br> Recurring UI development problems are solved through well-organized, reusable components (no Web Components required); efficient centralized or decentralized state management; synchronized, granular DOM updates; routing control without page reloads, coordinated with the UI; and conventions that facilitate interoperable collaboration.<br><strong>That can be achieved seamlessly and accordingly using:</strong> native HTML, in-memory JS-scoped data, batched event-based DOM reactivity, isolated and complete routing lifecycle interfaces, and standards-compliant HTML, CSS, and JS conventions with minimal guidelines.</li>
                             <li><h4>Well-organized, reusable components:</h4><br>
                                 <ul role="list">
                                     <li><strong>Specific context:</strong> While Web Components is a solid solution, it is less flexible than raw HTML. For instance, scoping styles to a single component is not always desirable—often styles need to cascade globally or affect other components (such as wrappers for specific layout areas or residual elements). Standard HTML also has a lower learning curve and is inherently SEO-friendly, avoiding extra prerendering layers or the need to 'teach' web browsers, bots, and scrapers what elements actually mean.<br>On the other hand, 'well-organized components' is ambiguous and subjective. Many favor precompiled or bundled components merged into a single asset (which optimizes network performance), yet the resulting bundle itself is not reusable on its own (typically due to minification and obfuscation); only the pre-bundled source components are.<br>There are also other factors to consider depending on the complexity of the application these components form, or even the organizational style, such as structuring them so that both AI models and developer teams can leverage them in a consistent, coherent, and scalable manner.<br><strong>The data consumed by components is ultimately more valuable than the components themselves.</strong> Furthermore, components can be fetched on demand via signed or authenticated requests whenever protecting source origins, intellectual property, or assets is required—completely decoupled from how they are organized or reused.</li>
