@@ -237,7 +237,11 @@ code {
     margin: 1px 0;
     display: inline-block;
 }
-
+pre code {
+    width: 100%;
+    display: block;
+    overflow-x: auto;
+}
 code strong {
     font-size: 1.25rem;
     color: var(--blue);
