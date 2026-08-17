@@ -162,8 +162,28 @@
                                     <li><strong>Bypass:</strong><br>
                                         <span>HTML natively provides traditional, broadly compatible mechanisms to load components, which is often sufficient for many scenarios, like <code>script</code> tag attributes <code>defer</code>, <code>async</code>, <code>type="module"</code> (deferred), as well as standard synchronous execution:</span>
                                         <div class="rounded-box"><code>&lt;script src="./main.sync.js" &gt;&lt;/script&gt;</code><code>&lt;script defer src="./html.complete.js" &gt;&lt;/script&gt;</code><code>&lt;script type="module" src="./html.complete.2.js" &gt;&lt;/script&gt;</code><code>&lt;script async src="./independent.js" &gt;&lt;/script&gt;</code><code>&lt;script async type="module" src="./independent.2.js" &gt;&lt;/script&gt;</code></div>
-                                        <span>When precise component synchronization is required (such as managing execution order or inter-component dependencies), patterns like "Asynchronous Proxy-Based Synchronization" or a "Shared Resource Resolution System with Barrier/Completion Conditions" can be employed.</span>
-                                        <div class="rounded-box"><code>Coming soon ...</code></div>
+                                        <span>When precise component synchronization is required (such as managing execution order or inter-component dependencies), patterns like "Asynchronous Proxy-Based Synchronization" or a "Shared Resource Resolution System with Barrier/Completion Conditions" can be implemented using <code>Proxy</code> or <code>Promise.all</code>.</span>
+                                        <div class="rounded-box">
+                                            <pre><code>const queue = { load: [], fail: [] };
+const sync = new Proxy(queue, {
+    set: (target, prop, fn) =&gt; (target[prop]?.push(fn), true)
+});
+
+// 1. Register component dependencies
+const CompA = { init: () =&gt; console.log('CompA ready') };
+const CompB = { init: () =&gt; console.log('CompB ready') };
+const CompC = { init: (data) =&gt; console.log('CompC ready with:', data) };
+
+sync.load = CompA.init;
+sync.load = CompB.init;
+
+// 2. Barrier: wait for async data/module loading
+const data = await fetch('/api/data').then(res =&gt; res.json());
+sync.load = () =&gt; CompC.init(data);
+
+// 3. Dispatch execution barrier
+queue.load.forEach(fn =&gt; fn());</code></pre>
+                                        </div>
                                     </li>
                                 </ul>
                             </li>
