@@ -191,7 +191,7 @@ class Component {
             Queue.state = true;
             queueMicrotask(() =&gt; {
                 Promise.all(Queue.load.map(fn =&gt; fn()))
-                .then(() => {
+                .then(() =&gt; {
                     Queue.load = [];
                     Queue.state = false;
                 })
@@ -225,8 +225,8 @@ new Component('CompC', () =&gt; {
 });
 </code></pre>
                                         </div>
-                                        <em>Or "Asynchronous Proxy-Based Synchronization" pattern implemented in the original <a class="no-default-arrow" rel="noopener noreferrer" target="_blank" href="https://github.com/okzgn/componentes-prototype-2025-js"><strong>Components Prototype</strong></a> using ES6+.</em>
-
+                                        <span>And the "Asynchronous Proxy-Based Synchronization" pattern implemented in the <a class="no-default-arrow" rel="noopener noreferrer" target="_blank" href="https://github.com/okzgn/componentes-prototype-2025-js"><strong>Components Prototype</strong></a> (ES6+). In this architecture, components are declared in HTML index via <code>data-*</code> attributes, and automatically fetched on demand from self-hosted endpoints or CDNs, structured in dedicated directories (<code>name/style.css</code>, <code>name/component.html</code>, <code>name/functionality.js</code>) and automatically synchronized and orchestrated by the prototype framework.</span><br>
+                                        <span>Or explore more advanced patterns with a production-grade implementation in <a class="no-default-arrow" rel="noopener noreferrer" target="_blank" href="https://estructura.okzgn.com/extensions/components/"><strong>Components</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> (ES6+).</span>
                                         <br>
                                     </li>
                                 </ul>
