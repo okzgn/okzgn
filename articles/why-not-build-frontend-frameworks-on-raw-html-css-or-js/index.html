@@ -238,15 +238,18 @@ new Component('CompC', () =&gt; {
                                         <div class="rounded-box"><code>Proxy</code>, <code>Reflect</code>, <code>WeakMap</code>, <code>Array.prototype.concat</code>, <code>Symbol</code>, <code>...</code></div>
                                         <span>Minimal implementation:</span>
                                         <div class="rounded-box">
-<pre><code>function State(target = {}, options = {}, path = [], cache = new WeakMap()) {
+<pre><code>function State(options = {}, path = [], cache = new WeakMap()) {
+    // In-scope state with flexibility to use external objects
+    const data = options.data || {};
+
     // Reuse existing proxy for identity preservation and to avoid memory leaks
-    if (cache.has(target)) {
-        return cache.get(target);
+    if (cache.has(data)) {
+        return cache.get(data);
     }
 
     const handler = {
-        get(_target, property, receiver) {
-            const value = Reflect.get(_target, property, receiver);
+        get(_data, property, receiver) {
+            const value = Reflect.get(_data, property, receiver);
 
             // Pass symbols through unmodified
             if (typeof property === 'symbol') {
@@ -256,14 +259,14 @@ new Component('CompC', () =&gt; {
             (!options.onGet || options.onGet({ type: 'get', value, path: path.concat(property) }));
 
             if (value !== null &amp;&amp; typeof value === 'object') {
-                return State(value, options, path.concat(property), cache);
+                return State({ ...options, data: value }, path.concat(property), cache);
             }
             return value;
         },
 
-        set(_target, property, value, receiver) {
-            const oldValue = _target[property];
-            const success = Reflect.set(_target, property, value, receiver);
+        set(_data, property, value, receiver) {
+            const oldValue = _data[property];
+            const success = Reflect.set(_data, property, value, receiver);
 
             if (success &amp;&amp; oldValue !== value) {
                 (!options.onSet || options.onSet({ type: 'set', oldValue, value, path: path.concat(property) }));
@@ -271,10 +274,10 @@ new Component('CompC', () =&gt; {
             return success;
         },
 
-        deleteProperty(_target, property) {
-            const exists = property in _target;
-            const oldValue = _target[property];
-            const success = Reflect.deleteProperty(_target, property);
+        deleteProperty(_data, property) {
+            const exists = property in _data;
+            const oldValue = _data[property];
+            const success = Reflect.deleteProperty(_data, property);
 
             if (exists &amp;&amp; success) {
                 (!options.onDelete || options.onDelete({ type: 'delete', oldValue, path: path.concat(property) }));
@@ -283,28 +286,28 @@ new Component('CompC', () =&gt; {
         }
     };
 
-    const proxy = new Proxy(target, handler);
-    cache.set(target, proxy);
+    const proxy = new Proxy(data, handler);
+    cache.set(data, proxy);
     return proxy;
 }</code></pre>
                                         </div>
                                         <span>Usage examples:</span>
                                         <div class="rounded-box">
-<pre><code>const state = State({ user: { profile: { name: 'Ethan' } } }, {
+<pre><code>const state = State({
     onSet: (mutation) =&gt; {
-        console.log(mutation.type, mutation.path, mutation.value);
+        console.log(mutation.type, mutation.path, mutation.value, mutation.oldValue);
     },
 
     onDelete: (mutation) =&gt; {
-        console.log(mutation.type, mutation.path, mutation.value);
+        console.log(mutation.type, mutation.path, mutation.value, mutation.oldValue);
     }
 });
 
-state.user.profile.name = 'John';
-// set (3)["user", "profile", "name"] John
+state.name = 'John';
+// set (1)["name"] John undefined
 
-delete state.user.profile.name;
-// delete (3)["user", "profile", "name"] undefined
+delete state.name;
+// delete (1)["name"] undefined John
 </code></pre>
                                         </div>
                                         <span>Or explore another implementation of safe auto-vivification, prototype pollution guards, array mutator tracking, and depth limits in <a class="no-default-arrow" rel="noopener noreferrer" target="_blank" href="https://github.com/okzgn/dx-object-js"><strong>DXObject</strong></a> (RC3, ESM, ES6+), and store patterns implemented in <a class="no-default-arrow" rel="noopener noreferrer" target="_blank" href="https://estructura.okzgn.com/extensions/reactive/"><strong>Reactive</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> (RC1, ES6+).</span>
