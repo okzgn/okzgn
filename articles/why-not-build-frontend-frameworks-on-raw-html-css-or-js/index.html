@@ -112,7 +112,7 @@
                     <h2 class="auto-font-size-2">This article is not:</h2>
                     <p>A call to switch your framework or dismiss other techniques, after all, today's custom syntaxes may be tomorrow's standards. It also doesn't ignore the massive challenges, serious business and enterprise needs, or the real value of today's tools or methods.</p>
                     <h2 class="auto-font-size-2">Perspective:</h2>
-                    <p>Having written code close to the metal (XDP, shared memory, C), delved into low-level systems (protocol flows, RAM interactions, Go), focused on optimizing core operations and identifying high-performance algorithms (BM25, djb2, HNSW), compared the performance of various runtimes (PHP, Lua, Node, Wasm, Rust); <strong>and analyzed some modern frontend fundamentals from the same viewpoint</strong>.</p>
+                    <p>Having written code close to the metal (XDP, shared memory, C), delved into low-level systems (protocol flows, RAM interactions, Go), focused on optimizing core operations and identifying high-performance algorithms (BM25, HNSW, djb2), compared the performance of various runtimes (PHP, Lua, Node, Wasm, Rust); <strong>and analyzed some modern frontend fundamentals from the same viewpoint</strong>.</p>
                     <h2 class="auto-font-size-2">Simplified solution:</h2>
                     <p>What was mentioned in the first line (regarding what is possible) could be solved if most modern browsers or JavaScript engines updated to a recent ECMAScript specification with native TypeScript and backward compatibility support.<br> But the proprietary or custom syntaxes that have been invented are not standard JS or TS; they require transpilers, optimizers, compilers, bundlers, and so on (understanding their inner workings and mechanisms is indeed fascinating).</p>
                     <h2 class="auto-font-size-2">Proposition:</h2>
@@ -233,8 +233,78 @@ new Component('CompC', () =&gt; {
                             <li><h4>Efficient centralized or decentralized state management:</h4><br>
                                 <ul role="list">
                                     <li><strong>Specific context:</strong> At its core, state management simply receives and integrates data, controls how it is read and written (optionally enforcing rules), and usually emits events to notify of mutations—excluding advanced paradigms like finite-state machines, the actor model, event sourcing, or others that imply declarative programming.</li>
-                                    <li><strong>Bypass:</strong>
-                                        <div class="rounded-box"><code>Coming soon ...</code></div>
+                                    <li><strong>Bypass:</strong><br>
+                                        <span>Minimal implementation pattern:</span>
+                                        <div class="rounded-box">
+<pre><code>function State(target = {}, options = {}, path = [], cache = new WeakMap()) {
+    // Reuse existing proxy for identity preservation and to avoid memory leaks
+    if (cache.has(target)) {
+        return cache.get(target);
+    }
+
+    const handler = {
+        get(_target, property, receiver) {
+            const value = Reflect.get(_target, property, receiver);
+
+            // Pass symbols through unmodified
+            if (typeof property === 'symbol') {
+                return value;
+            }
+
+            (!options.onGet || options.onGet({ type: 'get', value, path: path.concat(property) }));
+
+            if (value !== null &amp;&amp; typeof value === 'object') {
+                return State(value, options, path.concat(property), cache);
+            }
+            return value;
+        },
+
+        set(_target, property, value, receiver) {
+            const oldValue = _target[property];
+            const success = Reflect.set(_target, property, value, receiver);
+
+            if (success &amp;&amp; oldValue !== value) {
+                (!options.onSet || options.onSet({ type: 'set', oldValue, value, path: path.concat(property) }));
+            }
+            return success;
+        },
+
+        deleteProperty(_target, property) {
+            const exists = property in _target;
+            const oldValue = _target[property];
+            const success = Reflect.deleteProperty(_target, property);
+
+            if (exists &amp;&amp; success) {
+                (!options.onDelete || options.onDelete({ type: 'delete', oldValue, path: path.concat(property) }));
+            }
+            return success;
+        }
+    };
+
+    const proxy = new Proxy(target, handler);
+    cache.set(target, proxy);
+    return proxy;
+}</code></pre>
+                                        </div>
+                                        <span>Usage examples:</span>
+                                        <div class="rounded-box">
+<pre><code>const state = State({ user: { profile: { name: 'Ethan' } } }, {
+    onSet: (mutation) =&gt; {
+        console.log(mutation.type, mutation.path, mutation.value);
+    },
+
+    onDelete: (mutation) =&gt; {
+        console.log(mutation.type, mutation.path, mutation.value);
+    }
+});
+
+state.user.profile.name = 'John';
+// set (3)["user", "profile", "name"] John
+
+delete state.user.profile.name;
+// delete (3)["user", "profile", "name"] undefined
+</code></pre>
+                                        </div>
                                     </li>
                                 </ul>
                             </li>
@@ -242,7 +312,10 @@ new Component('CompC', () =&gt; {
                                 <ul role="list">
                                     <li><strong>Specific context:</strong></li>
                                     <li><strong>Bypass:</strong>
-                                        <div class="rounded-box"><code>Coming soon ...</code></div>
+                                        <div class="rounded-box">
+<pre><code>Coming soon...
+</code></pre>
+                                        </div>
                                     </li>
                                 </ul>
                             </li>
