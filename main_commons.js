@@ -305,9 +305,13 @@ document.addEventListener('DOMContentLoaded', function () {
     preCodes[i].addEventListener('click', (function(element) {
       return function (event) {
         event.preventDefault();
-        console.log('Copy:', element.textContent);
+        var code = element.querySelector('code');
+        if (!code) { return; }
+
+        console.log('Copy:', code.textContent);
+
         if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(element.textContent);
+          navigator.clipboard.writeText(code.textContent);
         }
       }
     })(preCodes[i]));

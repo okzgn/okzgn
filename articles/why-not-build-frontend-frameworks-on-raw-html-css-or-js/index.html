@@ -161,11 +161,11 @@
                                     <li><strong>Bypass:</strong><br>
                                         <span>HTML natively provides traditional, broadly compatible mechanisms to load components, which is often sufficient for many scenarios, like <code>script</code> tag attributes <code>defer</code>, <code>async</code>, <code>type="module"</code> (deferred), as well as standard synchronous execution:</span>
                                         <div class="rounded-box">
-                                            <pre><code class="language-html">&lt;script src="./main.sync.js"&gt;&lt;/script&gt;</code></pre>
-                                            <pre><code class="language-html">&lt;script defer src="./html.complete.js"&gt;&lt;/script&gt;</code></pre>
-                                            <pre><code class="language-html">&lt;script type="module" src="./html.complete.2.js"&gt;&lt;/script&gt;</code></pre>
-                                            <pre><code class="language-html">&lt;script async src="./independent.load.js"&gt;&lt;/script&gt;</code></pre>
-                                            <pre><code class="language-html">&lt;script async type="module" src="./independent.load.2.js"&gt;&lt;/script&gt;</code></pre>
+                                            <pre><code class="language-html">&lt;script src="./main.sync.js"&gt;&lt;/script&gt;</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
+                                            <pre><code class="language-html">&lt;script defer src="./html.complete.js"&gt;&lt;/script&gt;</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
+                                            <pre><code class="language-html">&lt;script type="module" src="./html.complete.2.js"&gt;&lt;/script&gt;</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
+                                            <pre><code class="language-html">&lt;script async src="./independent.load.js"&gt;&lt;/script&gt;</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
+                                            <pre><code class="language-html">&lt;script async type="module" src="./independent.load.2.js"&gt;&lt;/script&gt;</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
                                         </div>
                                         <span>When precise component synchronization is required (such as managing execution order or inter-component dependencies), patterns like "Shared Resource Resolution System with Barrier/Completion Conditions" can be implemented using ES6+:</span>
                                         <div class="rounded-box"><code>class</code>, <code>Promise</code>, <code>Promise.resolve</code>, <code>Promise.all</code>, <code>Array.prototype.push</code>, <code>Array.prototype.map</code>, <code>Array.prototype.forEach</code>, <code>queueMicrotask</code>, <code>...</code></div>
@@ -210,7 +210,7 @@ class Component {
         return this;
     }
 }
-</code></pre>
+</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
                                         </div>
                                         <span>Usage examples:</span>
                                         <div class="rounded-box">
@@ -229,7 +229,7 @@ new Component('CompC', () =&gt; {
 .fail(() =&gt; {
     console.warn('CompC failed.');
 });
-</code></pre>
+</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
                                         </div>
                                         <span>And the "Asynchronous Proxy-Based Synchronization" pattern used where components are declared in HTML index via <code>data-*</code> attributes, and automatically fetched on demand from self-hosted endpoints or CDNs, structured in dedicated directories (<code>name/style.css</code>, <code>name/component.html</code>, <code>name/functionality.js</code>), and automatically synchronized, orchestrated and injected by the prototype framework implemented in <a class="no-default-arrow" rel="noopener noreferrer" target="_blank" href="https://github.com/okzgn/componentes-prototype-2025-js"><strong>Components Prototype</strong></a> (PoC, ES6+). Or explore advanced patterns with another implementation in <a class="no-default-arrow" rel="noopener noreferrer" target="_blank" href="https://estructura.okzgn.com/extensions/components/"><strong>Components</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> (RC2, ES6+).</span>
                                         <br>
@@ -295,7 +295,7 @@ new Component('CompC', () =&gt; {
     const proxy = new Proxy(data, handler);
     cache.set(data, proxy);
     return proxy;
-}</code></pre>
+}</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
                                         </div>
                                         <span>Usage examples:</span>
                                         <div class="rounded-box">
@@ -314,7 +314,7 @@ state.name = 'John';
 
 delete state.name;
 // delete (1)["name"] undefined John
-</code></pre>
+</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
                                         </div>
                                         <span>Or explore other patterns like "Safe Auto-Vivification", with prototype pollution guards, array mutator tracking, and depth limits implementation in <a class="no-default-arrow" rel="noopener noreferrer" target="_blank" href="https://github.com/okzgn/dx-object-js"><strong>DXObject</strong></a> (RC3, ESM, ES6+), and reactivity store patterns implemented in <a class="no-default-arrow" rel="noopener noreferrer" target="_blank" href="https://estructura.okzgn.com/extensions/reactive/"><strong>Reactive</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> (RC1, ES6+).</span>
                                     </li>
@@ -325,7 +325,7 @@ delete state.name;
                                     <li><strong>Specific context:</strong> Flawed implementations can quickly cause UI jank or severe memory leaks, particularly during high-frequency node mount and unmount cycles, requiring rigorous optimization. Granular updates demand precise reference tracking and automatic cleanup as elements leave the DOM tree.</li>
                                     <li><strong>Bypass:</strong>
                                         <div class="rounded-box">
-                                            <pre><code class="language-javascript">Coming soon ...</code></pre>
+                                            <pre><code class="language-javascript">// Coming soon ...</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
                                         </div>
                                     </li>
                                 </ul>
@@ -335,7 +335,7 @@ delete state.name;
                                     <li><strong>Specific context:</strong></li>
                                     <li><strong>Bypass:</strong>
                                         <div class="rounded-box">
-                                            <pre><code class="language-javascript">Coming soon ...</code></pre></div>
+                                            <pre><code class="language-javascript">// Coming soon ...</code><button class="cta-button no-default-arrow copy">Copy</button></pre></div>
                                     </li>
                                 </ul>
                             </li>
@@ -344,7 +344,7 @@ delete state.name;
                                     <li><strong>Specific context:</strong></li>
                                     <li><strong>Bypass:</strong>
                                         <div class="rounded-box">
-                                            <pre><code class="language-javascript">Coming soon ...</code></pre></div>
+                                            <pre><code class="language-javascript">// Coming soon ...</code><button class="cta-button no-default-arrow copy">Copy</button></pre></div>
                                     </li>
                                 </ul>
                             </li>

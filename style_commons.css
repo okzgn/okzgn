@@ -253,25 +253,6 @@ code strong {
     color: var(--blue);
 }
 
-pre::after {
-    content: 'Copy';
-    float: right;
-    display: inline-block;
-    padding: 0.25rem 0.5rem;
-    color: var(--white);
-    text-align: right;
-    margin-right: 1rem;
-    border-radius: 0.5rem;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    font-weight: bold;
-    font-size: 0.8rem;
-    background: var(--accentDark2);
-    cursor: pointer;
-    position: relative;
-    top: -1px;
-}
-
 a, input, textarea, button, input[type="submit"] {
     transition: all 0.25s;
 }
@@ -338,6 +319,50 @@ button:hover::after, button:active::after, button:focus::after{
     margin-right: 1rem;
 }
 
+button.no-default-arrow {
+    padding: 0.5rem 1rem;
+    background: none;
+    color: var(--blue);
+    border-color: var(--blueDark3);
+}
+button.no-default-arrow:hover,
+button.no-default-arrow:active,
+button.no-default-arrow:focus {
+    color: var(--white);
+}
+
+button.no-default-arrow.cta-button {
+    border-color: var(--accentDark2);
+    color: var(--accentDark);
+}
+
+button.no-default-arrow.cta-button:hover,
+button.no-default-arrow.cta-button:active,
+button.no-default-arrow.cta-button:focus {
+    color: var(--white);
+}
+
+button.no-arrow {
+    border-color: var(--blueDark3);
+    padding: 0.5rem 1rem;
+}
+
+button.no-arrow.cta-button {
+    border-color: var(--accentDark2);
+}
+
+button.no-arrow::before, button.no-arrow::after {
+    display: none;
+}
+
+button.copy {
+    font-weight: bold;
+    font-size: 0.85rem;
+    padding: 0.25rem 0.5rem;
+    float: right;
+    margin: 0 0.5rem 0.25rem 0.5rem;
+
+}
 
 .cta-button,
 .cta-blue-button,
@@ -363,6 +388,11 @@ button::after { margin-right: 1rem; }
 .cta-button {
     background: linear-gradient(to right, var(--accentDark2) 50%, var(--accentDark));
     color: var(--white);
+}
+
+.cta-button, .cta-blue-button {
+    background: linear-gradient(to right, var(--accentDark2) 50%, var(--accentDark));
+    color: var(--white);
     box-shadow: 0 0.125rem 0.25rem var(--shadow);
 }
 
@@ -378,7 +408,9 @@ button:hover::after, button:focus::after, button:active::after {
     border-left-color: var(--white);
 }
 
-.cta-blue-button, button { background: linear-gradient(to right, var(--blueDark3) 50%, var(--blue)); color: var(--white); }
+.cta-blue-button, button {
+    background: linear-gradient(to right, var(--blueDark3) 50%, var(--blue)); color: var(--white);
+}
 .cta-blue-button:hover, .cta-blue-button:active, .cta-blue-button:focus,
 button:hover, button:active, button:focus {
     box-shadow: 0 0.25rem 0.5rem var(--softSilver), inset -2.75rem 0 0.25rem var(--blue);
@@ -681,10 +713,14 @@ main {
 
     a, code { background: var(--softWhite); }
 
+    button.no-default-arrow.cta-button {
+        color: var(--themeColor);
+        border-color: var(--accentDark3);
+    }
+
     .rounded-box { border-color: var(--softWhite); }
 
     .card::after { background: linear-gradient(0deg, var(--softShadow), transparent); }
-
 
     .cta-button { background: linear-gradient(to right, var(--accentDark3), var(--accentDark2)); }
     .cta-button:hover, .cta-button:focus, .cta-button:active { background: linear-gradient(to right, var(--accentDark3), var(--accentDark2) 50%, var(--accentDark)); }
