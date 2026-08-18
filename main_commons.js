@@ -296,4 +296,20 @@ document.addEventListener('DOMContentLoaded', function () {
       element.current.click();
     }
   }
+
+  var
+    preCodes = document.getElementsByTagName('pre'),
+    i = preCodes.length;
+
+  while (i--) {
+    preCodes[i].addEventListener('click', (function(element) {
+      return function (event) {
+        event.preventDefault();
+        console.log('Copy:', element.textContent);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(element.textContent);
+        }
+      }
+    })(preCodes[i]));
+  }
 });

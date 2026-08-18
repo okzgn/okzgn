@@ -247,9 +247,29 @@ pre code {
     display: block;
     overflow-x: auto;
 }
+
 code strong {
     font-size: 1.25rem;
     color: var(--blue);
+}
+
+pre::after {
+    content: 'Copy';
+    float: right;
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    color: var(--white);
+    text-align: right;
+    margin-right: 1rem;
+    border-radius: 0.5rem;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    font-weight: bold;
+    font-size: 0.8rem;
+    background: var(--accentDark2);
+    cursor: pointer;
+    position: relative;
+    top: -1px;
 }
 
 a, input, textarea, button, input[type="submit"] {
@@ -563,6 +583,7 @@ main, .paragraphs {
     margin-bottom: 0.5rem;
     margin-top: 0.5rem;
     border-radius: 1rem;
+    overflow-x: auto;
 }
 
 main {
