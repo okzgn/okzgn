@@ -234,6 +234,8 @@ new Component('CompC', () =&gt; {
                                 <ul role="list">
                                     <li><strong>Specific context:</strong> At its core, state management simply receives and integrates data, controls how it is read and written (optionally enforcing rules), and usually emits events to notify of mutations—excluding advanced paradigms like finite-state machines, the actor model, event sourcing, or others that imply declarative programming.</li>
                                     <li><strong>Bypass:</strong><br>
+                                        <span><code>Proxy</code> provides everything needed to establish a complete, predictable state lifecycle while avoiding unnecessary object recreation during mutations. Deeply observable state trees, lifecycle interceptors (<code>onGet</code>, <code>onSet</code>, <code>onDelete</code>), and reference caching can be implemented natively using ES6+:</span>
+                                        <div class="rounded-box"><code>Proxy</code>, <code>Reflect</code>, <code>WeakMap</code>, <code>Array.prototype.concat</code>, <code>Symbol</code>, <code>...</code></div>
                                         <span>Minimal implementation pattern:</span>
                                         <div class="rounded-box">
 <pre><code>function State(target = {}, options = {}, path = [], cache = new WeakMap()) {

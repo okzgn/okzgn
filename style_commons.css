@@ -230,13 +230,18 @@ a, code {
 }
 code {
     font-family: "Plex";
-    padding: 0.25rem 0.5rem;
+    padding: 0 0.25rem;
     font-size: 0.9rem;
     color: var(--black);
     text-indent: 0;
     margin: 1px 0;
     display: inline-block;
 }
+
+div.rounded-box code, pre code {
+    padding: 0.25rem 0.5rem;
+}
+
 pre code {
     width: 100%;
     display: block;
