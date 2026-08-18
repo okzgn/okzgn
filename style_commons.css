@@ -269,6 +269,13 @@ a::before, a::after, button::before, button::after {
 a::before, button::before { margin-right: 1rem; }
 a::after, button::after { border-left-color: transparent; }
 
+.collapsed {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
 .no-default, .no-default-arrow {
     background: none;
     padding: 0;

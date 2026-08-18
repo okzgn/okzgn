@@ -1,0 +1,47 @@
+.hidden { display: none; }
+.repositories strong {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+.projects-container {
+    word-break: break-all;
+}
+.projects-list li {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-flow: column;
+}
+.projects-list .link {
+    align-self: flex-start;
+    font-weight: bold;
+}
+.projects-list .description {
+    margin: 0.5rem 0;
+    cursor: pointer;
+}
+
+.projects-list .description:hover,
+.projects-list .description:active {
+    text-decoration: underline;
+}
+.projects-list li .language,
+.projects-list li .topic {
+    padding: 0.25rem 0.5rem;
+    font-weight: bold;
+}
+.projects-list li .topic {
+    font-size: 0.75rem;
+    align-self: center;
+}
+.projects-list li .details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+.repo-url h3 { margin-bottom: 1rem; }
+@media screen and (max-width: 640px) {
+    .repo-url a {
+        word-break: break-all;
+    }
+}
