@@ -373,6 +373,10 @@ function Updater(mutations, observer) {
             const handler = Updater[type];
             const { addedNodes, removedNodes } = mutation;
 
+            if (Updater.excludedTags.has(target.nodeName)) {
+                break;
+            }
+
             if (addedNodes.length) {
                 let item = 0;
                 const length = addedNodes.length;
