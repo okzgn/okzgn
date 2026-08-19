@@ -340,15 +340,14 @@ delete state.name;
 
 function Updater(mutations, observer) {
     for (const mutation of mutations) {
-    let type = mutation.type, target, oldValue;
+    let type = mutation.type, target = mutation.target, oldValue;
     switch (type) {
         case 'attributes':
-            target = mutation.target;
             oldValue = mutation.oldValue;
             let attributeName = mutation.attributeName;
             let newValue = target.getAttribute(attributeName);
 
-            if (oldValue === newValue) {
+            if (oldValue === newValue || Updater.excludedTags.has(target.nodeName)) {
                 break;
             }
 
@@ -358,10 +357,9 @@ function Updater(mutations, observer) {
         break;
 
         case 'characterData':
-            target = mutation.target;
             oldValue = mutation.oldValue;
 
-            if (oldValue === target.data || !target.parentNode || Updater.excludedTags.has(target.parentNode.nodeName) || target.data.trim() === '') {
+            if (oldValue === target.data || !target.parentNode || Updater.excludedTags.has(target.parentNode.nodeName)) {
                 break;
             }
 
@@ -374,10 +372,9 @@ function Updater(mutations, observer) {
         case 'childList':
             const handler = Updater[type];
             const { addedNodes, removedNodes } = mutation;
-            target = mutation.target;
-            let item = 0;
 
             if (addedNodes.length) {
+                let item = 0;
                 const length = addedNodes.length;
                 while (item &lt; length){
                     const node = addedNodes[item++];
@@ -387,27 +384,29 @@ function Updater(mutations, observer) {
                             continue;
                         }
 
-                        handler.added(node, target, mutation.previousSibling, mutation.nextSibling);
+                        handler.added(node, target);
                     }
-                    else if (node.nodeName in handler &amp;&amp; 'added' in handler[node.nodeName]) {
-                        handler[node.nodeName].added(node, target, mutation.previousSibling, mutation.nextSibling);
+                    else if (handler[node.nodeName] &amp;&amp; typeof handler[node.nodeName] === 'object' &amp;&amp; handler[node.nodeName]['added']) {
+                        handler[node.nodeName].added(node, target);
                     }
                 }
             }
 
-            if (item = removedNodes.length) {
-                while (item--) {
-                    const node = removedNodes[item];
+            if (removedNodes.length) {
+                let item = 0;
+                const length = removedNodes.length;
+                while (item &lt; length){
+                    const node = removedNodes[item++];
 
                     if (node.nodeType === 1) {
                         if (Updater.excludedTags.has(node.nodeName)) {
                             continue;
                         }
 
-                        handler.removed(node, target, mutation.previousSibling, mutation.nextSibling);
+                        handler.removed(node, target);
                     }
-                    else if (node.nodeName in handler &amp;&amp; 'removed' in handler[node.nodeName]) {
-                        handler[node.nodeName].removed(node, target, mutation.previousSibling, mutation.nextSibling);
+                    else if (handler[node.nodeName] &amp;&amp; typeof handler[node.nodeName] === 'object' &amp;&amp; handler[node.nodeName]['removed']) {
+                        handler[node.nodeName].removed(node, target);
                     }
                 }
             }
@@ -445,27 +444,27 @@ Updater.characterData = {
 };
 
 Updater.childList = {
-    added: (elementNode, parentNode, previousSibling, nextSibling) =&gt; {
+    added: (elementNode, parentNode) =&gt; {
 
     },
-    removed: (elementNode, parentNode, previousSibling, nextSibling) =&gt; {
+    removed: (elementNode, parentNode) =&gt; {
 
     },
 
     '#comment': {
-        added: (commentNode, parentNode, previousSibling, nextSibling) =&gt; {
+        added: (commentNode, parentNode) =&gt; {
 
         },
-        removed: (commentNode, parentNode, previousSibling, nextSibling) =&gt; {
+        removed: (commentNode, parentNode) =&gt; {
 
         },
     },
 
     '#text': {
-        added: (textNode, parentNode, previousSibling, nextSibling) =&gt; {
+        added: (textNode, parentNode) =&gt; {
 
         },
-        removed: (textNode, parentNode, previousSibling, nextSibling) =&gt; {
+        removed: (textNode, parentNode) =&gt; {
 
         },
     },

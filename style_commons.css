@@ -247,7 +247,9 @@ pre code {
     display: block;
     overflow-x: auto;
 }
-
+code {
+    max-height: 25rem;
+}
 code strong {
     font-size: 1.25rem;
     color: var(--blue);
