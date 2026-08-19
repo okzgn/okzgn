@@ -370,54 +370,35 @@ function Updater(mutations, observer) {
         break;
 
         case 'childList':
-            const handler = Updater[type];
-            const { addedNodes, removedNodes } = mutation;
-
             if (Updater.excludedTags.has(target.nodeName)) {
                 break;
             }
 
-            if (addedNodes.length) {
-                let item = 0;
-                const length = addedNodes.length;
-                while (item &lt; length){
-                    const node = addedNodes[item++];
-
-                    if (node.nodeType === 1) {
-                        if (Updater.excludedTags.has(node.nodeName)) {
-                            continue;
-                        }
-
-                        handler.added(node, target);
-                    }
-                    else if (handler[node.nodeName] &amp;&amp; typeof handler[node.nodeName] === 'object' &amp;&amp; handler[node.nodeName]['added']) {
-                        handler[node.nodeName].added(node, target);
-                    }
-                }
-            }
-
-            if (removedNodes.length) {
-                let item = 0;
-                const length = removedNodes.length;
-                while (item &lt; length){
-                    const node = removedNodes[item++];
-
-                    if (node.nodeType === 1) {
-                        if (Updater.excludedTags.has(node.nodeName)) {
-                            continue;
-                        }
-
-                        handler.removed(node, target);
-                    }
-                    else if (handler[node.nodeName] &amp;&amp; typeof handler[node.nodeName] === 'object' &amp;&amp; handler[node.nodeName]['removed']) {
-                        handler[node.nodeName].removed(node, target);
-                    }
-                }
-            }
+            if (mutation.addedNodes.length) { Updater.processNodes(mutation.addedNodes, 'added', target); }
+            if (mutation.removedNodes.length) { Updater.processNodes(mutation.removedNodes, 'removed', target); }
         break;
     }
     }
 }
+
+Updater.processNodes = (nodes, action, target) =&gt; {
+    for (let i = 0; i &lt; nodes.length; i++) {
+        const node = nodes[i];
+
+        if (node.nodeType === Node.ELEMENT_NODE) {
+            if (Updater.excludedTags.has(node.nodeName)) {
+                continue;
+            }
+
+            Updater.childList[action](node, target);
+        }
+        else if (Updater.childList[node.nodeName] &amp;&amp;
+            typeof Updater.childList[node.nodeName] === 'object' &amp;&amp;
+                 Updater.childList[node.nodeName][action]) {
+            Updater.childList[node.nodeName][action](node, target);
+        }
+    }
+};
 
 Updater.excludedTags = new Set([
     'SCRIPT', 'STYLE', 'LINK', 'NOSCRIPT',
