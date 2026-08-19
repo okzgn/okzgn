@@ -1,30 +1,46 @@
 document.addEventListener('DOMContentLoaded', function () {
   console.log('Blank Ready.');
 
-  /*var
+  var
+    currentDate = Date.now(),
     projectsContainer = document.querySelector('.projects-container'),
     projectsResponseContainer = document.querySelector('.projects-response'),
     alreadyRequestedProjects = localStorage.getItem('all-oss-projects'),
-    projectsContent = alreadyRequestedProjects || '{"error":"Loading..."}';
+    alreadyRequestedProjectsDate = localStorage.getItem('all-oss-projects-date'),
+    projectsDiffDate = alreadyRequestedProjectsDate ? Math.round((currentDate - Number(alreadyRequestedProjectsDate)) / 1000) : 0,
+    projectsContent = alreadyRequestedProjects || '{"loading":"Loading..."}';
 
-  if (projectsContainer && projectsResponseContainer && !alreadyRequestedProjects) {
+  if (projectsContainer && projectsResponseContainer && (!alreadyRequestedProjects || !alreadyRequestedProjectsDate || projectsDiffDate > 86400)) {
     var projectsRequest = _http({
-      url: 'https://api.github.com/users/okzgn/repos?sort=pushed&per_page=50',
+      url: 'https://api.github.com/users/okzgn/repos?sort=pushed&per_page=30',
       onSuccess: function (r) {
+        console.info('New Github request.');
         projectsContent = r;
         localStorage.setItem('all-oss-projects', projectsContent);
+        localStorage.setItem('all-oss-projects-date', Date.now());
         showProjects(projectsContainer, projectsResponseContainer, projectsContent);
       },
       onError: function (e) {
         projectsContent = '{"error":"' + e.message + '"}';
         localStorage.setItem('all-oss-projects', projectsContent);
+        localStorage.setItem('all-oss-projects-date', Date.now() + 85800000);
         showProjects(projectsContainer, projectsResponseContainer, projectsContent);
       }
     });
   }
 
-  showProjects(projectsContainer, projectsResponseContainer, projectsContent);*/
+  showProjects(projectsContainer, projectsResponseContainer, projectsContent);
+
+  var descriptions = document.querySelectorAll('.projects-container .description');
+  descriptions.forEach(function (description) {
+    description.addEventListener('click', toggleDescription);
+  });
 });
+
+function toggleDescription (e) {
+  e.preventDefault();
+  this.classList.toggle('collapsed');
+}
 
 function showProjects(container, responseContainer, projects){
   try {
@@ -34,17 +50,21 @@ function showProjects(container, responseContainer, projects){
     projects = { error: 'Cannot read the projects (JSON).' };
   }
 
-  if (projects.error) {
+  if (projects.loading) {
+    responseContainer.classList.add('loading');
+    responseContainer.textContent = projects.loading;
+    return;
+  }
+
+  if (projects.error || !projects.length) {
+    if (!projects.length) { projects.error = 'Cannot update projects list (empty).'; }
+    responseContainer.classList.add('error');
     responseContainer.textContent = projects.error;
     return;
   }
 
-  if (!projects.length) {
-    responseContainer.textContent = 'No projects found, try again later.';
-    return;
-  }
-
   responseContainer.classList.add('hidden');
+  container.textContent = '';
 
   createProjectsLinks('Modern projects', container, projects, [], ['website', 'software-preservation']);
   createProjectsLinks('Old projects / Software Preservation', container, projects, ['software-preservation'], ['website'], true);
@@ -53,10 +73,10 @@ function showProjects(container, responseContainer, projects){
 function createProjectsLinks(title, projectsContainer, projects, included, excluded, hr) {
   var
     container = document.createElement('ul'),
-    titleItem = document.createElement('h3');
+    sectionItem = document.createElement('h3');
 
-  titleItem.className = 'auto-font-size-2';
-  titleItem.textContent = title;
+  sectionItem.className = 'auto-font-size-2';
+  sectionItem.textContent = title;
 
   container.className = 'projects-list';
 
@@ -65,16 +85,11 @@ function createProjectsLinks(title, projectsContainer, projects, included, exclu
     projectsContainer.appendChild(hr);
   }
 
-  projectsContainer.appendChild(titleItem);
+  projectsContainer.appendChild(sectionItem);
   projectsContainer.appendChild(container);
 
-  var toggle = function (e) {
-    e.preventDefault();
-    this.classList.toggle('collapsed');
-  };
-
+  var total = 0;
   for (var i = 0; i < projects.length; i++) {
-
     var
       topics = projects[i].topics && projects[i].topics.length,
       _topics = new Set(topics ? projects[i].topics : []);
@@ -86,6 +101,8 @@ function createProjectsLinks(title, projectsContainer, projects, included, exclu
       }
     }
 
+    total++;
+
     var
       listItem = document.createElement('li'),
       titleBoxItem = document.createElement('h4'),
@@ -94,20 +111,21 @@ function createProjectsLinks(title, projectsContainer, projects, included, exclu
       languageItem = document.createElement('code'),
       descriptionItem = document.createElement('span');
 
+    titleItem.id = projects[i].name;
     titleItem.className = 'link';
     titleItem.textContent = projects[i].name;
     titleItem.href = projects[i].html_url;
     titleItem.target = "_blank";
-    titleItem.ref = "noopener noreferrer";
+    titleItem.rel = "noopener noreferrer";
 
     languageItem.className = 'language';
     languageItem.textContent = projects[i].language;
 
     detailsItem.className = 'details rounded-box';
-    detailsItem.appendChild(languageItem);
+    if (projects[i].language) { detailsItem.appendChild(languageItem); }
 
     var
-      filteredTopics = (topics ? projects[i].topics.filter(function (topic) { return (topic !== projects[i].language.toLowerCase() ? topic : ''); }) : []),
+      filteredTopics = (topics ? projects[i].topics.filter(function (topic) { return (topic !== (projects[i].language || '').toLowerCase() ? topic : ''); }) : []),
       k = filteredTopics.length;
 
     while(k--){
@@ -119,7 +137,7 @@ function createProjectsLinks(title, projectsContainer, projects, included, exclu
 
     descriptionItem.className = 'description collapsed';
     descriptionItem.textContent = projects[i].description;
-    descriptionItem.addEventListener('click', toggle);
+    descriptionItem.addEventListener('click', toggleDescription);
 
     titleBoxItem.className = 'title';
     titleBoxItem.appendChild(titleItem);
@@ -129,6 +147,8 @@ function createProjectsLinks(title, projectsContainer, projects, included, exclu
 
     container.appendChild(listItem);
   }
+
+  sectionItem.textContent += ' (' + total + ')';
 }
 
 function haveTopic(_topics, list, condition) {

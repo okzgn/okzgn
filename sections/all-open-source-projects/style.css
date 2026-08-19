@@ -3,6 +3,17 @@
     display: inline-block;
     margin-bottom: 0.5rem;
 }
+.projects-response.error {
+    margin-bottom: 1rem;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    background: #c00;
+    color: var(--white);
+    border-radius: 0.5rem;
+}
+.projects-response.loading {
+    background: var(--blue);
+}
 .projects-container {
     word-break: break-all;
 }
@@ -20,7 +31,6 @@
     margin: 0.5rem 0;
     cursor: pointer;
 }
-
 .projects-list .description:hover,
 .projects-list .description:active {
     text-decoration: underline;
