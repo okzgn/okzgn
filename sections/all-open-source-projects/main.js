@@ -67,7 +67,11 @@ function showProjects(container, responseContainer, projects){
   container.textContent = '';
 
   createProjectsLinks('Modern projects', container, projects, [], ['website', 'software-preservation']);
-  createProjectsLinks('Old projects / Software Preservation', container, projects, ['software-preservation'], ['website'], true);
+  createProjectsLinks('Old projects', container, projects, ['software-preservation'], ['website'], true);
+
+  if (typeof window['_TOC_OBSERVER_RESET'] === 'function'){
+    window['_TOC_OBSERVER_RESET']();
+  }
 }
 
 function createProjectsLinks(title, projectsContainer, projects, included, excluded, hr) {
@@ -111,7 +115,8 @@ function createProjectsLinks(title, projectsContainer, projects, included, exclu
       languageItem = document.createElement('code'),
       descriptionItem = document.createElement('span');
 
-    titleItem.id = projects[i].name;
+    titleBoxItem.id = projects[i].name;
+
     titleItem.className = 'link';
     titleItem.textContent = projects[i].name;
     titleItem.href = projects[i].html_url;
@@ -148,7 +153,9 @@ function createProjectsLinks(title, projectsContainer, projects, included, exclu
     container.appendChild(listItem);
   }
 
-  sectionItem.textContent += ' (' + total + ')';
+  var totalItem = document.createElement('strong');
+  totalItem.textContent = 'Total: ' + total;
+  sectionItem.insertAdjacentElement('afterend', totalItem);
 }
 
 function haveTopic(_topics, list, condition) {

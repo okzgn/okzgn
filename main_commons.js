@@ -153,6 +153,8 @@ document.addEventListener('DOMContentLoaded', function () {
         _handler.observe(element);
       });
     }
+
+    return _handler;
   }
 
   function scrollOperation(target) {
@@ -227,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   menu.addEventListener('click', menuOperation);
 
-  points.forEach(function (point) {
+  function setPoints(point) {
     var anchor = point.id || point.textContent.replace(/['"\(\)\[\]]/g, '').replace(/[^a-zA-Z0-9]/g, '-').replace(/^\-|\-$/g, '').toLowerCase();
     var visibleAnchor = point.textContent.replace(/^[^a-zA-Z0-9]|[^a-zA-Z0-9]$/g, '');
 
@@ -241,53 +243,61 @@ document.addEventListener('DOMContentLoaded', function () {
     menuList.appendChild(menuListItem);
 
     menuListItemLink.addEventListener('click', menuOperation);
-  });
+  }
+
+  points.forEach(setPoints);
 
   var anchors = document.querySelectorAll('nav .menu-list a');
   if (!anchors.length) { return console.error('There is no anchors.'); }
 
-  var observerShow, observerHide;
-  observer(points,
-    function show(scrollXDirection, scrollYDirection, visibleRatio) {
-      var id = this.id;
-      //console.log('show', scrollXDirection, scrollYDirection, id);
+  function show(scrollXDirection, scrollYDirection, visibleRatio) {
+    var id = this.id;
+    //console.log('show', scrollXDirection, scrollYDirection, id);
 
-      clearTimeout(observerShow);
-      observerShow = setTimeout(function () {
-        var elements = iterateByCond(anchors, function () { return this.getAttribute('href') === '#' + id; });
-        if (!elements) { return; }
+    clearTimeout(observerShow);
+    observerShow = setTimeout(function () {
+      var elements = iterateByCond((function () { return anchors; })(), function () { return this.getAttribute('href') === '#' + id; });
+      if (!elements) { return; }
 
-        elements.current.classList.add('cta-button');
-        elements.prev.forEach(function (element) {
-          element.classList.add('cta-button');
+      elements.current.classList.add('cta-button');
+      elements.prev.forEach(function (element) {
+        element.classList.add('cta-button');
+      });
+      scrollSituate(menuListContainer, elements.current);
+    }, 200);
+  }
+
+  function hide(scrollXDirection, scrollYDirection, intersectionEntry) {
+    var id = this.id;
+    //console.log('hide', scrollXDirection, scrollYDirection, id);
+
+    clearTimeout(observerHide);
+    observerHide = setTimeout(function () {
+      var elements = iterateByCond((function () { return anchors; })(), function () { return this.getAttribute('href') === '#' + id; });
+      if (!elements) { return; }
+
+      if (scrollYDirection === 'up') {
+        elements.current.classList.remove('cta-button');
+        elements.next.forEach(function (element) {
+          element.classList.remove('cta-button');
         });
-        scrollSituate(menuListContainer, elements.current);
-      }, 200);
 
-    },
-
-    function hide(scrollXDirection, scrollYDirection, intersectionEntry) {
-      var id = this.id;
-      //console.log('hide', scrollXDirection, scrollYDirection, id);
-
-      clearTimeout(observerHide);
-      observerHide = setTimeout(function () {
-        var elements = iterateByCond(anchors, function () { return this.getAttribute('href') === '#' + id; });
-        if (!elements) { return; }
-
-        if (scrollYDirection === 'up') {
-          elements.current.classList.remove('cta-button');
-          elements.next.forEach(function (element) {
-            element.classList.remove('cta-button');
-          });
-
-          if (elements.prev.length) {
-            scrollSituate(menuListContainer, elements.prev[elements.prev.length - 1]);
-          }
+        if (elements.prev.length) {
+          scrollSituate(menuListContainer, elements.prev[elements.prev.length - 1]);
         }
-      }, 200);
-    }
-  );
+      }
+    }, 200);
+  }
+
+  var observerShow, observerHide, observerHandler = observer(points, show, hide);
+  window['_TOC_OBSERVER_RESET'] = function() {
+    observerHandler.disconnect();
+    points = document.querySelectorAll('h2, h3, h4, h5, h6');
+    menuList.textContent = '';
+    points.forEach(setPoints);
+    anchors = document.querySelectorAll('nav .menu-list a');
+    observer(points, show, hide);
+  };
 
   var hash = window.location.hash + '';
   if (hash) {
