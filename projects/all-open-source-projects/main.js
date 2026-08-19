@@ -40,8 +40,9 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   else if (alreadyRequestedProjects) {
     setTimeout(function () {
+      console.log('Cached Github request.');
       showProjects(projectsContainer, projectsResponseContainer, alreadyRequestedProjects);
-    }, 5678);
+    }, 2345);
   }
 });
 
