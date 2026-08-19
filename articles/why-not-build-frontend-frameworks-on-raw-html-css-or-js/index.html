@@ -13,7 +13,7 @@
 	<meta name="robots" content="index, follow, max-image-preview:large">
 	<meta name="author" content="OKZGN">
 
-	<meta property="article:published_time" content="2026-08-18T12:00:00Z">
+	<meta property="article:published_time" content="2026-08-19T12:00:00Z">
 	<meta property="article:author" content="Elías Francisco Alvarado Soshina">
 
 	<meta name="theme-color" content="#ffdbb8" media="(prefers-color-scheme: light)">
@@ -55,8 +55,8 @@
   "description": "It is possible: No endless dependencies, no dev environment setup, no build step, no Web Components required, minimal boilerplate, minimal lock-in. Raw HTML, CSS and JS have everything needed and are web standards, unlike custom syntaxes.",
   "image": "https://okzgn.com/landscape.png",
   "url": "https://okzgn.com/articles/why-not-build-frontend-frameworks-on-raw-html-css-or-js/",
-  "datePublished": "2026-08-18T12:00:00Z",
-  "dateModified": "2026-08-18T12:00:00Z",
+  "datePublished": "2026-08-19T12:00:00Z",
+  "dateModified": "2026-08-19T12:00:00Z",
   "inLanguage": "en",
   "author": {
     "@type": "Person",
@@ -245,7 +245,7 @@ new Component('CompC', () =&gt; {
                                         <span>Minimal implementation:</span>
                                         <div class="rounded-box">
 <pre><code class="language-javascript">function State(options = {}, path = [], cache = new WeakMap()) {
-    // In-scope state with flexibility to use external objects
+    // In-scope secure state with flexibility to use external objects (risk of external mutation)
     const data = options.data || Object.create(null);
 
     // Reuse existing proxy for identity preservation and to avoid memory leaks
@@ -322,10 +322,12 @@ delete state.name;
                             </li>
                             <li><h4>Synchronized, granular DOM updates:</h4><br>
                                 <ul role="list">
-                                    <li><strong>Specific context:</strong> Flawed implementations can quickly cause UI jank or severe memory leaks, particularly during high-frequency node mount and unmount cycles, requiring rigorous optimization. Granular updates demand precise reference tracking and automatic cleanup as elements leave the DOM tree.</li>
+                                    <li><strong>Specific context:</strong> This pattern is typically used to bind DOM nodes to the application's internal state variables, managing their lifecycle through mounting, unmounting, and state changes. <strong>Flawed implementations can quickly cause UI jank or severe memory leaks</strong>, particularly during high-frequency node mount and unmount cycles, requiring rigorous optimization. <strong>Granular updates demand precise reference tracking and automatic cleanup as elements leave the DOM tree</strong>. Beyond basic state binding, it is also frequently used for integrating third-party imperative libraries, managing browser APIs (such as Observers), handling focus trapping and accessibility workflows, implementing complex interactions like click-outside detection and drag-and-drop, and executing imperative animations to bypass rendering overhead.</li>
                                     <li><strong>Bypass:</strong>
                                         <div class="rounded-box">
-                                            <pre><code class="language-javascript">// Coming soon ...</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
+<pre><code class="language-javascript">
+// Coming soon ...
+</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
                                         </div>
                                     </li>
                                 </ul>
