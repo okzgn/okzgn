@@ -237,6 +237,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var menuListItem = document.createElement('li');
     var menuListItemLink = document.createElement('a');
+    menuListItemLink.className = point.tagName;
     menuListItemLink.href = '#' + anchor;
     menuListItemLink.textContent = visibleAnchor;
     menuListItem.appendChild(menuListItemLink);

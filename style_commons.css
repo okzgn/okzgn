@@ -502,6 +502,25 @@ nav.expanded .menu-list ol li {
     margin-bottom: 0.5rem;
 }
 
+
+nav.expanded .menu-list-levels .H4::before, nav.expanded .menu-list-levels .H4::after { display: none; }
+nav.expanded .menu-list-levels .H4 {
+    margin-left: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+nav.expanded .menu-list-levels .H5::before, nav.expanded .menu-list-levels .H5::after { display: none; }
+nav.expanded .menu-list-levels .H5 {
+    margin-left: 1.5rem;
+    padding: 0.25rem 0.5rem;
+}
+
+nav.expanded .menu-list-levels .H6::before, nav.expanded .menu-list-levels .H6::after { display: none; }
+nav.expanded .menu-list-levels .H6 {
+    margin-left: 2rem;
+    padding: 0.125rem 0.25rem;
+}
+
 nav.expanded #menu::before {
     transform: rotate(-45deg);
     top: 0.1875rem;
