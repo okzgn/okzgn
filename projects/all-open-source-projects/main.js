@@ -1,45 +1,66 @@
 document.addEventListener('DOMContentLoaded', function () {
   console.log('Blank Ready.');
 
+  var descriptions = document.querySelectorAll('.projects-container .description');
+  descriptions.forEach(function (description) {
+    description.addEventListener('click', toggleDescription);
+    description.addEventListener('keydown', toggleByKeyboard);
+  });
+
   var
     currentDate = Date.now(),
     projectsContainer = document.querySelector('.projects-container'),
     projectsResponseContainer = document.querySelector('.projects-response'),
     alreadyRequestedProjects = localStorage.getItem('all-oss-projects'),
-    alreadyRequestedProjectsDate = localStorage.getItem('all-oss-projects-date'),
-    projectsDiffDate = alreadyRequestedProjectsDate ? Math.round((currentDate - Number(alreadyRequestedProjectsDate)) / 1000) : 0,
-    projectsContent = alreadyRequestedProjects || '{"loading":"Updating"}';
+    alreadyRequestedProjectsDate = Number(localStorage.getItem('all-oss-projects-date') || 0),
+    projectsDiffDate = (Date.now() > alreadyRequestedProjectsDate),
+    projectsContent = '{"error":"Projects not found."}';
 
-  if (projectsContainer && projectsResponseContainer && (!alreadyRequestedProjects || !alreadyRequestedProjectsDate || projectsDiffDate > 86400)) {
+  if (projectsContainer && projectsResponseContainer &&
+    (!alreadyRequestedProjects || !alreadyRequestedProjectsDate || projectsDiffDate)) {
+    projectsResponseContainer.classList.add('loading');
+    projectsResponseContainer.textContent = 'Updating...';
+
     var projectsRequest = _http({
       url: 'https://api.github.com/users/okzgn/repos?sort=pushed&per_page=30',
       onSuccess: function (r) {
         console.info('New Github request.');
         projectsContent = r;
         localStorage.setItem('all-oss-projects', projectsContent);
-        localStorage.setItem('all-oss-projects-date', Date.now());
+        localStorage.setItem('all-oss-projects-date', Date.now() + 86400000);
         showProjects(projectsContainer, projectsResponseContainer, projectsContent);
       },
       onError: function (e) {
         projectsContent = '{"error":"' + e.message + '"}';
         localStorage.setItem('all-oss-projects', projectsContent);
-        localStorage.setItem('all-oss-projects-date', Date.now() + 85800000);
+        localStorage.setItem('all-oss-projects-date', Date.now() + 600000);
         showProjects(projectsContainer, projectsResponseContainer, projectsContent);
       }
     });
   }
-
-  showProjects(projectsContainer, projectsResponseContainer, projectsContent);
-
-  var descriptions = document.querySelectorAll('.projects-container .description');
-  descriptions.forEach(function (description) {
-    description.addEventListener('click', toggleDescription);
-  });
+  else if (alreadyRequestedProjects) {
+    setTimeout(function () {
+      showProjects(projectsContainer, projectsResponseContainer, alreadyRequestedProjects);
+    }, 5678);
+  }
 });
+
+function toggleByKeyboard(e) {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    toggleDescription.call(this, e);
+  }
+}
 
 function toggleDescription (e) {
   e.preventDefault();
-  this.classList.toggle('collapsed');
+  if (this.classList.contains('collapsed')){
+      this.setAttribute('aria-expanded', 'true');
+      this.classList.remove('collapsed');
+      return;
+  }
+  this.setAttribute('aria-expanded', 'false');
+  this.classList.add('collapsed');
 }
 
 function showProjects(container, responseContainer, projects){
@@ -50,14 +71,11 @@ function showProjects(container, responseContainer, projects){
     projects = { error: 'Cannot read the projects (JSON).' };
   }
 
-  if (projects.loading) {
-    responseContainer.classList.add('loading');
-    responseContainer.textContent = projects.loading;
-    return;
-  }
-
   if (projects.error || !projects.length) {
-    if (!projects.length) { projects.error = 'Cannot update projects list (empty).'; }
+    if (!projects.length) {
+      projects.error = 'Cannot update projects list (empty).';
+    }
+
     responseContainer.classList.add('error');
     responseContainer.textContent = projects.error;
     return;
@@ -140,9 +158,13 @@ function createProjectsLinks(title, projectsContainer, projects, included, exclu
       detailsItem.appendChild(topicItem);
     }
 
+    descriptionItem.setAttribute('tabindex', '0');
+    descriptionItem.setAttribute('role', 'button');
+    descriptionItem.setAttribute('aria-expanded', 'false');
     descriptionItem.className = 'description collapsed';
     descriptionItem.textContent = projects[i].description;
     descriptionItem.addEventListener('click', toggleDescription);
+    descriptionItem.addEventListener('keydown', toggleByKeyboard);
 
     titleBoxItem.className = 'title';
     titleBoxItem.appendChild(titleItem);

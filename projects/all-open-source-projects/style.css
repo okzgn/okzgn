@@ -9,12 +9,41 @@
     padding: 0.5rem 1rem;
     background: #c00;
     color: var(--white);
-    border-radius: 0.5rem;
+    border-radius: 1rem;
 }
 .projects-response.loading {
     background: var(--blue);
 }
+.projects-response.loading::before,
+.projects-response.loading::after {
+    content: '';
+    display: inline-block;
+    width: 0.25rem;
+    height: 0.25rem;
+    background: var(--themeColor);
+    border-radius: 0.125rem;
+    position: relative;
+    left: 0;
+}
+.projects-response.loading::before {
+    animation: pow 2s ease-in-out infinite alternate;
+    animation-delay: 1s;
+    margin-right: 0.5rem;
+}
+.projects-response.loading::after {
+    animation: pow 2s ease-in-out infinite alternate;
+    animation-delay: 2s;
+    margin-left: 0.5rem;
+}
+@keyframes pow {
+    100% {
+        left: 50%;
+        background: var(--white);
+    }
+}
 .projects-container .total {
+    display: block;
+    margin: 0.5rem 0 1.25rem 0;
     color: var(--accentDark2);
 }
 .projects-container .total b {
@@ -28,6 +57,7 @@
     display: flex;
     flex-flow: column;
 }
+.projects-list h3 { text-shadow: unset; }
 .projects-list .link {
     align-self: flex-start;
     font-weight: bold;
@@ -35,7 +65,33 @@
 .projects-list .description {
     margin: 0.5rem 0;
     cursor: pointer;
-    word-break: keep-all;
+    word-break: normal;
+}
+.projects-list .description:focus-visible {
+    margin: 0.5rem 0;
+    cursor: pointer;
+    word-break: normal;
+    outline: 2px solid var(--blueDark);
+    outline-offset: 2px;
+    border-radius: 1rem;
+}
+.projects-list .description::before {
+    content: '—';
+    display: inline-block;
+    font-weight: bold;
+    width: 1.25rem;
+    height: 1.25rem;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    background: var(--softShadow);
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 0.5rem;
+    color: var(--blue);
+}
+.projects-list .description.collapsed::before {
+    content: '+';
 }
 .projects-list .description:hover,
 .projects-list .description:active {
