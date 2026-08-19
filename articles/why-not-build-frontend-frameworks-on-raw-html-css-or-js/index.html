@@ -340,35 +340,41 @@ delete state.name;
 
 function Updater(mutations, observer) {
     for (const mutation of mutations) {
-    switch (mutation.type) {
+    let type = mutation.type, target, oldValue;
+    switch (type) {
         case 'attributes':
-            const { attributeName, target, oldValue } = mutation;
+            target = mutation.target;
+            oldValue = mutation.oldValue;
+            let attributeName = mutation.attributeName;
             let newValue = target.getAttribute(attributeName);
 
             if (oldValue === newValue) {
                 break;
             }
 
-            if (oldValue === null) { Updater[mutation.type].added(target, attributeName, newValue, null); }
-            else if (newValue === null) { Updater[mutation.type].removed(target, attributeName, null, oldValue); }
-            else { Updater[mutation.type].modified(target, attributeName, newValue, oldValue); }
+            if (oldValue === null) { Updater[type].added(target, attributeName, newValue, null); }
+            else if (newValue === null) { Updater[type].removed(target, attributeName, null, oldValue); }
+            else { Updater[type].modified(target, attributeName, newValue, oldValue); }
         break;
 
         case 'characterData':
-            const { target, oldValue } = mutation;
+            target = mutation.target;
+            oldValue = mutation.oldValue;
+
             if (oldValue === target.data || !target.parentNode || Updater.excludedTags.has(target.parentNode.nodeName) || target.data.trim() === '') {
                 break;
             }
 
             switch (target.nodeType) {
-                case Node.TEXT_NODE: Updater[mutation.type].text(target, oldValue, target.data); break;
-                case Node.COMMENT_NODE: Updater[mutation.type].comment(target, oldValue, target.data); break;
+                case Node.TEXT_NODE: Updater[type].text(target, oldValue, target.data); break;
+                case Node.COMMENT_NODE: Updater[type].comment(target, oldValue, target.data); break;
             }
         break;
 
         case 'childList':
-            const handler = Updater[mutation.type];
-            const { target, addedNodes, removedNodes } = mutation;
+            const handler = Updater[type];
+            const { addedNodes, removedNodes } = mutation;
+            target = mutation.target;
             let item = 0;
 
             if (addedNodes.length) {
