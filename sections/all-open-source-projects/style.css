@@ -3,7 +3,7 @@
     display: inline-block;
     margin-bottom: 0.5rem;
 }
-.projects-response.error {
+.projects-response.error, .projects-response.loading {
     margin-bottom: 1rem;
     font-weight: bold;
     padding: 0.5rem 1rem;
