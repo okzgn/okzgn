@@ -327,7 +327,7 @@ delete state.name;
                                         <span><code>MutationObserver</code> can be used to scan the initial HTML, parse, and map nodes, as it does not rely on <code>DOMContentLoaded</code> and makes it possible to capture the creation phase of all nodes across the <code>document</code>. And with the necessary adjustments and optimizations, it can precisely control everything happening in the DOM asynchronously, yet synchronously for batched updates with <code>queueMicrotask</code> or <code>requestAnimationFrame</code> depending on the type of update. This can be implemented natively using ES6+:</span>
                                         <div class="rounded-box"><code>MutationObserver</code>, <code>Set</code>, <code>Node</code>, <code>Node.prototype.getAttribute</code>, <code>...</code></div>
                                         <span>Minimal implementation:</span>
-                                        <strong>Coming soon...</strong>
+                                        <strong>Work In Progress...</strong>
                                         <div class="rounded-box">
 <pre><code class="language-javascript">new MutationObserver(Updater).observe(document.documentElement, {
     attributes: true,
