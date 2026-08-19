@@ -329,25 +329,20 @@ delete state.name;
                                         <span>Minimal implementation:</span>
                                         <strong>Work In Progress...</strong>
                                         <div class="rounded-box">
-<pre><code class="language-javascript">new MutationObserver(Updater).observe(document.documentElement, {
-    attributes: true,
-    attributeOldValue: true,
-    childList: true,
-    subtree: true,
-    characterData: true,
-    characterDataOldValue: true
-});
-
-function Updater(mutations, observer) {
+<pre><code class="language-javascript">function Updater(mutations, observer) {
     for (const mutation of mutations) {
     let type = mutation.type, target = mutation.target, oldValue;
     switch (type) {
         case 'attributes':
             oldValue = mutation.oldValue;
             let attributeName = mutation.attributeName;
-            let newValue = target.getAttribute(attributeName);
 
-            if (oldValue === newValue || Updater.excludedTags.has(target.nodeName)) {
+            if (Updater.excludedTags.has(target.nodeName)) {
+                break;
+            }
+
+            let newValue = target.getAttribute(attributeName);
+            if (oldValue === newValue) {
                 break;
             }
 
@@ -400,13 +395,6 @@ Updater.processNodes = (nodes, action, target) =&gt; {
     }
 };
 
-Updater.excludedTags = new Set([
-    'SCRIPT', 'STYLE', 'LINK', 'NOSCRIPT',
-    'META', 'BASE', 'TITLE',
-    'TEMPLATE', 'SLOT',
-    'IFRAME', 'OBJECT', 'EMBED'
-]);
-
 Updater.attributes = {
     added: (elementNode, attributeName, newValue, oldValue) =&gt; {
 
@@ -453,7 +441,31 @@ Updater.childList = {
 
         },
     },
-};</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
+};
+
+Updater.excludedTags = new Set([
+    'SCRIPT', 'STYLE', 'LINK', 'NOSCRIPT',
+    'META', 'BASE', 'TITLE',
+    'TEMPLATE', 'SLOT',
+    'IFRAME', 'OBJECT', 'EMBED',
+    'CANVAS',
+
+    'SVG', 'svg', 'script', 'style', 'link',
+    'title', 'desc', 'metadata', 'defs', 'symbol',
+    'clipPath', 'mask', 'pattern', 'foreignObject', 'canvas',
+
+    'xml-stylesheet', 'math', 'MATH', 'semantics', 'annotation',
+    'rdf:RDF', 'rdf:Description', 'dc:metadata', 'annotation-xml'
+]);
+
+new MutationObserver(Updater).observe(document.documentElement, {
+    attributes: true,
+    attributeOldValue: true,
+    childList: true,
+    subtree: true,
+    characterData: true,
+    characterDataOldValue: true
+});</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
                                         </div>
                                         <span>Usage examples:</span>
                                         <div class="rounded-box">
