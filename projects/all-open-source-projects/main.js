@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     alreadyRequestedProjects = localStorage.getItem('all-oss-projects'),
     alreadyRequestedProjectsDate = localStorage.getItem('all-oss-projects-date'),
     projectsDiffDate = alreadyRequestedProjectsDate ? Math.round((currentDate - Number(alreadyRequestedProjectsDate)) / 1000) : 0,
-    projectsContent = alreadyRequestedProjects || '{"loading":"Loading..."}';
+    projectsContent = alreadyRequestedProjects || '{"loading":"Updating"}';
 
   if (projectsContainer && projectsResponseContainer && (!alreadyRequestedProjects || !alreadyRequestedProjectsDate || projectsDiffDate > 86400)) {
     var projectsRequest = _http({
@@ -77,7 +77,7 @@ function showProjects(container, responseContainer, projects){
 function createProjectsLinks(title, projectsContainer, projects, included, excluded, hr) {
   var
     container = document.createElement('ul'),
-    sectionItem = document.createElement('h3');
+    sectionItem = document.createElement('h2');
 
   sectionItem.className = 'auto-font-size-2';
   sectionItem.textContent = title;
@@ -109,7 +109,7 @@ function createProjectsLinks(title, projectsContainer, projects, included, exclu
 
     var
       listItem = document.createElement('li'),
-      titleBoxItem = document.createElement('h4'),
+      titleBoxItem = document.createElement('h3'),
       titleItem = document.createElement('a'),
       detailsItem = document.createElement('div'),
       languageItem = document.createElement('code'),
@@ -154,8 +154,14 @@ function createProjectsLinks(title, projectsContainer, projects, included, exclu
   }
 
   var totalItem = document.createElement('strong');
-  totalItem.textContent = 'Total: ' + total;
+  totalItem.className = 'total';
+  totalItem.textContent = 'Total:';
   sectionItem.insertAdjacentElement('afterend', totalItem);
+
+  var totalValue = document.createElement('b');
+  totalValue.textContent = total;
+  totalItem.appendChild(totalValue);
+
 }
 
 function haveTopic(_topics, list, condition) {

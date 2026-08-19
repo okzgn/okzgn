@@ -291,22 +291,29 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   var observerShow, observerHide, observerHandler = observer(points, show, hide);
-  window['_TOC_OBSERVER_RESET'] = function() {
+  window['_TOC_OBSERVER_RESET'] = function(mode) {
     observerHandler.disconnect();
     points = document.querySelectorAll('h2, h3, h4, h5, h6');
     menuList.textContent = '';
     points.forEach(setPoints);
     anchors = document.querySelectorAll('nav .menu-list a');
     observer(points, show, hide);
+    if (!mode) {
+      goHashLocation();
+    }
   };
 
-  var hash = window.location.hash + '';
-  if (hash) {
-    var element = iterateByCond(anchors, function () { return this.getAttribute('href') === hash; });
-    if (element) {
-      element.current.click();
+  function goHashLocation(){
+    var hash = window.location.hash + '';
+    if (hash) {
+      var element = iterateByCond(anchors, function () { return this.getAttribute('href') === hash; });
+      if (element) {
+        element.current.click();
+      }
     }
   }
+
+  goHashLocation();
 
   var
     preCodes = document.getElementsByTagName('pre'),

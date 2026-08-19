@@ -14,8 +14,13 @@
 .projects-response.loading {
     background: var(--blue);
 }
-.projects-container {
-    word-break: break-all;
+.projects-container .total {
+    color: var(--accentDark2);
+}
+.projects-container .total b {
+    display: inline-block;
+    margin-left: 0.5rem;
+
 }
 .projects-list li {
     margin-top: 1rem;
@@ -30,28 +35,49 @@
 .projects-list .description {
     margin: 0.5rem 0;
     cursor: pointer;
+    word-break: keep-all;
 }
 .projects-list .description:hover,
 .projects-list .description:active {
     text-decoration: underline;
 }
-.projects-list li .language,
-.projects-list li .topic {
+.projects-list .language {
+    margin-right: 0.5rem;
+    color: var(--accentDark3);
+    font-size: 0.95rem;
+}
+.projects-list .language,
+.projects-list .topic {
     padding: 0.25rem 0.5rem;
     font-weight: bold;
+    transition: 0.125s all;
 }
-.projects-list li .topic {
-    font-size: 0.75rem;
+.projects-list .topic {
+    font-size: 0.8rem;
     align-self: center;
 }
-.projects-list li .details {
+.projects-list .language:hover,
+.projects-list .topic:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+.projects-list .details {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
 }
-.repo-url h3 { margin-bottom: 1rem; }
+.repositories-urls h2 { margin-bottom: 1rem; }
 @media screen and (max-width: 640px) {
-    .repo-url a {
+    .repositories-urls a {
         word-break: break-all;
+    }
+}
+@media (prefers-color-scheme: dark) {
+    .projects-container .total {
+        color: var(--themeColor);
+    }
+    .projects-list .language {
+        color: var(--themeColor2);
+        background: var(--ghostBlueWhite3);
     }
 }

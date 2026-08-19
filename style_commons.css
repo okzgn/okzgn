@@ -502,6 +502,11 @@ nav.expanded .menu-list ol li {
     margin-bottom: 0.5rem;
 }
 
+nav.expanded .menu-list-levels .H3::before, nav.expanded .menu-list-levels .H3::after { display: none; }
+nav.expanded .menu-list-levels .H3 {
+    margin-left: 0.5rem;
+    padding: 0.5rem 1rem;
+}
 
 nav.expanded .menu-list-levels .H4::before, nav.expanded .menu-list-levels .H4::after { display: none; }
 nav.expanded .menu-list-levels .H4 {
