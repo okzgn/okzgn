@@ -13,7 +13,7 @@
 	<meta name="robots" content="index, follow, max-image-preview:large">
 	<meta name="author" content="OKZGN">
 
-	<meta property="article:published_time" content="2026-08-19T12:00:00Z">
+	<meta property="article:published_time" content="2026-08-20T12:00:00Z">
 	<meta property="article:author" content="Elías Francisco Alvarado Soshina">
 
 	<meta name="theme-color" content="#ffdbb8" media="(prefers-color-scheme: light)">
@@ -55,8 +55,8 @@
   "description": "It is possible: No endless dependencies, no dev environment setup, no build step, no Web Components required, minimal boilerplate, minimal lock-in. Raw HTML, CSS and JS have everything needed and are web standards, unlike custom syntaxes.",
   "image": "https://okzgn.com/landscape.png",
   "url": "https://okzgn.com/articles/why-not-build-frontend-frameworks-on-raw-html-css-or-js/",
-  "datePublished": "2026-08-19T12:00:00Z",
-  "dateModified": "2026-08-19T12:00:00Z",
+  "datePublished": "2026-08-20T12:00:00Z",
+  "dateModified": "2026-08-20T12:00:00Z",
   "inLanguage": "en",
   "author": {
     "@type": "Person",
@@ -333,8 +333,8 @@ delete state.name;
     for (const mutation of mutations) {
         let target = mutation.target;
         switch (mutation.type) {
-            case 'attributes': {
-                if (ExcludedTags.has(target.nodeName)) {
+                case 'attributes': {
+                if (!IncludedNodes.has(target)) {
                     break;
                 }
 
@@ -352,9 +352,13 @@ delete state.name;
             }
 
             case 'characterData': {
+                if (!IncludedNodes.has(target.parentNode)) {
+                    break;
+                }
+
                 let oldValue = mutation.oldValue;
 
-                if (oldValue === target.data || !target.parentNode || ExcludedTags.has(target.parentNode.nodeName)) {
+                if (oldValue === target.data || !Updater.characterData[target.nodeName]) {
                     break;
                 }
 
@@ -363,16 +367,16 @@ delete state.name;
             }
 
             case 'childList': {
-                if (ExcludedTags.has(target.nodeName)) {
+                if (ExcludedNodes.has(target.nodeName)) {
                     break;
                 }
 
-                if (mutation.addedNodes.length) {
-                    Updater.processNodes(mutation.addedNodes, 'added', target);
+                if (mutation.removedNodes.length) {
+                    Updater.processNodes(target, mutation.removedNodes, 'removed');
                 }
 
-                if (mutation.removedNodes.length) {
-                    Updater.processNodes(mutation.removedNodes, 'removed', target);
+                if (mutation.addedNodes.length) {
+                    Updater.processNodes(target, mutation.addedNodes, 'added');
                 }
                 break;
             }
@@ -380,31 +384,47 @@ delete state.name;
     }
 }
 
-Updater.processNodes = (nodes, action, target) =&gt; {
-    for (let i = 0; i &lt; nodes.length; i++) {
-        let node = nodes[i];
+Updater.processNodes = (target, nodes, action) => {
+    for (let i = 0; i < nodes.length; i++) {
+        Updater.processTree(target, nodes[i], action);
+    }
+};
 
-        if (ExcludedTags.has(node.nodeName)) {
-            continue;
-        }
+Updater.processTree = (target, rootNode, action) => {
+    const added = (action === 'added');
+    if (ExcludedNodes.has(rootNode.nodeName) || IncludedNodes.has(rootNode) === added) {
+        return;
+    }
 
-        if (node.nodeType !== Node.ELEMENT_NODE) {
-            Updater.childList[node.nodeName][action](node, target);
-            continue;
-        }
-
-        Updater.childList[action](node, target);
-
-        let nodeChild;
-        const nodesWalker = document.createTreeWalker(node, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT | NodeFilter.SHOW_COMMENT, ExcludedTagsFilter);
-        while ((nodeChild = nodesWalker.nextNode())) {
-            if (nodeChild.nodeType !== Node.ELEMENT_NODE) {
-                Updater.childList[nodeChild.nodeName][action](nodeChild, nodeChild.parentNode);
-                continue;
+    switch (rootNode.nodeType) {
+        case Node.COMMENT_NODE:
+        case Node.TEXT_NODE:
+            if (added) {
+                IncludedNodes.add(rootNode);
+            }
+            else {
+                IncludedNodes.delete(rootNode);
             }
 
-            Updater.childList[action](nodeChild, nodeChild.parentNode);
-        }
+            Updater.childList[rootNode.nodeName][action](rootNode, target);
+        break;
+
+        case Node.ELEMENT_NODE:
+            if (added) {
+                IncludedNodes.add(rootNode);
+            }
+            else {
+                IncludedNodes.delete(rootNode);
+            }
+
+            Updater.childList['#element'][action](rootNode, target);
+
+            let child = rootNode.firstChild;
+            while (child) {
+                const next = child.nextSibling;
+                Updater.processTree(rootNode, child, action);
+                child = next;
+            }
     }
 };
 
@@ -435,11 +455,13 @@ Updater.characterData = {
 };
 
 Updater.childList = {
-    added: (elementNode, parentNode) =&gt; {
+    '#element':{
+        added: (elementNode, parentNode) =&gt; {
 
-    },
-    removed: (elementNode, parentNode) =&gt; {
+        },
+        removed: (elementNode, parentNode) =&gt; {
 
+        }
     },
 
     '#comment': {
@@ -448,7 +470,7 @@ Updater.childList = {
         },
         removed: (commentNode, parentNode) =&gt; {
 
-        },
+        }
     },
 
     '#text': {
@@ -457,26 +479,20 @@ Updater.childList = {
         },
         removed: (textNode, parentNode) =&gt; {
 
-        },
+        }
     }
 };
 
-const ExcludedTagsFilter = {
-    acceptNode: (node) => {
-        return (!ExcludedTags.has(node.nodeName) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT);
-    }
-};
+const IncludedNodes = new WeakSet();
+const ExcludedNodes = new Set([
+    '#document-fragment',
 
-const ExcludedTags = new Set([
-    '#document', '#document-fragment',
-
-    'HTML',
     'SCRIPT', 'STYLE', 'LINK', 'NOSCRIPT',
     'META', 'BASE', 'TITLE',
     'TEMPLATE', 'SLOT',
     'IFRAME', 'OBJECT', 'EMBED',
     'SOURCE', 'TRACK', 'PORTAL',
-    'CANVAS', 'svg', 'math',
+    'CANVAS', 'SVG', 'MATH', 'svg', 'math',
     'semantics', 'annotation', 'annotation-xml',
 
     'script', 'style', 'link', 'desc', 'title',
@@ -484,7 +500,8 @@ const ExcludedTags = new Set([
     'mask', 'pattern', 'foreignObject', 'g',
     'path', 'rect', 'circle', 'line', 'polygon',
     'use', 'text', 'polyline', 'ellipse', 'image',
-    'tspan', 'linearGradient', 'radialGradient', 'stop', 'marker', 'filter',
+    'tspan', 'linearGradient', 'radialGradient',
+    'stop', 'marker', 'filter',
 ]);
 
 new MutationObserver(Updater).observe(document, {
