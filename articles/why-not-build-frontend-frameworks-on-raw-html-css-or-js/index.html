@@ -428,6 +428,12 @@ delete state.name;
                 }
 
                 if (!added) {
+                    if (rootNode.hasAttributes()) {
+                        for (const attr of rootNode.attributes) {
+                            UpdaterAttributes.removed(rootNode, attr.name, attr.value, null);
+                        }
+                    }
+
                     UpdaterChildList['#element'][action](rootNode, parentNode);
                     IncludedNodes.delete(rootNode);
                 }
