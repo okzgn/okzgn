@@ -358,9 +358,10 @@ delete state.name;
                 break;
             }
 
-            switch (target.nodeType) {
-                case Node.TEXT_NODE: Updater[type].text(target, oldValue, target.data); break;
-                case Node.COMMENT_NODE: Updater[type].comment(target, oldValue, target.data); break;
+            if (Updater.characterData[target.nodeName] &amp;&amp;
+                typeof Updater.characterData[target.nodeName] === 'object' &amp;&amp;
+                Updater.characterData[target.nodeName].modified) {
+                Updater.characterData[target.nodeName].modified(target, target.data, oldValue);
             }
         break;
 
@@ -408,11 +409,16 @@ Updater.attributes = {
 };
 
 Updater.characterData = {
-    text: (textNode, oldValue, newValue) =&gt; {
+    '#comment': {
+        modified: (commentNode, newValue, oldValue) =&gt; {
 
+        },
     },
-    comment: (commentNode, oldValue, newValue) =&gt; {
 
+    '#text': {
+        modified: (textNode, newValue, oldValue) =&gt; {
+
+        }
     }
 };
 
@@ -440,7 +446,7 @@ Updater.childList = {
         removed: (textNode, parentNode) =&gt; {
 
         },
-    },
+    }
 };
 
 Updater.excludedTags = new Set([
