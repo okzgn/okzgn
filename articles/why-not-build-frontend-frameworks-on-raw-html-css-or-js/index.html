@@ -391,7 +391,9 @@ delete state.name;
 
     function UpdaterProcessTree (parentNode, rootNode, action) {
         const added = (action === 'added');
-        if (ExcludedNodes.has(rootNode.nodeName) || IncludedNodes.has(rootNode) === added) {
+        if (ExcludedNodes.has(rootNode.nodeName) ||
+            (added && IncludedNodes.get(rootNode) === parentNode) ||
+                (!added && !IncludedNodes.has(rootNode))) {
             return;
         }
 
@@ -399,7 +401,7 @@ delete state.name;
             case Node.COMMENT_NODE:
             case Node.TEXT_NODE:
                 if (added) {
-                    IncludedNodes.add(rootNode);
+                    IncludedNodes.set(rootNode, parentNode);
                     UpdaterChildList[rootNode.nodeName][action](rootNode, parentNode);
                 }
                 else {
@@ -410,7 +412,7 @@ delete state.name;
 
             case Node.ELEMENT_NODE:
                 if (added) {
-                    IncludedNodes.add(rootNode);
+                    IncludedNodes.set(rootNode, parentNode);
                     UpdaterChildList['#element'][action](rootNode, parentNode);
 
                     if (rootNode.hasAttributes()) {
@@ -430,7 +432,7 @@ delete state.name;
                 if (!added) {
                     if (rootNode.hasAttributes()) {
                         for (const attr of rootNode.attributes) {
-                            UpdaterAttributes.removed(rootNode, attr.name, attr.value, null);
+                            UpdaterAttributes.removed(rootNode, attr.name, null, attr.value);
                         }
                     }
 
@@ -495,7 +497,7 @@ delete state.name;
         }
     };
 
-    const IncludedNodes = new WeakSet();
+    const IncludedNodes = new WeakMap();
     const ExcludedNodes = new Set([
         '#document-fragment',
 
@@ -531,7 +533,7 @@ delete state.name;
     });
 
     if (targetNode.nodeType === Node.DOCUMENT_NODE) {
-        IncludedNodes.add(targetNode);
+        IncludedNodes.set(targetNode, null);
         if (targetNode.documentElement) {
         UpdaterProcessTree(targetNode, targetNode.documentElement, 'added');
         }
