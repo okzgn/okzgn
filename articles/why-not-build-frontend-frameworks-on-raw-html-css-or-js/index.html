@@ -413,6 +413,12 @@ delete state.name;
                 if (added) {
                     IncludedNodes.add(rootNode);
                     UpdaterChildList['#element'][action](rootNode, parentNode);
+
+                    if (rootNode.hasAttributes()) {
+                        for (const attr of rootNode.attributes) {
+                            UpdaterAttributes.added(rootNode, attr.name, attr.value, null);
+                        }
+                    }
                 }
 
                 let child = rootNode.firstChild;
