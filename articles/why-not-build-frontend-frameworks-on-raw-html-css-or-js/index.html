@@ -469,7 +469,7 @@ Updater.excludedTags = new Set([
     'rdf:RDF', 'rdf:Description', 'dc:metadata', 'annotation-xml'
 ]);
 
-new MutationObserver(Updater).observe(document.documentElement, {
+new MutationObserver(Updater).observe(document, {
     attributes: true,
     attributeOldValue: true,
     childList: true,
