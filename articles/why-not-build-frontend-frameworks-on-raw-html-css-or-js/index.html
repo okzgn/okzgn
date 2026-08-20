@@ -334,13 +334,12 @@ delete state.name;
     let type = mutation.type, target = mutation.target, oldValue;
     switch (type) {
         case 'attributes':
-            oldValue = mutation.oldValue;
-            let attributeName = mutation.attributeName;
-
             if (Updater.excludedTags.has(target.nodeName)) {
                 break;
             }
 
+            oldValue = mutation.oldValue;
+            let attributeName = mutation.attributeName;
             let newValue = target.getAttribute(attributeName);
             if (oldValue === newValue) {
                 break;
@@ -358,11 +357,7 @@ delete state.name;
                 break;
             }
 
-            if (Updater.characterData[target.nodeName] &amp;&amp;
-                typeof Updater.characterData[target.nodeName] === 'object' &amp;&amp;
-                Updater.characterData[target.nodeName].modified) {
-                Updater.characterData[target.nodeName].modified(target, target.data, oldValue);
-            }
+            Updater.characterData[target.nodeName].modified(target, target.data, oldValue);
         break;
 
         case 'childList':
@@ -392,10 +387,7 @@ Updater.processNodes = (nodes, action, target) =&gt; {
                 Updater.processNodes(node.childNodes, action, node);
             }
         }
-        else if (Updater.childList[node.nodeName] &amp;&amp;
-            typeof Updater.childList[node.nodeName] === 'object' &amp;&amp;
-                 Updater.childList[node.nodeName][action]) {
-
+        else {
             Updater.childList[node.nodeName][action](node, target);
         }
     }
@@ -455,18 +447,22 @@ Updater.childList = {
 };
 
 Updater.excludedTags = new Set([
+    '#document', '#document-fragment', 'html',
+
     'SCRIPT', 'STYLE', 'LINK', 'NOSCRIPT',
     'META', 'BASE', 'TITLE',
     'TEMPLATE', 'SLOT',
     'IFRAME', 'OBJECT', 'EMBED',
-    'CANVAS',
+    'SOURCE', 'TRACK', 'PORTAL',
+    'CANVAS', 'svg', 'math',
+    'semantics', 'annotation', 'annotation-xml',
 
-    'SVG', 'svg', 'script', 'style', 'link',
-    'title', 'desc', 'metadata', 'defs', 'symbol',
-    'clipPath', 'mask', 'pattern', 'foreignObject', 'canvas',
-
-    'xml-stylesheet', 'math', 'MATH', 'semantics', 'annotation',
-    'rdf:RDF', 'rdf:Description', 'dc:metadata', 'annotation-xml'
+    'script', 'style', 'link', 'desc', 'title',
+    'metadata', 'defs', 'symbol', 'clipPath',
+    'mask', 'pattern', 'foreignObject', 'g',
+    'path', 'rect', 'circle', 'line', 'polygon',
+    'use', 'text', 'polyline', 'ellipse', 'image',
+    'tspan', 'linearGradient', 'radialGradient', 'stop', 'marker', 'filter',
 ]);
 
 new MutationObserver(Updater).observe(document, {
