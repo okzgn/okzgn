@@ -352,17 +352,16 @@ delete state.name;
             }
 
             case 'characterData': {
-                if (!IncludedNodes.has(target.parentNode)) {
-                    break;
+                if (!target.parentNode) { break; }
+                if (IncludedNodes.has(target.parentNode) && IncludedNodes.has(target)) {
+                    let oldValue = mutation.oldValue;
+
+                    if (oldValue === target.data || !Updater.characterData[target.nodeName]) {
+                        break;
+                    }
+
+                    Updater.characterData[target.nodeName].modified(target, target.data, oldValue);
                 }
-
-                let oldValue = mutation.oldValue;
-
-                if (oldValue === target.data || !Updater.characterData[target.nodeName]) {
-                    break;
-                }
-
-                Updater.characterData[target.nodeName].modified(target, target.data, oldValue);
                 break;
             }
 
@@ -401,29 +400,30 @@ Updater.processTree = (target, rootNode, action) => {
         case Node.TEXT_NODE:
             if (added) {
                 IncludedNodes.add(rootNode);
+                Updater.childList[rootNode.nodeName][action](rootNode, target);
             }
             else {
+                Updater.childList[rootNode.nodeName][action](rootNode, target);
                 IncludedNodes.delete(rootNode);
             }
-
-            Updater.childList[rootNode.nodeName][action](rootNode, target);
         break;
 
         case Node.ELEMENT_NODE:
             if (added) {
                 IncludedNodes.add(rootNode);
+                Updater.childList['#element'][action](rootNode, target);
             }
-            else {
-                IncludedNodes.delete(rootNode);
-            }
-
-            Updater.childList['#element'][action](rootNode, target);
 
             let child = rootNode.firstChild;
             while (child) {
-                const next = child.nextSibling;
+                const current = child.nextSibling;
                 Updater.processTree(rootNode, child, action);
-                child = next;
+                child = current;
+            }
+
+            if (!added) {
+                Updater.childList['#element'][action](rootNode, target);
+                IncludedNodes.delete(rootNode);
             }
     }
 };
