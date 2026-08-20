@@ -387,10 +387,15 @@ Updater.processNodes = (nodes, action, target) =&gt; {
             }
 
             Updater.childList[action](node, target);
+
+            if (node.childNodes.length) {
+                Updater.processNodes(node.childNodes, action, node);
+            }
         }
         else if (Updater.childList[node.nodeName] &amp;&amp;
             typeof Updater.childList[node.nodeName] === 'object' &amp;&amp;
                  Updater.childList[node.nodeName][action]) {
+
             Updater.childList[node.nodeName][action](node, target);
         }
     }
