@@ -329,189 +329,206 @@ delete state.name;
                                         <span>Minimal implementation:</span>
                                         <strong>Work In Progress...</strong>
                                         <div class="rounded-box">
-<pre><code class="language-javascript">function Updater(mutations, observer) {
-    for (const mutation of mutations) {
-        let target = mutation.target;
-        switch (mutation.type) {
+<pre><code class="language-javascript">
+(function UpdaterStart(targetNode){
+    function Updater(mutations) {
+        for (const mutation of mutations) {
+            let target = mutation.target;
+            switch (mutation.type) {
                 case 'attributes': {
-                if (!IncludedNodes.has(target)) {
-                    break;
-                }
-
-                let
-                    oldValue = mutation.oldValue,
-                    attributeName = mutation.attributeName,
-                    newValue = target.getAttribute(attributeName);
-
-                if (oldValue === newValue) {
-                    break;
-                }
-
-                Updater.attributes[(oldValue === null ? 'added' : newValue === null ? 'removed' : 'modified')](target, attributeName, newValue, oldValue);
-                break;
-            }
-
-            case 'characterData': {
-                if (!target.parentNode) { break; }
-                if (IncludedNodes.has(target.parentNode) && IncludedNodes.has(target)) {
-                    let oldValue = mutation.oldValue;
-
-                    if (oldValue === target.data || !Updater.characterData[target.nodeName]) {
+                    if (!IncludedNodes.has(target)) {
                         break;
                     }
 
-                    Updater.characterData[target.nodeName].modified(target, target.data, oldValue);
-                }
-                break;
-            }
+                    let
+                        oldValue = mutation.oldValue,
+                        attributeName = mutation.attributeName,
+                        newValue = target.getAttribute(attributeName);
 
-            case 'childList': {
-                if (ExcludedNodes.has(target.nodeName)) {
+                    if (oldValue === newValue) {
+                        break;
+                    }
+
+                    UpdaterAttributes[(oldValue === null ? 'added' : newValue === null ? 'removed' : 'modified')](target, attributeName, newValue, oldValue);
                     break;
                 }
 
-                if (mutation.removedNodes.length) {
-                    Updater.processNodes(target, mutation.removedNodes, 'removed');
+                case 'characterData': {
+                    if (!IncludedNodes.has(target)) { break; }
+
+                    let oldValue = mutation.oldValue;
+
+                    if (oldValue === target.data || !UpdaterCharacterData[target.nodeName]) {
+                        break;
+                    }
+
+                    UpdaterCharacterData[target.nodeName].modified(target, target.data, oldValue);
+                    break;
                 }
 
-                if (mutation.addedNodes.length) {
-                    Updater.processNodes(target, mutation.addedNodes, 'added');
+                case 'childList': {
+                    if (ExcludedNodes.has(target.nodeName) || !IncludedNodes.has(target)) {
+                        break;
+                    }
+
+                    if (mutation.removedNodes.length) {
+                        UpdaterProcessNodes(target, mutation.removedNodes, 'removed');
+                    }
+
+                    if (mutation.addedNodes.length) {
+                        UpdaterProcessNodes(target, mutation.addedNodes, 'added');
+                    }
+                    break;
                 }
-                break;
             }
         }
     }
-}
 
-Updater.processNodes = (target, nodes, action) => {
-    for (let i = 0; i < nodes.length; i++) {
-        Updater.processTree(target, nodes[i], action);
-    }
-};
+    function UpdaterProcessNodes (parentNode, nodes, action) {
+        for (let i = 0; i < nodes.length; i++) {
+            UpdaterProcessTree(parentNode, nodes[i], action);
+        }
+    };
 
-Updater.processTree = (target, rootNode, action) => {
-    const added = (action === 'added');
-    if (ExcludedNodes.has(rootNode.nodeName) || IncludedNodes.has(rootNode) === added) {
+    function UpdaterProcessTree (parentNode, rootNode, action) {
+        const added = (action === 'added');
+        if (ExcludedNodes.has(rootNode.nodeName) || IncludedNodes.has(rootNode) === added) {
+            return;
+        }
+
+        switch (rootNode.nodeType) {
+            case Node.COMMENT_NODE:
+            case Node.TEXT_NODE:
+                if (added) {
+                    IncludedNodes.add(rootNode);
+                    UpdaterChildList[rootNode.nodeName][action](rootNode, parentNode);
+                }
+                else {
+                    UpdaterChildList[rootNode.nodeName][action](rootNode, parentNode);
+                    IncludedNodes.delete(rootNode);
+                }
+            break;
+
+            case Node.ELEMENT_NODE:
+                if (added) {
+                    IncludedNodes.add(rootNode);
+                    UpdaterChildList['#element'][action](rootNode, parentNode);
+                }
+
+                let child = rootNode.firstChild;
+                while (child) {
+                    const current = child.nextSibling;
+                    UpdaterProcessTree(rootNode, child, action);
+                    child = current;
+                }
+
+                if (!added) {
+                    UpdaterChildList['#element'][action](rootNode, parentNode);
+                    IncludedNodes.delete(rootNode);
+                }
+        }
+    };
+
+    const UpdaterAttributes = {
+        added: (elementNode, attributeName, newValue, oldValue) =&gt; {
+
+        },
+        removed: (elementNode, attributeName, newValue, oldValue) =&gt; {
+
+        },
+        modified: (elementNode, attributeName, newValue, oldValue) =&gt; {
+
+        }
+    };
+
+    const UpdaterCharacterData = {
+        '#comment': {
+            modified: (commentNode, newValue, oldValue) =&gt; {
+
+            },
+        },
+
+        '#text': {
+            modified: (textNode, newValue, oldValue) =&gt; {
+
+            }
+        }
+    };
+
+    const UpdaterChildList = {
+        '#element':{
+            added: (elementNode, parentNode) =&gt; {
+
+            },
+            removed: (elementNode, parentNode) =&gt; {
+
+            }
+        },
+
+        '#comment': {
+            added: (commentNode, parentNode) =&gt; {
+
+            },
+            removed: (commentNode, parentNode) =&gt; {
+
+            }
+        },
+
+        '#text': {
+            added: (textNode, parentNode) =&gt; {
+
+            },
+            removed: (textNode, parentNode) =&gt; {
+
+            }
+        }
+    };
+
+    const IncludedNodes = new WeakSet();
+    const ExcludedNodes = new Set([
+        '#document-fragment',
+
+        'SCRIPT', 'STYLE', 'LINK', 'NOSCRIPT',
+        'META', 'BASE', 'TITLE',
+        'TEMPLATE', 'SLOT',
+        'IFRAME', 'OBJECT', 'EMBED',
+        'SOURCE', 'TRACK', 'PORTAL',
+        'CANVAS', 'SVG', 'MATH', 'svg', 'math',
+        'semantics', 'annotation', 'annotation-xml',
+
+        'script', 'style', 'link', 'desc', 'title',
+        'metadata', 'defs', 'symbol', 'clipPath',
+        'mask', 'pattern', 'foreignObject', 'g',
+        'path', 'rect', 'circle', 'line', 'polygon',
+        'use', 'text', 'polyline', 'ellipse', 'image',
+        'tspan', 'linearGradient', 'radialGradient',
+        'stop', 'marker', 'filter',
+    ]);
+
+
+    if (!targetNode || typeof targetNode !== 'object' || !('nodeType' in targetNode)) {
         return;
     }
 
-    switch (rootNode.nodeType) {
-        case Node.COMMENT_NODE:
-        case Node.TEXT_NODE:
-            if (added) {
-                IncludedNodes.add(rootNode);
-                Updater.childList[rootNode.nodeName][action](rootNode, target);
-            }
-            else {
-                Updater.childList[rootNode.nodeName][action](rootNode, target);
-                IncludedNodes.delete(rootNode);
-            }
-        break;
+    new MutationObserver(Updater).observe(targetNode, {
+        attributes: true,
+        attributeOldValue: true,
+        childList: true,
+        subtree: true,
+        characterData: true,
+        characterDataOldValue: true
+    });
 
-        case Node.ELEMENT_NODE:
-            if (added) {
-                IncludedNodes.add(rootNode);
-                Updater.childList['#element'][action](rootNode, target);
-            }
-
-            let child = rootNode.firstChild;
-            while (child) {
-                const current = child.nextSibling;
-                Updater.processTree(rootNode, child, action);
-                child = current;
-            }
-
-            if (!added) {
-                Updater.childList['#element'][action](rootNode, target);
-                IncludedNodes.delete(rootNode);
-            }
-    }
-};
-
-Updater.attributes = {
-    added: (elementNode, attributeName, newValue, oldValue) =&gt; {
-
-    },
-    removed: (elementNode, attributeName, newValue, oldValue) =&gt; {
-
-    },
-    modified: (elementNode, attributeName, newValue, oldValue) =&gt; {
-
-    }
-};
-
-Updater.characterData = {
-    '#comment': {
-        modified: (commentNode, newValue, oldValue) =&gt; {
-
-        },
-    },
-
-    '#text': {
-        modified: (textNode, newValue, oldValue) =&gt; {
-
+    if (targetNode.nodeType === Node.DOCUMENT_NODE) {
+        IncludedNodes.add(targetNode);
+        if (targetNode.documentElement) {
+        UpdaterProcessTree(targetNode, targetNode.documentElement, 'added');
         }
+        return;
     }
-};
 
-Updater.childList = {
-    '#element':{
-        added: (elementNode, parentNode) =&gt; {
-
-        },
-        removed: (elementNode, parentNode) =&gt; {
-
-        }
-    },
-
-    '#comment': {
-        added: (commentNode, parentNode) =&gt; {
-
-        },
-        removed: (commentNode, parentNode) =&gt; {
-
-        }
-    },
-
-    '#text': {
-        added: (textNode, parentNode) =&gt; {
-
-        },
-        removed: (textNode, parentNode) =&gt; {
-
-        }
-    }
-};
-
-const IncludedNodes = new WeakSet();
-const ExcludedNodes = new Set([
-    '#document-fragment',
-
-    'SCRIPT', 'STYLE', 'LINK', 'NOSCRIPT',
-    'META', 'BASE', 'TITLE',
-    'TEMPLATE', 'SLOT',
-    'IFRAME', 'OBJECT', 'EMBED',
-    'SOURCE', 'TRACK', 'PORTAL',
-    'CANVAS', 'SVG', 'MATH', 'svg', 'math',
-    'semantics', 'annotation', 'annotation-xml',
-
-    'script', 'style', 'link', 'desc', 'title',
-    'metadata', 'defs', 'symbol', 'clipPath',
-    'mask', 'pattern', 'foreignObject', 'g',
-    'path', 'rect', 'circle', 'line', 'polygon',
-    'use', 'text', 'polyline', 'ellipse', 'image',
-    'tspan', 'linearGradient', 'radialGradient',
-    'stop', 'marker', 'filter',
-]);
-
-new MutationObserver(Updater).observe(document, {
-    attributes: true,
-    attributeOldValue: true,
-    childList: true,
-    subtree: true,
-    characterData: true,
-    characterDataOldValue: true
-});</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
+    UpdaterProcessTree(targetNode.parentNode, targetNode, 'added');
+})(document);</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
                                         </div>
                                         <span>Usage examples:</span>
                                         <strong>Work In Progress...</strong>
