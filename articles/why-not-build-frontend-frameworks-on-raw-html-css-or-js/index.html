@@ -329,8 +329,7 @@ delete state.name;
                                         <span>Minimal implementation:</span>
                                         <strong>Work In Progress...</strong>
                                         <div class="rounded-box">
-<pre><code class="language-javascript">
-(function UpdaterStart(targetNode){
+<pre><code class="language-javascript">(function UpdaterStart(targetNode){
     function Updater(mutations) {
         for (const mutation of mutations) {
             let target = mutation.target;
@@ -385,7 +384,7 @@ delete state.name;
     }
 
     function UpdaterProcessNodes (parentNode, nodes, action) {
-        for (let i = 0; i < nodes.length; i++) {
+        for (let i = 0; i &lt; nodes.length; i++) {
             UpdaterProcessTree(parentNode, nodes[i], action);
         }
     };
@@ -436,26 +435,26 @@ delete state.name;
     };
 
     const UpdaterAttributes = {
-        added: (elementNode, attributeName, newValue, oldValue) =&gt; {
+        added: (elementNode, attributeName, newValue, oldValue) => {
 
         },
-        removed: (elementNode, attributeName, newValue, oldValue) =&gt; {
+        removed: (elementNode, attributeName, newValue, oldValue) => {
 
         },
-        modified: (elementNode, attributeName, newValue, oldValue) =&gt; {
+        modified: (elementNode, attributeName, newValue, oldValue) => {
 
         }
     };
 
     const UpdaterCharacterData = {
         '#comment': {
-            modified: (commentNode, newValue, oldValue) =&gt; {
+            modified: (commentNode, newValue, oldValue) => {
 
             },
         },
 
         '#text': {
-            modified: (textNode, newValue, oldValue) =&gt; {
+            modified: (textNode, newValue, oldValue) => {
 
             }
         }
@@ -463,28 +462,28 @@ delete state.name;
 
     const UpdaterChildList = {
         '#element':{
-            added: (elementNode, parentNode) =&gt; {
+            added: (elementNode, parentNode) => {
 
             },
-            removed: (elementNode, parentNode) =&gt; {
+            removed: (elementNode, parentNode) => {
 
             }
         },
 
         '#comment': {
-            added: (commentNode, parentNode) =&gt; {
+            added: (commentNode, parentNode) => {
 
             },
-            removed: (commentNode, parentNode) =&gt; {
+            removed: (commentNode, parentNode) => {
 
             }
         },
 
         '#text': {
-            added: (textNode, parentNode) =&gt; {
+            added: (textNode, parentNode) => {
 
             },
-            removed: (textNode, parentNode) =&gt; {
+            removed: (textNode, parentNode) => {
 
             }
         }
