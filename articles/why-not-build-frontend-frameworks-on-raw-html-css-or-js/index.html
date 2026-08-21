@@ -169,7 +169,7 @@
                                         </div>
                                         <span>When precise component synchronization is required (such as managing execution order or inter-component dependencies), patterns like "Shared Resource Resolution System with Barrier/Completion Conditions" can be implemented using ES6+:</span>
                                         <div class="rounded-box"><code>class</code>, <code>Promise</code>, <code>Promise.resolve</code>, <code>Promise.all</code>, <code>Array.prototype.push</code>, <code>Array.prototype.map</code>, <code>Array.prototype.forEach</code>, <code>queueMicrotask</code>, <code>...</code></div>
-                                        <span>Minimal implementation:</span>
+                                        <span>Minimal implementation (<strong>Component</strong>):</span>
                                         <div class="rounded-box">
 <pre><code class="language-javascript">const Queue = { state: false, load: [], fail: [] };
 
@@ -242,7 +242,7 @@ new Component('CompC', () =&gt; {
                                     <li><strong>Bypass:</strong><br>
                                         <span><code>Proxy</code> provides everything needed to establish a complete, predictable state lifecycle while avoiding unnecessary object recreation during mutations. Deeply observable state trees, lifecycle interceptors (<code>onGet</code>, <code>onSet</code>, <code>onDelete</code>), and reference caching can be implemented natively using ES6+:</span>
                                         <div class="rounded-box"><code>Proxy</code>, <code>Object.create</code>, <code>Reflect.get</code>, <code>Reflect.set</code>, <code>Reflect.deleteProperty</code>, <code>WeakMap</code>, <code>WeakMap.prototype.has</code>, <code>WeakMap.prototype.get</code>, <code>WeakMap.prototype.set</code>, <code>Array.prototype.concat</code>, <code>...</code></div>
-                                        <span>Minimal implementation:</span>
+                                        <span>Minimal implementation (<strong>State</strong>):</span>
                                         <div class="rounded-box">
 <pre><code class="language-javascript">function State(options = {}, path = [], cache = new WeakMap()) {
     // In-scope secure state with flexibility to use external objects (risk of external mutation)
@@ -326,7 +326,7 @@ delete state.name;
                                     <li><strong>Bypass:</strong>
                                         <span><code>MutationObserver</code> can be used to scan the initial HTML, parse, and map nodes, as it does not rely on <code>DOMContentLoaded</code> and makes it possible to capture the creation phase of all nodes across the <code>document</code>. And with the necessary adjustments and optimizations, it can precisely control everything happening in the DOM asynchronously, yet synchronously for batched updates with <code>queueMicrotask</code> or <code>requestAnimationFrame</code> depending on the type of update. This can be implemented natively (<strong>for HTML only</strong>) using ES6+:</span>
                                         <div class="rounded-box"><code>MutationObserver</code>, <code>Set</code>, <code>Node</code>, <code>Node.prototype</code>, <code>WeakMap</code>, <code>Object.create</code>, <code>Reflect</code>, <code>...</code></div>
-                                        <span>Minimal implementation:</span>
+                                        <span>Minimal implementation (<strong>Updater</strong>):</span>
                                         <div class="rounded-box">
 <pre><code class="language-javascript">const UpdaterExcludedNodes = new Set([
     '#document-fragment',
@@ -547,64 +547,183 @@ function UpdaterStart(targetNode, handlers) {
     }
 }</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
                                         </div>
-                                        <span>Usage examples:</span>
+                                        <span>Usage examples:</span><br><br>
+                                        <strong>A simple DOM nodes mapping and binding with reactivity state (<a class="no-default-arrow" target="_blank" rel="noopener noreferrer" href="./test.html">view demonstration</a>).</strong>
                                         <div class="rounded-box">
-<pre><code class="language-javascript">UpdaterStart(document, {
+                                            <strong class="auto-x-padding">JavaScript</strong>
+<pre><code class="language-javascript">const XVars_prefix = '${';
+const XVars_postfix = '}';
+const XVarsNamesRE = /[^a-z\_0-9]/i;
+const XVarsNodes = new WeakMap();
+const XVarsSuscriptors = new Map();
+const XElementDataStr = 'data-x';
+const XElements = new WeakSet();
+
+UpdaterStart(document, {
     childList: {
         [Node.ELEMENT_NODE]: {
             added: (elementNode, parentNode) =&gt; {
-                // Work In Progress (example) ...
+                const hasX = elementNode.hasAttribute(XElementDataStr);
+                if (hasX) {
+                console.log('X ELEMENT ADDED:', elementNode);
+                XElements.add(elementNode);
+                }
             },
             removed: (elementNode, parentNode) =&gt; {
-                // Work In Progress (example) ...
+                if (XElements.has(elementNode)) {
+                XElements.delete(elementNode);
+                console.log('X ELEMENT REMOVED:', elementNode);
+                }
             }
         },
 
         [Node.COMMENT_NODE]: {
             added: (commentNode, parentNode, newValue) =&gt; {
-                console.log('COMMENT ADD:', commentNode, parentNode, newValue);
+                // console.log('COMMENT ADD:', commentNode, parentNode, newValue);
             },
             removed: (commentNode, parentNode, oldValue) =&gt; {
-                console.log('COMMENT DEL:', commentNode, parentNode, oldValue);
+                // console.log('COMMENT DEL:', commentNode, parentNode, oldValue);
             }
         },
 
         [Node.TEXT_NODE]: {
             added: (textNode, parentNode, newValue) =&gt; {
-                console.log('TEXT ADD:', textNode, parentNode, newValue);
+                if (newValue.trim() === '') { return; }
+
+                const XParent = parentNode.closest('[' + XElementDataStr + ']');
+                if (XParent &amp;&amp; XElements.has(XParent) &amp;&amp; newValue.includes(XVars_prefix)) {
+                const varsList = [];
+                const varsTemplate = [];
+                const vars = newValue
+                    .split(XVars_prefix)
+                    .reduce((array, str) =&gt; {
+                    if (str.includes(XVars_postfix)){
+                        let varPos = str.indexOf(XVars_postfix) + 1;
+                        let varName = str.slice(0, varPos - 1);
+
+                        if (!XVarsNamesRE.test(varName)) {
+                        varsList.push(varName);
+                        varsTemplate.push(() =&gt; { return XState[varName]; });
+                        varsTemplate.push(str.slice(varPos));
+                        return array.concat(str);
+                        }
+                    }
+
+                    varsTemplate.push(str);
+                    return array.concat(str);
+                    }, []);
+
+                if (varsList.length) {
+                    for (let varName of varsList) {
+                    if (!XVarsSuscriptors.has(varName)) {
+                        XVarsSuscriptors.set(varName, new Set());
+                    }
+
+                    const xVarSuscriptor = XVarsSuscriptors.get(varName);
+                    if (!xVarSuscriptor.has(textNode)){
+                        xVarSuscriptor.add(textNode);
+                    }
+
+                    if (!XVarsNodes.has(textNode)) {
+                        XVarsNodes.set(textNode, varsTemplate);
+                    }
+                    }
+
+                    console.log('X TEXT ADD:', varsList, varsTemplate);
+                    for (let varName of varsList) {
+                    XState[varName] = XState[varName] || '';
+                    }
+                }
+                }
             },
             removed: (textNode, parentNode, oldValue) =&gt; {
-                console.log('TEXT DEL:', textNode, parentNode, oldValue);
-            }
-        }
-    },
-
-    attributes: {
-        added: (elementNode, attributeName, newValue, oldValue) =&gt; {
-            console.log('ATTR ADD:', elementNode, attributeName, newValue, oldValue);
-        },
-        removed: (elementNode, attributeName, newValue, oldValue) =&gt; {
-            console.log('ATTR DEL:', elementNode, attributeName, newValue, oldValue);
-        },
-        modified: (elementNode, attributeName, newValue, oldValue) =&gt; {
-            console.log('ATTR MUT:', elementNode, attributeName, newValue, oldValue);
-        }
-    },
-
-    characterData: {
-        [Node.COMMENT_NODE]: {
-            modified: (commentNode, newValue, oldValue) =&gt; {
-                console.log('COMMENT MUT:', commentNode, newValue, oldValue);
-            },
-        },
-
-        [Node.TEXT_NODE]: {
-            modified: (textNode, newValue, oldValue) =&gt; {
-                console.log('TEXT MUT:', textNode, newValue, oldValue);
+                // console.log('TEXT DEL:', textNode, parentNode, oldValue);
+                for (const [varName, nodeSet] of XVarsSuscriptors.entries()) {
+                    nodeSet.delete(textNode);
+                    if (nodeSet.size === 0) {
+                        XVarsSuscriptors.delete(varName);
+                    }
+                }
             }
         }
     }
-});</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
+});
+
+let XStateBatchState = false;
+let XStateBatch = new Set();
+const XState = State({
+    onSet: (mutation) =&gt; {
+    const xVarName = mutation.path[0];
+
+    if (XVarsSuscriptors.has(xVarName)) {
+        const subs = XVarsSuscriptors.get(xVarName);
+        if (subs) {
+            for (const node of subs) {
+                XStateBatch.add(node);
+            }
+        }
+    }
+
+    XStateBatchExecution();
+    },
+
+    onDelete: (mutation) =&gt; {
+
+    }
+});
+
+function XStateBatchExecution() {
+    if (XStateBatchState) {
+        return;
+    }
+
+    XStateBatchState = true;
+
+    requestAnimationFrame(() =&gt; {
+        XStateBatchState = false;
+
+        for (const suscriptor of XStateBatch.values()) {
+            if (XVarsNodes.has(suscriptor)) {
+                const varValue = XVarsNodes.get(suscriptor).map((varPart) =&gt; (typeof varPart === 'function' ? varPart() : varPart)).join('');
+
+                switch (suscriptor.nodeType) {
+                case Node.TEXT_NODE:
+                    suscriptor.data = varValue;
+                break;
+                }
+            }
+        }
+
+        XStateBatch.clear();
+    });
+}</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
+                                        </div>
+                                        <div class="rounded-box">
+                                            <strong class="auto-x-padding">HTML</strong>
+<pre><code class="language-html">&lt;head&gt;
+  &lt;!-- [Previous STATE Minimal Implementation JavaScript Code File] --&gt;
+  &lt;script src="./test/State.js"&gt;&lt;/script&gt;
+
+  &lt;!-- [Previous UPDATER Minimal Implementation JavaScript Code File] --&gt;
+  &lt;script src="./test/Updater.js"&gt;&lt;/script&gt;
+  &lt;!-- [Previous UPDATER Usage Example JavaScript Code] --&gt;
+  &lt;script src="./test/Updater.usage.js"&gt;&lt;/script&gt;
+  &lt;script&gt;
+    // TESTING REACTIVE VALUES
+    setInterval(() =&gt; {
+      XState['VALUE_1'] = Math.round(Math.random() * Date.now());
+      XState['VALUE_2'] = Math.round(Math.random() * Date.now());
+      XState['VALUE_3'] = Math.round(Math.random() * Date.now());
+    }, 567);
+  &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div data-x&gt;
+    &lt;p&gt;Reactive value: ${VALUE_1}, ${VALUE_2}&lt;/p&gt;
+    &lt;p&gt;Another reactive value: ${VALUE_3}&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
                                         </div>
                                     </li>
                                 </ul>

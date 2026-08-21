@@ -5,87 +5,52 @@
 
 	<title>Test | OKZGN</title>
 
-	<script src="./test/Updater.js"></script>
 	<script src="./test/State.js"></script>
-	<script src="./test/Component.js"></script>
-	<style>
-:root {
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
-
-  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
-    "Liberation Mono", monospace;
-}
-*, *::before, *::after {
-    box-sizing: border-box;
-}
-body {
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-    margin: 0;
-    padding: 1rem;
-    font: 1rem normal var(--font-sans);
-}
-
-[data-x] {
-    border: 0.125rem solid gray;
-    border-radius: 1rem;
-    padding: 0.5rem 1rem;
-}
-	</style>
-
-
+	<script src="./test/Updater.js"></script>
+	<script src="./test/Updater.usage.js"></script>
 	<script>
-(function() {
-  const X = new WeakMap();
-
-  UpdaterStart(document, {
-      childList: {
-          [Node.ELEMENT_NODE]: {
-              added: (elementNode, parentNode) => {
-                  const hasX = elementNode.hasAttribute('data-x');
-                  if (hasX) {
-                    console.log('X ELEMENT ADDED:', elementNode);
-                    X.set(elementNode, Object.create(null));
-                  }
-              },
-              removed: (elementNode, parentNode) => {
-                  if (X.has(elementNode)) {
-                    console.log('X ELEMENT REMOVED:', elementNode);
-                  }
-              }
-          },
-
-          [Node.COMMENT_NODE]: {
-              added: (commentNode, parentNode, newValue) => {
-                  // console.log('COMMENT ADD:', commentNode, parentNode, newValue);
-              },
-              removed: (commentNode, parentNode, oldValue) => {
-                  // console.log('COMMENT DEL:', commentNode, parentNode, oldValue);
-              }
-          },
-
-          [Node.TEXT_NODE]: {
-              added: (textNode, parentNode, newValue) => {
-                  // console.log('TEXT ADD:', textNode, parentNode, newValue);
-              },
-              removed: (textNode, parentNode, oldValue) => {
-                  // console.log('TEXT DEL:', textNode, parentNode, oldValue);
-              }
-          }
-      }
-  });
-})();
-	</script>
+	  // TESTING REACTIVE VALUES
+      setInterval(() => {
+        XState['VALUE_1'] = Math.round(Math.random() * Date.now());
+        XState['VALUE_2'] = Math.round(Math.random() * Date.now());
+        XState['VALUE_3'] = Math.round(Math.random() * Date.now());
+      }, 567);
+    </script>
 </head>
 
 <body>
-    <h1>Test suite:</h1>
+    <h1>Test:</h1>
     <div data-x>
-        <h2>Welcome text</h2>
-        <p>This is a test suite to verify the correct functionality of some code fragments.</p>
+        <p>Reactive value: ${VALUE_1}, ${VALUE_2}</p>
+        <p>Another reactive value: ${VALUE_3}</p>
     </div>
+
+    <style>
+    :root {
+        --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+
+        --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+        "Liberation Mono", monospace;
+    }
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+    body {
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        margin: 0;
+        padding: 1rem;
+        font: 1rem normal var(--font-sans);
+    }
+
+    [data-x] {
+        border: 0.125rem solid gray;
+        border-radius: 1rem;
+        padding: 0.5rem 1rem;
+    }
+	</style>
 </body>
 </html>
