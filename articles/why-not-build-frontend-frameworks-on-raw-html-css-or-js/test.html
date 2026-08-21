@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html spellcheck="false" lang="en">
+<head>
+	<meta charset="UTF-8">
+
+	<title>Test | OKZGN</title>
+	<script>
+const UpdaterExcludedNodes = new Set([
+    '#document-fragment',
+
+    'SCRIPT', 'STYLE', 'LINK', 'NOSCRIPT',
+    'META', 'BASE', 'TITLE',
+    'TEMPLATE', 'SLOT',
+    'IFRAME', 'OBJECT', 'EMBED',
+    'SOURCE', 'TRACK', 'PORTAL',
+    'CANVAS', 'SVG', 'MATH', 'svg', 'math',
+    'semantics', 'annotation', 'annotation-xml',
+
+    'script', 'style', 'link', 'desc', 'title',
+    'metadata', 'defs', 'symbol', 'clipPath',
+    'mask', 'pattern', 'foreignObject', 'g',
+    'path', 'rect', 'circle', 'line', 'polygon',
+    'use', 'text', 'polyline', 'ellipse', 'image',
+    'tspan', 'linearGradient', 'radialGradient',
+    'stop', 'marker', 'filter',
+]);
+
+function UpdaterStart(targetNode, handlers) {
+    function Updater(mutations) {
+        for (const mutation of mutations) {
+            let target = mutation.target;
+            switch (mutation.type) {
+                case 'attributes': {
+                    if (!IncludedNodes.has(target)) {
+                        break;
+                    }
+
+                    const attributeName = mutation.attributeName;
+                    const nodeAttributes = IncludedAttrs.get(target);
+                    const oldValue = nodeAttributes[attributeName];
+                    const newValue = target.getAttribute(attributeName);
+
+                    if (oldValue === newValue) {
+                        break;
+                    }
+
+                    if (oldValue === undefined) {
+                        nodeAttributes[attributeName] = newValue;
+                        handlers.attributes.added(target, attributeName, newValue, oldValue);
+                    }
+                    else if (newValue === null) {
+                        Reflect.deleteProperty(nodeAttributes, attributeName);
+                        handlers.attributes.removed(target, attributeName, newValue, oldValue);
+                    }
+                    else {
+                        nodeAttributes[attributeName] = newValue;
+                        handlers.attributes.modified(target, attributeName, newValue, oldValue);
+                    }
+                    break;
+                }
+
+                case 'characterData': {
+                    if (!IncludedNodes.has(target)) {
+                        break;
+                    }
+
+                    let oldValue = IncludedCommentsAndTexts.get(target);
+
+                    if (oldValue === target.data || !handlers.characterData[target.nodeType]) {
+                        break;
+                    }
+
+                    IncludedCommentsAndTexts.set(target, target.data);
+                    handlers.characterData[target.nodeType].modified(target, target.data, oldValue);
+                    break;
+                }
+
+                case 'childList': {
+                    if (UpdaterExcludedNodes.has(target.nodeName) || !IncludedNodes.has(target)) {
+                        break;
+                    }
+
+                    if (mutation.removedNodes.length) {
+                        ProcessNodes(target, mutation.removedNodes, 'removed');
+                    }
+
+                    if (mutation.addedNodes.length) {
+                        ProcessNodes(target, mutation.addedNodes, 'added');
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    function ProcessNodes(parentNode, nodes, action) {
+        for (let i = 0; i < nodes.length; i++) {
+            ProcessTree(parentNode, nodes[i], action);
+        }
+    }
+
+    function ProcessTree(parentNode, rootNode, action) {
+        const added = (action === 'added');
+        if (UpdaterExcludedNodes.has(rootNode.nodeName) ||
+            (added && IncludedNodes.get(rootNode) === parentNode) ||
+            (!added && !IncludedNodes.has(rootNode))) {
+            return;
+        }
+
+        const type = rootNode.nodeType;
+        switch (type) {
+            case Node.COMMENT_NODE:
+            case Node.TEXT_NODE:
+                if (added) {
+                    IncludedNodes.set(rootNode, parentNode);
+                    IncludedCommentsAndTexts.set(rootNode, rootNode.data);
+                    handlers.childList[type][action](rootNode, parentNode, rootNode.data);
+                }
+                else {
+                    handlers.childList[type][action](rootNode, parentNode, IncludedCommentsAndTexts.get(rootNode));
+                    IncludedCommentsAndTexts.delete(rootNode);
+                    IncludedNodes.delete(rootNode);
+                }
+            break;
+
+            case Node.ELEMENT_NODE:
+                const hasAttrs = handlers.attributes && rootNode.hasAttributes();
+
+                if (added) {
+                    IncludedNodes.set(rootNode, parentNode);
+                    handlers.childList[type][action](rootNode, parentNode);
+
+                    let attrs = Object.create(null);
+                    IncludedAttrs.set(rootNode, attrs);
+
+                    if (hasAttrs) {
+                        for (const attr of rootNode.attributes) {
+                            attrs[attr.name] = attr.value;
+                            handlers.attributes.added(rootNode, attr.name, attr.value, undefined);
+                        }
+                    }
+                }
+
+                try {
+                    let child = rootNode.firstChild;
+                    while (child) {
+                        const current = child.nextSibling;
+                        ProcessTree(rootNode, child, action);
+                        child = current;
+                    }
+                }
+                catch (e) {
+                    if (e instanceof RangeError) {
+                        throw new Error('Updater > ProcessTree: ' + e.message);
+                    }
+                    throw e;
+                }
+
+                if (!added) {
+                    if (hasAttrs) {
+                        for (const attr of rootNode.attributes) {
+                            handlers.attributes.removed(rootNode, attr.name, null, attr.value);
+                        }
+                    }
+
+                    IncludedAttrs.delete(rootNode);
+
+                    handlers.childList[type][action](rootNode, parentNode);
+                    IncludedNodes.delete(rootNode);
+                }
+        }
+    }
+
+    const IncludedCommentsAndTexts = new WeakMap();
+    const IncludedAttrs = new WeakMap();
+    const IncludedNodes = new WeakMap();
+
+    try {
+        const ObserverConfig = Object.create(null);
+        ObserverConfig.subtree = true;
+
+        try {
+            if (ObserverConfig.attributes = !!handlers.attributes) {
+                if(!(handlers.attributes.added && handlers.attributes.removed && handlers.attributes.modified)) {
+                    throw new Error('attributes: added, removed, modified required functions.');
+                }
+            }
+
+            if (ObserverConfig.characterData = !!handlers.characterData) {
+                if (!(handlers.characterData[Node.COMMENT_NODE].modified && handlers.characterData[Node.TEXT_NODE].modified)) {
+                    throw new Error('characterData: [Node.COMMENT_NODE].modified && [Node.TEXT_NODE].modified required functions.');
+                }
+            }
+
+            if (ObserverConfig.childList = !!handlers.childList) {
+                if (!(handlers.childList[Node.COMMENT_NODE].added && handlers.childList[Node.COMMENT_NODE].removed &&
+                    handlers.childList[Node.TEXT_NODE].added && handlers.childList[Node.TEXT_NODE].removed &&
+                    handlers.childList[Node.ELEMENT_NODE].added && handlers.childList[Node.ELEMENT_NODE].removed)
+                ) {
+                    throw new Error('childList: [Node.ELEMENT_NODE], [Node.TEXT_NODE], [Node.COMMENT_NODE] each with added && removed required functions.');
+                }
+            }
+        }
+        catch (e) {
+            throw new Error('ObserverConfig: ' + e.message);
+        }
+
+        const Observer = new MutationObserver(Updater);
+        Observer.observe(targetNode, ObserverConfig);
+
+        if (targetNode.nodeType === Node.DOCUMENT_NODE) {
+            IncludedNodes.set(targetNode, null);
+            if (targetNode.documentElement) {
+                ProcessTree(targetNode, targetNode.documentElement, 'added');
+            }
+            return Observer;
+        }
+
+        ProcessTree(targetNode.parentNode, targetNode, 'added');
+        return Observer;
+    }
+    catch (e) {
+        throw new Error('UpdaterStart > Observer > Initialization: ' + e.message);
+    }
+}
+
+UpdaterStart(document, {
+    childList: {
+        [Node.ELEMENT_NODE]: {
+            added: (elementNode, parentNode) => {
+                console.log('ELEMENT ADD:', elementNode, parentNode);
+            },
+            removed: (elementNode, parentNode) => {
+                console.log('ELEMENT DEL:', elementNode, parentNode);
+            }
+        },
+
+        [Node.COMMENT_NODE]: {
+            added: (commentNode, parentNode, newValue) => {
+                console.log('COMMENT ADD:', commentNode, parentNode, newValue);
+            },
+            removed: (commentNode, parentNode, oldValue) => {
+                console.log('COMMENT DEL:', commentNode, parentNode, oldValue);
+            }
+        },
+
+        [Node.TEXT_NODE]: {
+            added: (textNode, parentNode, newValue) => {
+                console.log('TEXT ADD:', textNode, parentNode, newValue);
+            },
+            removed: (textNode, parentNode, oldValue) => {
+                console.log('TEXT DEL:', textNode, parentNode, oldValue);
+            }
+        }
+    }
+});
+	</script>
+</head>
+
+<body>
+    <h1>Test suite:</h1>
+</body>
+</html>

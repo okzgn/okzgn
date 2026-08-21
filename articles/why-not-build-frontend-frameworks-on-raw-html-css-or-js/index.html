@@ -447,6 +447,8 @@ function UpdaterStart(targetNode, handlers) {
             break;
 
             case Node.ELEMENT_NODE:
+                const hasAttrs = handlers.attributes && rootNode.hasAttributes();
+
                 if (added) {
                     IncludedNodes.set(rootNode, parentNode);
                     handlers.childList[type][action](rootNode, parentNode);
@@ -454,7 +456,7 @@ function UpdaterStart(targetNode, handlers) {
                     let attrs = Object.create(null);
                     IncludedAttrs.set(rootNode, attrs);
 
-                    if (rootNode.hasAttributes()) {
+                    if (hasAttrs) {
                         for (const attr of rootNode.attributes) {
                             attrs[attr.name] = attr.value;
                             handlers.attributes.added(rootNode, attr.name, attr.value, undefined);
@@ -478,7 +480,7 @@ function UpdaterStart(targetNode, handlers) {
                 }
 
                 if (!added) {
-                    if (rootNode.hasAttributes()) {
+                    if (hasAttrs) {
                         for (const attr of rootNode.attributes) {
                             handlers.attributes.removed(rootNode, attr.name, null, attr.value);
                         }
