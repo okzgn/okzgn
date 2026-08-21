@@ -325,11 +325,11 @@ delete state.name;
                                     <li><strong>Specific context:</strong> This pattern is typically used to bind DOM nodes to the application's internal state variables, managing their lifecycle through mounting, unmounting, and state changes. <strong>Flawed implementations can quickly cause UI jank or severe memory leaks</strong>, particularly during high-frequency node mount and unmount cycles, requiring rigorous optimization. <strong>Granular updates demand precise reference tracking and automatic cleanup as elements leave the DOM tree</strong>. Beyond basic state binding, it is also frequently used for integrating third-party imperative libraries, managing browser APIs (such as Observers), handling focus trapping and accessibility workflows, implementing complex interactions like click-outside detection and drag-and-drop, and executing imperative animations to bypass rendering overhead.</li>
                                     <li><strong>Bypass:</strong>
                                         <span><code>MutationObserver</code> can be used to scan the initial HTML, parse, and map nodes, as it does not rely on <code>DOMContentLoaded</code> and makes it possible to capture the creation phase of all nodes across the <code>document</code>. And with the necessary adjustments and optimizations, it can precisely control everything happening in the DOM asynchronously, yet synchronously for batched updates with <code>queueMicrotask</code> or <code>requestAnimationFrame</code> depending on the type of update. This can be implemented natively (<strong>for HTML only</strong>) using ES6+:</span>
-                                        <div class="rounded-box"><code>MutationObserver</code>, <code>Set</code>, <code>Node</code>, <code>Node.prototype.getAttribute</code>, <code>document.createTreeWalker</code>, <code>NodeFilter</code>, <code>...</code></div>
+                                        <div class="rounded-box"><code>MutationObserver</code>, <code>Set</code>, <code>Node</code>, <code>Node.prototype.getAttribute</code>, <code>WeakMap</code>, <code>Object.create</code>,<code>...</code></div>
                                         <span>Minimal implementation:</span>
                                         <strong>Work In Progress...</strong>
                                         <div class="rounded-box">
-<pre><code class="language-javascript">(function UpdaterStart(targetNode){
+<pre><code class="language-javascript">(function Start(targetNode) {
     function Updater(mutations) {
         for (const mutation of mutations) {
             let target = mutation.target;
@@ -339,29 +339,43 @@ delete state.name;
                         break;
                     }
 
-                    let
-                        oldValue = mutation.oldValue,
-                        attributeName = mutation.attributeName,
-                        newValue = target.getAttribute(attributeName);
+                    const attributeName = mutation.attributeName;
+                    const nodeAttributes = IncludedAttrs.get(target);
+                    const oldValue = nodeAttributes[attributeName];
+                    const newValue = target.getAttribute(attributeName);
 
                     if (oldValue === newValue) {
                         break;
                     }
 
-                    UpdaterAttributes[(oldValue === null ? 'added' : newValue === null ? 'removed' : 'modified')](target, attributeName, newValue, oldValue);
+                    if (oldValue === undefined) {
+                        nodeAttributes[attributeName] = newValue;
+                        UpdaterAttributes.added(target, attributeName, newValue, oldValue);
+                    }
+                    else if (newValue === null) {
+                        Reflect.deleteProperty(nodeAttributes, attributeName);
+                        UpdaterAttributes.removed(target, attributeName, newValue, oldValue);
+                    }
+                    else {
+                        nodeAttributes[attributeName] = newValue;
+                        UpdaterAttributes.modified(target, attributeName, newValue, oldValue);
+                    }
                     break;
                 }
 
                 case 'characterData': {
-                    if (!IncludedNodes.has(target)) { break; }
-
-                    let oldValue = mutation.oldValue;
-
-                    if (oldValue === target.data || !UpdaterCharacterData[target.nodeName]) {
+                    if (!IncludedNodes.has(target)) {
                         break;
                     }
 
-                    UpdaterCharacterData[target.nodeName].modified(target, target.data, oldValue);
+                    let oldValue = IncludedCommentsAndTexts.get(target);
+
+                    if (oldValue === target.data || !UpdaterCharacterData[target.nodeType]) {
+                        break;
+                    }
+
+                    IncludedCommentsAndTexts.set(target, target.data);
+                    UpdaterCharacterData[target.nodeType].modified(target, target.data, oldValue);
                     break;
                 }
 
@@ -383,29 +397,32 @@ delete state.name;
         }
     }
 
-    function UpdaterProcessNodes (parentNode, nodes, action) {
+    function UpdaterProcessNodes(parentNode, nodes, action) {
         for (let i = 0; i &lt; nodes.length; i++) {
             UpdaterProcessTree(parentNode, nodes[i], action);
         }
-    };
+    }
 
-    function UpdaterProcessTree (parentNode, rootNode, action) {
+    function UpdaterProcessTree(parentNode, rootNode, action) {
         const added = (action === 'added');
         if (ExcludedNodes.has(rootNode.nodeName) ||
-            (added && IncludedNodes.get(rootNode) === parentNode) ||
-                (!added && !IncludedNodes.has(rootNode))) {
+            (added &amp;&amp; IncludedNodes.get(rootNode) === parentNode) ||
+            (!added &amp;&amp; !IncludedNodes.has(rootNode))) {
             return;
         }
 
-        switch (rootNode.nodeType) {
+        const type = rootNode.nodeType;
+        switch (type) {
             case Node.COMMENT_NODE:
             case Node.TEXT_NODE:
                 if (added) {
                     IncludedNodes.set(rootNode, parentNode);
-                    UpdaterChildList[rootNode.nodeName][action](rootNode, parentNode);
+                    IncludedCommentsAndTexts.set(rootNode, rootNode.data);
+                    UpdaterChildList[type][action](rootNode, parentNode);
                 }
                 else {
-                    UpdaterChildList[rootNode.nodeName][action](rootNode, parentNode);
+                    UpdaterChildList[type][action](rootNode, parentNode);
+                    IncludedCommentsAndTexts.delete(rootNode);
                     IncludedNodes.delete(rootNode);
                 }
             break;
@@ -413,11 +430,15 @@ delete state.name;
             case Node.ELEMENT_NODE:
                 if (added) {
                     IncludedNodes.set(rootNode, parentNode);
-                    UpdaterChildList['#element'][action](rootNode, parentNode);
+                    UpdaterChildList[type][action](rootNode, parentNode);
+
+                    let attrs = Object.create(null);
+                    IncludedAttrs.set(rootNode, attrs);
 
                     if (rootNode.hasAttributes()) {
                         for (const attr of rootNode.attributes) {
-                            UpdaterAttributes.added(rootNode, attr.name, attr.value, null);
+                            attrs[attr.name] = attr.value;
+                            UpdaterAttributes.added(rootNode, attr.name, attr.value, undefined);
                         }
                     }
                 }
@@ -436,11 +457,13 @@ delete state.name;
                         }
                     }
 
-                    UpdaterChildList['#element'][action](rootNode, parentNode);
+                    IncludedAttrs.delete(rootNode);
+
+                    UpdaterChildList[type][action](rootNode, parentNode);
                     IncludedNodes.delete(rootNode);
                 }
         }
-    };
+    }
 
     const UpdaterAttributes = {
         added: (elementNode, attributeName, newValue, oldValue) => {
@@ -455,13 +478,13 @@ delete state.name;
     };
 
     const UpdaterCharacterData = {
-        '#comment': {
+        [Node.COMMENT_NODE]: {
             modified: (commentNode, newValue, oldValue) => {
 
             },
         },
 
-        '#text': {
+        [Node.TEXT_NODE]: {
             modified: (textNode, newValue, oldValue) => {
 
             }
@@ -469,7 +492,7 @@ delete state.name;
     };
 
     const UpdaterChildList = {
-        '#element':{
+        [Node.ELEMENT_NODE]: {
             added: (elementNode, parentNode) => {
 
             },
@@ -478,7 +501,7 @@ delete state.name;
             }
         },
 
-        '#comment': {
+        [Node.COMMENT_NODE]: {
             added: (commentNode, parentNode) => {
 
             },
@@ -487,7 +510,7 @@ delete state.name;
             }
         },
 
-        '#text': {
+        [Node.TEXT_NODE]: {
             added: (textNode, parentNode) => {
 
             },
@@ -497,6 +520,8 @@ delete state.name;
         }
     };
 
+    const IncludedCommentsAndTexts = new WeakMap();
+    const IncludedAttrs = new WeakMap();
     const IncludedNodes = new WeakMap();
     const ExcludedNodes = new Set([
         '#document-fragment',
@@ -518,29 +543,27 @@ delete state.name;
         'stop', 'marker', 'filter',
     ]);
 
+    try {
+        new MutationObserver(Updater).observe(targetNode, {
+            attributes: true,
+            childList: true,
+            subtree: true,
+            characterData: true
+        });
 
-    if (!targetNode || typeof targetNode !== 'object' || !('nodeType' in targetNode)) {
-        return;
-    }
-
-    new MutationObserver(Updater).observe(targetNode, {
-        attributes: true,
-        attributeOldValue: true,
-        childList: true,
-        subtree: true,
-        characterData: true,
-        characterDataOldValue: true
-    });
-
-    if (targetNode.nodeType === Node.DOCUMENT_NODE) {
-        IncludedNodes.set(targetNode, null);
-        if (targetNode.documentElement) {
-        UpdaterProcessTree(targetNode, targetNode.documentElement, 'added');
+        if (targetNode.nodeType === Node.DOCUMENT_NODE) {
+            IncludedNodes.set(targetNode, null);
+            if (targetNode.documentElement) {
+                UpdaterProcessTree(targetNode, targetNode.documentElement, 'added');
+            }
+            return;
         }
-        return;
-    }
 
-    UpdaterProcessTree(targetNode.parentNode, targetNode, 'added');
+        UpdaterProcessTree(targetNode.parentNode, targetNode, 'added');
+    }
+    catch (e) {
+        throw new Error('Start &gt; Updater &gt; MutationObserver &gt; Initialization: ' + e.message);
+    }
 })(document);</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
                                         </div>
                                         <span>Usage examples:</span>
