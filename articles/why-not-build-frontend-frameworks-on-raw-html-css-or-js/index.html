@@ -168,66 +168,162 @@
                                             <pre><code class="language-html">&lt;script async type="module" src="./independent.load.2.js"&gt;&lt;/script&gt;</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
                                         </div>
                                         <span>When precise component synchronization is required (such as managing execution order or inter-component dependencies), patterns like "Shared Resource Resolution System with Barrier/Completion Conditions" can be implemented using ES6+:</span>
-                                        <div class="rounded-box"><code>class</code>, <code>Promise</code>, <code>Promise.resolve</code>, <code>Promise.all</code>, <code>Array.prototype.push</code>, <code>Array.prototype.map</code>, <code>Array.prototype.forEach</code>, <code>queueMicrotask</code>, <code>...</code></div>
+                                        <div class="rounded-box"><code>class</code>, <code>Promise</code>, <code>Promise.all</code>, <code>Array.prototype.push</code>, <code>Array.prototype.map</code>, <code>Array.prototype.reduce</code>, <code>queueMicrotask</code>, <code>...</code></div>
                                         <span>Minimal implementation (<strong>Component</strong>):</span>
                                         <div class="rounded-box">
-<pre><code class="language-javascript">const Queue = { state: false, load: [], fail: [] };
+<pre><code class="language-javascript">const Queue = {
+  state: false,
+  load: [],
+  fail: [],
+
+  unlockQueue: () =&gt; {
+    Queue.state = false;
+    if (Queue.load.length &gt; 0) {
+      Queue.process();
+    }
+  },
+
+  process: () =&gt; {
+    if (!Queue.state &amp;&amp; Queue.load.length) {
+      Queue.state = true;
+      queueMicrotask(() =&gt; {
+        const toLoad = [];
+        while (Queue.load.length &gt; 0) {
+          toLoad.push(Queue.load.shift());
+        }
+
+        Promise.all(toLoad.map(loadFn =&gt; loadFn()))
+        .then(() =&gt; {
+          const fails = Queue.fail.splice(0, Queue.fail.length);
+
+          return fails.reduce((promise, failFn) =&gt; {
+            return promise.then(() =&gt; failFn()).catch(Queue.unhandledFail);
+          }, Promise.resolve());
+        })
+        .then(Queue.unlockQueue, (errorResponse) =&gt; {
+          Queue.unlockQueue();
+          Queue.unhandledFail(errorResponse);
+        });
+      });
+    }
+  },
+
+  unhandledFail: (errorResponse) =&gt; {
+    console.error(errorResponse);
+  }
+};
 
 class Component {
     constructor(name, fn) {
         this.name = name;
 
         const fails = [];
-        this.fail = (fn) =&gt; fails.push(fn);
+        this.fail = (fn) =&gt; {
+          fails.push(fn);
 
-        this.load = (fn) =&gt; Queue.load.push(() =&gt; new Promise((resolve, reject) =&gt; {
-            Promise.resolve()
-            .then(() =&gt; fn())
-            .then(resolve)
-            .catch((e) =&gt; {
-                fails.forEach((fn) =&gt; Queue.fail.push(fn));
-                reject({ component: name, error: e });
-            });
-        }));
+          return this;
+        };
+
+        let current = Promise.resolve(name);
+        let error = false;
+        let lastError = null;
+
+        this.load = (fn) =&gt; {
+          let openGate;
+          const gate = new Promise((resolve) =&gt; {
+            openGate = resolve;
+          });
+
+          current = current
+          .then((prevResult) =&gt; gate.then(() =&gt; prevResult))
+          .then((result) =&gt; {
+            if (error) {
+              return;
+            }
+            return fn(result);
+          })
+          .catch((e) =&gt; {
+            if (!error) {
+              error = true;
+              lastError = e;
+
+              Queue.fail.push(() =&gt; {
+                return fails.reduce(
+                  (promise, failFn) =&gt; promise.then((prevResult) =&gt; {
+                    const errorResponse = failFn(prevResult);
+                    return (errorResponse === undefined ? prevResult : errorResponse);
+                  }),
+                  Promise.resolve(e)
+                );
+              });
+            }
+          });
+
+          Queue.load.push(() =&gt; {
+            openGate();
+            return current;
+          });
+
+          Queue.process();
+          return this;
+        }
 
         this.load(fn);
 
-        if (!Queue.state) {
-            Queue.state = true;
-            queueMicrotask(() =&gt; {
-                Promise.all(Queue.load.map(fn =&gt; fn()))
-                .then(() =&gt; {
-                    Queue.load = [];
-                    Queue.state = false;
-                })
-                .catch((CompErr) =&gt; {
-                    Queue.fail.forEach(fn =&gt; fn());
-                    Queue.fail = [];
-                    Queue.state = false;
-                });
-            });
-        }
+        Object.defineProperty(this, 'ok', {
+          get: () =&gt; current.then((result) =&gt; {
+            if (error) {
+              return Promise.reject(lastError);
+            }
+
+            return result;
+          }),
+          configurable: false
+        });
         return this;
     }
-}
-</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
+}</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
                                         </div>
                                         <span>Usage example:</span>
                                         <div class="rounded-box">
-<pre><code class="language-javascript">new Component('CompA', () =&gt; {
+<pre><code class="language-javascript">const CA = new Component('CompA', () =&gt; {
     console.log('1');
 })
 .load(() =&gt; {
     new Component('CompB', () =&gt; {
         console.log('2');
+        throw new Error('Something went wrong.');
+    })
+    .fail((e) =&gt; {
+        console.error('Error description:', e);
     });
 });
 
-new Component('CompC', () =&gt; {
-    console.log('3');
+// This example uses async/await (ES2017+) for convenience,
+// but it is not required.
+const CC = new Component('CompC', async () =&gt; {
+    const req = await fetch('./test/data.json');
+
+    if (!req.ok) {
+        throw new Error('Request failed: ' + req.status);
+    }
+
+    return await req.text();
 })
-.fail(() =&gt; {
-    console.warn('CompC failed.');
+.load((r) =&gt; {
+    console.info('JSON Request:', r.slice(0, 128), '...');
+})
+.fail((e) =&gt; {
+    console.warn('CompC failed:', e);
+});
+
+
+CA.ok.then((r) =&gt; {
+    console.info('Result:', r);
+});
+
+CC.ok.then((r) =&gt; {
+    console.info('Result:', r);
 });
 </code><button class="cta-button no-default-arrow copy">Copy</button></pre>
                                         </div>
