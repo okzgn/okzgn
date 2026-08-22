@@ -1,32 +1,47 @@
 const Queue = {
   state: false,
   load: [],
+  pending: [],
   fail: [],
 
   unlockQueue: () => {
     Queue.state = false;
-    if (Queue.load.length > 0) {
+    if (Queue.load.length > 0 || Queue.pending.length > 0) {
       Queue.process();
     }
   },
 
+  flushLoad: () => {
+    const gates = Queue.load.splice(0);
+    for (const loadFn of gates) {
+      Queue.pending.push(loadFn());
+    }
+  },
+
+  execute: () => {
+    const toProcess = Queue.pending.splice(0);
+
+    return Promise.all(toProcess).then(() => {
+      if (Queue.load.length > 0 || Queue.pending.length > 0) {
+        Queue.flushLoad();
+        return Queue.execute();
+      }
+
+      const fails = Queue.fail.splice(0);
+      return fails.reduce((promise, failFn) => {
+        return promise.then(() => failFn()).catch(Queue.unhandledFail);
+      }, Promise.resolve());
+    });
+  },
+
   process: () => {
-    if (!Queue.state && Queue.load.length) {
+    Queue.flushLoad();
+
+    if (!Queue.state && Queue.pending.length > 0) {
       Queue.state = true;
+
       queueMicrotask(() => {
-        const toLoad = [];
-        while (Queue.load.length > 0) {
-          toLoad.push(Queue.load.shift());
-        }
-
-        Promise.all(toLoad.map(loadFn => loadFn()))
-        .then(() => {
-          const fails = Queue.fail.splice(0, Queue.fail.length);
-
-          return fails.reduce((promise, failFn) => {
-            return promise.then(() => failFn()).catch(Queue.unhandledFail);
-          }, Promise.resolve());
-        })
+        Queue.execute()
         .then(Queue.unlockQueue, (errorResponse) => {
           Queue.unlockQueue();
           Queue.unhandledFail(errorResponse);
@@ -36,7 +51,7 @@ const Queue = {
   },
 
   unhandledFail: (errorResponse) => {
-    console.error(errorResponse);
+    console.error('Unhandled Fail:', errorResponse);
   }
 };
 
@@ -45,8 +60,8 @@ class Component {
         this.name = name;
 
         const fails = [];
-        this.fail = (fn) => {
-          fails.push(fn);
+        this.fail = (failFn) => {
+          fails.push(failFn);
 
           return this;
         };
@@ -55,19 +70,19 @@ class Component {
         let error = false;
         let lastError = null;
 
-        this.load = (fn) => {
+        this.load = (loadFn) => {
           let openGate;
           const gate = new Promise((resolve) => {
             openGate = resolve;
           });
 
-          current = current
+          const currentFirst = (current = current
           .then((prevResult) => gate.then(() => prevResult))
           .then((result) => {
             if (error) {
               return;
             }
-            return fn(result);
+            return loadFn(result);
           })
           .catch((e) => {
             if (!error) {
@@ -77,36 +92,37 @@ class Component {
               Queue.fail.push(() => {
                 return fails.reduce(
                   (promise, failFn) => promise.then((prevResult) => {
-                    const errorResponse = failFn(prevResult);
-                    return (errorResponse === undefined ? prevResult : errorResponse);
+                    return Promise.resolve(failFn(prevResult)).then((errorResult) => {
+                      return errorResult === undefined ? prevResult : errorResult;
+                    });
                   }),
                   Promise.resolve(e)
                 );
               });
             }
-          });
+          }));
 
           Queue.load.push(() => {
             openGate();
-            return current;
+            return currentFirst;
           });
 
           Queue.process();
           return this;
         }
 
-        this.load(fn);
+        if (typeof fn === 'function') {
+          this.load(fn);
+        }
 
         Object.defineProperty(this, 'ok', {
           get: () => current.then((result) => {
             if (error) {
               return Promise.reject(lastError);
             }
-
             return result;
           }),
           configurable: false
         });
-        return this;
     }
 }

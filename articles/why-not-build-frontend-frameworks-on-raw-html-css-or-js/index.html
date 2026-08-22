@@ -174,32 +174,47 @@
 <pre><code class="language-javascript">const Queue = {
   state: false,
   load: [],
+  pending: [],
   fail: [],
 
   unlockQueue: () =&gt; {
     Queue.state = false;
-    if (Queue.load.length &gt; 0) {
+    if (Queue.load.length &gt; 0 || Queue.pending.length &gt; 0) {
       Queue.process();
     }
   },
 
+  flushLoad: () =&gt; {
+    const gates = Queue.load.splice(0);
+    for (const loadFn of gates) {
+      Queue.pending.push(loadFn());
+    }
+  },
+
+  execute: () =&gt; {
+    const toProcess = Queue.pending.splice(0);
+
+    return Promise.all(toProcess).then(() =&gt; {
+      if (Queue.load.length &gt; 0 || Queue.pending.length &gt; 0) {
+        Queue.flushLoad();
+        return Queue.execute();
+      }
+
+      const fails = Queue.fail.splice(0);
+      return fails.reduce((promise, failFn) =&gt; {
+        return promise.then(() =&gt; failFn()).catch(Queue.unhandledFail);
+      }, Promise.resolve());
+    });
+  },
+
   process: () =&gt; {
-    if (!Queue.state &amp;&amp; Queue.load.length) {
+    Queue.flushLoad();
+
+    if (!Queue.state &amp;&amp; Queue.pending.length &gt; 0) {
       Queue.state = true;
+
       queueMicrotask(() =&gt; {
-        const toLoad = [];
-        while (Queue.load.length &gt; 0) {
-          toLoad.push(Queue.load.shift());
-        }
-
-        Promise.all(toLoad.map(loadFn =&gt; loadFn()))
-        .then(() =&gt; {
-          const fails = Queue.fail.splice(0, Queue.fail.length);
-
-          return fails.reduce((promise, failFn) =&gt; {
-            return promise.then(() =&gt; failFn()).catch(Queue.unhandledFail);
-          }, Promise.resolve());
-        })
+        Queue.execute()
         .then(Queue.unlockQueue, (errorResponse) =&gt; {
           Queue.unlockQueue();
           Queue.unhandledFail(errorResponse);
@@ -209,7 +224,7 @@
   },
 
   unhandledFail: (errorResponse) =&gt; {
-    console.error(errorResponse);
+    console.error('Unhandled Fail:', errorResponse);
   }
 };
 
@@ -218,8 +233,8 @@ class Component {
         this.name = name;
 
         const fails = [];
-        this.fail = (fn) =&gt; {
-          fails.push(fn);
+        this.fail = (failFn) =&gt; {
+          fails.push(failFn);
 
           return this;
         };
@@ -228,19 +243,19 @@ class Component {
         let error = false;
         let lastError = null;
 
-        this.load = (fn) =&gt; {
+        this.load = (loadFn) =&gt; {
           let openGate;
           const gate = new Promise((resolve) =&gt; {
             openGate = resolve;
           });
 
-          current = current
+          const currentFirst = (current = current
           .then((prevResult) =&gt; gate.then(() =&gt; prevResult))
           .then((result) =&gt; {
             if (error) {
               return;
             }
-            return fn(result);
+            return loadFn(result);
           })
           .catch((e) =&gt; {
             if (!error) {
@@ -250,82 +265,90 @@ class Component {
               Queue.fail.push(() =&gt; {
                 return fails.reduce(
                   (promise, failFn) =&gt; promise.then((prevResult) =&gt; {
-                    const errorResponse = failFn(prevResult);
-                    return (errorResponse === undefined ? prevResult : errorResponse);
+                    return Promise.resolve(failFn(prevResult)).then((errorResult) =&gt; {
+                      return errorResult === undefined ? prevResult : errorResult;
+                    });
                   }),
                   Promise.resolve(e)
                 );
               });
             }
-          });
+          }));
 
           Queue.load.push(() =&gt; {
             openGate();
-            return current;
+            return currentFirst;
           });
 
           Queue.process();
           return this;
         }
 
-        this.load(fn);
+        if (typeof fn === 'function') {
+          this.load(fn);
+        }
 
         Object.defineProperty(this, 'ok', {
           get: () =&gt; current.then((result) =&gt; {
             if (error) {
               return Promise.reject(lastError);
             }
-
             return result;
           }),
           configurable: false
         });
-        return this;
     }
 }</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
                                         </div>
-                                        <span>Usage example:</span>
+                                        <span>Usage example:</span><br><br>
+                                        <strong>Coordinated asynchronous component execution, dependency chaining, and error propagation (<a class="no-default-arrow" target="_blank" rel="noopener noreferrer" href="./test.component.html">view demonstration</a>).</strong>
                                         <div class="rounded-box">
-<pre><code class="language-javascript">const CA = new Component('CompA', () =&gt; {
+<pre><code class="language-javascript">const CompA = new Component('CompA', () =&gt; {
     console.log('1');
 })
 .load(() =&gt; {
-    new Component('CompB', () =&gt; {
+    const CompB = new Component('CompB', () =&gt; {
         console.log('2');
         throw new Error('Something went wrong.');
-    })
-    .fail((e) =&gt; {
-        console.error('Error description:', e);
     });
+
+    return CompB.ok;
 });
 
 // This example uses async/await (ES2017+) for convenience,
 // but it is not required.
-const CC = new Component('CompC', async () =&gt; {
+const CompC = new Component('CompC', async () =&gt; {
     const req = await fetch('./test/data.json');
 
     if (!req.ok) {
         throw new Error('Request failed: ' + req.status);
     }
 
-    return await req.text();
+    return await req.json();
 })
 .load((r) =&gt; {
-    console.info('JSON Request:', r.slice(0, 128), '...');
+    console.log(3);
+    console.info('JSON Request:', r, '...');
+    return r;
 })
 .fail((e) =&gt; {
     console.warn('CompC failed:', e);
 });
 
-
-CA.ok.then((r) =&gt; {
-    console.info('Result:', r);
+// Listen to component completion or errors via the .ok promise
+CompA.ok.then((r) =&gt; {
+    console.info('Result A:', r);
+})
+.catch((e) =&gt; {
+    console.error('Error A:', e);
 });
 
-CC.ok.then((r) =&gt; {
-    console.info('Result:', r);
-});
-</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
+CompC.ok.then((r) =&gt; {
+    console.info('Result C:', r);
+})
+.catch((e) =&gt; {
+    console.error('Error C:', e);
+});</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
                                         </div>
                                         <span>And the "Asynchronous Proxy-Based Synchronization" pattern used where components are declared in HTML index via <code>data-*</code> attributes, and automatically fetched on demand from self-hosted endpoints or CDNs, structured in dedicated directories (<code>name/style.css</code>, <code>name/component.html</code>, <code>name/functionality.js</code>), and automatically synchronized, orchestrated and injected by the prototype framework implemented in <a class="no-default-arrow" rel="noopener noreferrer" target="_blank" href="https://github.com/okzgn/componentes-prototype-2025-js"><strong>Components Prototype</strong></a> (PoC, ES6+). Or explore advanced patterns with another implementation in <a class="no-default-arrow" rel="noopener noreferrer" target="_blank" href="https://estructura.okzgn.com/extensions/components/"><strong>Components</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> (RC2, ES6+).</span>
                                         <br>
@@ -340,7 +363,48 @@ CC.ok.then((r) =&gt; {
                                         <div class="rounded-box"><code>Proxy</code>, <code>Object.create</code>, <code>Reflect.get</code>, <code>Reflect.set</code>, <code>Reflect.deleteProperty</code>, <code>WeakMap</code>, <code>WeakMap.prototype.has</code>, <code>WeakMap.prototype.get</code>, <code>WeakMap.prototype.set</code>, <code>Array.prototype.concat</code>, <code>...</code></div>
                                         <span>Minimal implementation (<strong>State</strong>):</span>
                                         <div class="rounded-box">
-<pre><code class="language-javascript">function State(options = {}, path = [], cache = new WeakMap()) {
+<pre><code class="language-javascript">const Handlers = (options, path, cache) =&gt; {
+  return {
+    get: (_data, property, receiver) =&gt; {
+      const value = Reflect.get(_data, property, receiver);
+
+      // Pass symbols through unmodified
+      if (typeof property === 'symbol') {
+          return value;
+      }
+
+      (!options.onGet || options.onGet({ type: 'get', value, path: path.concat(property) }));
+
+      if (value !== null &amp;&amp; typeof value === 'object') {
+          return State({ ...options, data: value }, path.concat(property), cache);
+      }
+      return value;
+    },
+
+    set: (_data, property, value, receiver) =&gt; {
+      const oldValue = _data[property];
+      const success = Reflect.set(_data, property, value, receiver);
+
+      if (success &amp;&amp; oldValue !== value) {
+          (!options.onSet || options.onSet({ type: 'set', oldValue, value, path: path.concat(property) }));
+      }
+      return success;
+    },
+
+    deleteProperty: (_data, property) =&gt; {
+      const exists = property in _data;
+      const oldValue = _data[property];
+      const success = Reflect.deleteProperty(_data, property);
+
+      if (exists &amp;&amp; success) {
+          (!options.onDelete || options.onDelete({ type: 'delete', oldValue, path: path.concat(property) }));
+      }
+      return success;
+    }
+  }
+};
+
+function State(options = {}, path = [], cache = new WeakMap()) {
     // In-scope secure state with flexibility to use external objects (risk of external mutation)
     const data = options.data || Object.create(null);
 
@@ -349,51 +413,13 @@ CC.ok.then((r) =&gt; {
         return cache.get(data);
     }
 
-    const handler = {
-        get(_data, property, receiver) {
-            const value = Reflect.get(_data, property, receiver);
-
-            // Pass symbols through unmodified
-            if (typeof property === 'symbol') {
-                return value;
-            }
-
-            (!options.onGet || options.onGet({ type: 'get', value, path: path.concat(property) }));
-
-            if (value !== null &amp;&amp; typeof value === 'object') {
-                return State({ ...options, data: value }, path.concat(property), cache);
-            }
-            return value;
-        },
-
-        set(_data, property, value, receiver) {
-            const oldValue = _data[property];
-            const success = Reflect.set(_data, property, value, receiver);
-
-            if (success &amp;&amp; oldValue !== value) {
-                (!options.onSet || options.onSet({ type: 'set', oldValue, value, path: path.concat(property) }));
-            }
-            return success;
-        },
-
-        deleteProperty(_data, property) {
-            const exists = property in _data;
-            const oldValue = _data[property];
-            const success = Reflect.deleteProperty(_data, property);
-
-            if (exists &amp;&amp; success) {
-                (!options.onDelete || options.onDelete({ type: 'delete', oldValue, path: path.concat(property) }));
-            }
-            return success;
-        }
-    };
-
-    const proxy = new Proxy(data, handler);
+    const proxy = new Proxy(data, Handlers(options, path, cache));
     cache.set(data, proxy);
     return proxy;
 }</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
                                         </div>
-                                        <span>Usage example:</span>
+                                        <span>Usage example:</span><br><br>
+                                        <strong>Observable deep state tree with granular mutation hooks and identity preservation.</strong>
                                         <div class="rounded-box">
 <pre><code class="language-javascript">const state = State({
     onSet: (mutation) =&gt; {
@@ -644,7 +670,7 @@ function UpdaterStart(targetNode, handlers) {
 }</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
                                         </div>
                                         <span>Usage example:</span><br><br>
-                                        <strong>A simple DOM node mapping and binding with reactive state (<a class="no-default-arrow" target="_blank" rel="noopener noreferrer" href="./test.html">view demonstration</a>).</strong>
+                                        <strong>Granular DOM node mapping, state binding, and requestAnimationFrame batching (<a class="no-default-arrow" target="_blank" rel="noopener noreferrer" href="./test.updater.html">view demonstration</a>).</strong>
                                         <div class="rounded-box">
                                             <strong class="auto-x-padding">JavaScript</strong>
 <pre><code class="language-javascript">const XVars_prefix = '${';
