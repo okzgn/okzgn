@@ -11,7 +11,7 @@ const Handlers = (options, path, cache) => {
       (!options.onGet || options.onGet({ type: 'get', value, path: path.concat(property) }));
 
       if (value !== null && typeof value === 'object') {
-          return State({ ...options, data: value }, path.concat(property), cache);
+          return State(Object.assign({}, options, { data: value }), path.concat(property), cache);
       }
       return value;
     },

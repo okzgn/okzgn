@@ -392,7 +392,7 @@ CompC.ok.then((r) =&gt; {
       (!options.onGet || options.onGet({ type: 'get', value, path: path.concat(property) }));
 
       if (value !== null &amp;&amp; typeof value === 'object') {
-          return State({ ...options, data: value }, path.concat(property), cache);
+          return State(Object.assign({}, options, { data: value }), path.concat(property), cache);
       }
       return value;
     },
