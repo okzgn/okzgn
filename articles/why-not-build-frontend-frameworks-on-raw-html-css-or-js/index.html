@@ -112,9 +112,9 @@
                     <h2 class="auto-font-size-2">This article is not:</h2>
                     <p>A call to switch your framework or dismiss other techniques, after all, today's custom syntaxes may be tomorrow's standards. It also doesn't ignore the massive challenges, serious business and enterprise needs, or the real value of today's tools or methods.</p>
                     <h2 class="auto-font-size-2">Perspective:</h2>
-                    <p>Having written code close to the metal (XDP, shared memory, C), delved into low-level systems (protocol flows, RAM interactions, Go), focused on optimizing core operations and identifying high-performance algorithms (BM25, HNSW, djb2), compared the performance of various runtimes (PHP, Lua, Node, Wasm, Rust); <strong>and analyzed some modern frontend fundamentals from the same viewpoint</strong>.</p>
+                    <p>Having written code close to the metal (XDP, shared memory, C), delved into low-level systems (protocol flows, RAM interactions, Go), focused on optimizing core operations and identifying high-performance algorithms (BM25, HNSW, djb2), compared the performance of various runtimes (PHP, Lua, Node, Wasm, Rust), <strong>I analyzed some modern frontend fundamentals from the same viewpoint</strong>.</p>
                     <h2 class="auto-font-size-2">Simplified solution:</h2>
-                    <p>What was mentioned in the first line (regarding what is possible) could be solved if most modern browsers or JavaScript engines updated to a recent ECMAScript specification with native TypeScript and backward compatibility support.<br> But the proprietary or custom syntaxes that have been invented are not standard JS or TS; they require transpilers, optimizers, compilers, bundlers, and so on (understanding their inner workings and mechanisms is indeed fascinating).</p>
+                    <p>What was mentioned in the first line (regarding what is possible) could be solved if most modern browsers or JavaScript engines updated to a recent ECMAScript specification with native Type Annotations and backward compatibility support.<br> But the proprietary or custom syntaxes that have been invented are not standard JS or TS; they require transpilers, optimizers, compilers, bundlers, and so on (understanding their inner workings and mechanisms is indeed fascinating).</p>
                     <h2 class="auto-font-size-2">Proposition:</h2>
                     <p><strong>There are several steps that can be bypassed between the scripting language, the framework, and development</strong> (covered up to here in this article, without requiring any updates to ES/TS specifications), and bundling, the interpreter, and the end user (which follow in an upcoming article, where additional tooling is optional).</p>
                     <h2 class="auto-font-size-2">Focus points:</h2>
@@ -123,6 +123,7 @@
                             <li><strong>Point 1:</strong> JavaScript/TypeScript as the scripting language that does the actual work and creates the upper framework.</li>
                             <li><strong>Point 2:</strong> The framework, which helps avoid repetitive boilerplate, making the work with the scripting language easier and more efficient.</li>
                             <li><strong>Point 3:</strong> Developing interrelated or independent components using the framework to further abstract logic, reduce repetitive code, and reuse processes.</li>
+                            <li><strong>Point 4:</strong> Preparation and bundling of frontend assets into optimized output for production.</li>
                         </ul>
                     </div>
                     <h2 class="auto-font-size-2">Steps to bypass:</h2>
@@ -145,7 +146,8 @@
                                         <em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/routing/"><strong>Routing</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> using ES6+.</em>
                                     </li>
                                     <li><h4>Asynchronous & Orchestration:</h4><br>
-                                        <div class="rounded-box"><code>Promise</code>, <code>XMLHttpRequest</code>, <code>fetch</code>, <code>Blob</code>, <code>URL.createObjectURL</code>, <code>URL.revokeObjectURL</code>, <code>queueMicrotask</code>, <code>...</code></div><em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/http/"><strong>HTTP</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> & <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/components/"><strong>Components</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> using ES6+.</em>
+                                        <div class="rounded-box"><code>Promise</code>, <code>XMLHttpRequest</code>, <code>fetch</code>, <code>Blob</code>, <code>URL.createObjectURL</code>, <code>URL.revokeObjectURL</code>, <code>queueMicrotask</code>, <code>...</code></div>
+                                        <em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/http/"><strong>HTTP</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> & <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/components/"><strong>Components</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> using ES6+.</em>
                                     </li>
                                 </ul>
                             </li>
@@ -154,25 +156,25 @@
                     <h3 class="auto-font-size-3">Between Point 2 and 3</h3>
                     <div>
                         <ul role="list" class="lines">
-                            <li><strong>Context:</strong><br> Recurring UI development problems are solved through well-organized, reusable components (no Web Components required); efficient centralized or decentralized state management; synchronized, granular DOM updates; routing control without page reloads, coordinated with the UI; and conventions that facilitate interoperable collaboration.<br><strong>That can be achieved seamlessly and accordingly using:</strong> native HTML, in-memory JS-scoped data, batched event-based DOM reactivity, isolated and complete routing lifecycle interfaces, and standards-compliant HTML, CSS, and JS conventions with minimal guidelines.</li>
+                            <li><strong>Context:</strong><br> Recurring UI development problems are solved through well-organized, reusable components (no Web Components required); efficient centralized or decentralized state management; synchronized, granular DOM updates; routing control without page reloads, coordinated with the UI; and conventions that facilitate interoperable collaboration.<br><strong>That can be achieved seamlessly using:</strong> native HTML, in-memory JS-scoped data, batched event-based DOM reactivity, isolated and complete routing lifecycle interfaces, and standards-compliant HTML, CSS, and JS conventions with minimal guidelines.</li>
                             <li><h4>Well-organized, reusable components:</h4><br>
                                 <ul role="list">
                                     <li><strong>Specific context:</strong> While Web Components is a solid solution, it is less flexible than raw HTML. For instance, scoping styles to a single component is not always desirable—often styles need to cascade globally or affect other components (such as wrappers for specific layout areas or residual elements). Standard HTML also has a lower learning curve and is inherently SEO-friendly, avoiding extra prerendering layers or the need to 'teach' web browsers, bots, and scrapers what elements actually mean.<br>On the other hand, 'well-organized components' is ambiguous and subjective. Many favor precompiled or bundled components merged into a single asset (which optimizes network performance), yet the resulting bundle itself is not reusable on its own (typically due to minification and obfuscation); only the pre-bundled source components are.<br>There are also other factors to consider depending on the complexity of the application these components form, or even the organizational style, such as structuring them so that both AI models/agents and developer teams can leverage them in a consistent, coherent, and scalable manner.<br><strong>The data consumed by components is ultimately more valuable than the components themselves.</strong> Furthermore, components can be fetched on demand via signed or authenticated requests whenever protecting source origins, intellectual property, or assets is required—completely decoupled from how they are organized or reused.</li>
                                     <li><strong>Bypass:</strong><br>
                                         <span>HTML natively provides traditional, broadly compatible mechanisms to load components, which is often sufficient for many scenarios, like <code>script</code> tag attributes <code>defer</code>, <code>async</code>, <code>type="module"</code> (deferred), as well as standard synchronous execution:</span>
                                         <div class="rounded-box">
-                                            <pre><code class="language-html">&lt;script src="./main.sync.js"&gt;&lt;/script&gt;</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
-                                            <pre><code class="language-html">&lt;script defer src="./html.complete.js"&gt;&lt;/script&gt;</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
-                                            <pre><code class="language-html">&lt;script type="module" src="./html.complete.2.js"&gt;&lt;/script&gt;</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
-                                            <pre><code class="language-html">&lt;script async src="./independent.load.js"&gt;&lt;/script&gt;</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
-                                            <pre><code class="language-html">&lt;script async type="module" src="./independent.load.2.js"&gt;&lt;/script&gt;</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
+                                            <pre tabindex="0"><code class="language-html">&lt;script src="./main.sync.js"&gt;&lt;/script&gt;</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
+                                            <pre tabindex="0"><code class="language-html">&lt;script defer src="./html.complete.js"&gt;&lt;/script&gt;</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
+                                            <pre tabindex="0"><code class="language-html">&lt;script type="module" src="./html.complete.2.js"&gt;&lt;/script&gt;</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
+                                            <pre tabindex="0"><code class="language-html">&lt;script async src="./independent.load.js"&gt;&lt;/script&gt;</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
+                                            <pre tabindex="0"><code class="language-html">&lt;script async type="module" src="./independent.load.2.js"&gt;&lt;/script&gt;</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
                                         </div>
                                         <span>When precise component synchronization is required (such as managing execution order or inter-component dependencies), patterns like "Shared Resource Resolution System with Barrier/Completion Conditions" can be implemented using ES6+:</span>
                                         <div class="rounded-box"><code>class</code>, <code>Promise</code>, <code>Promise.all</code>, <code>Array.prototype.push</code>, <code>Array.prototype.map</code>, <code>Array.prototype.reduce</code>, <code>queueMicrotask</code>, <code>...</code></div>
                                         <h5>Minimal implementation:</h5>
                                         <strong>Coordinated asynchronous component execution, dependency chaining, and error propagation (<a class="no-default-arrow" target="_blank" rel="noopener noreferrer" href="./test.component.html">view demonstration</a>).</strong>
                                         <div class="rounded-box">
-<pre><code class="language-javascript">const Queue = {
+<pre tabindex="0"><code class="language-javascript">const Queue = {
   state: false,
   load: [],
   pending: [],
@@ -299,11 +301,11 @@ class Component {
           configurable: false
         });
     }
-}</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
+}</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
                                         </div>
                                         <h5>Usage example:</h5>
                                         <div class="rounded-box">
-<pre><code class="language-javascript">const CompA = new Component('CompA', () =&gt; {
+<pre tabindex="0"><code class="language-javascript">const CompA = new Component('CompA', () =&gt; {
     console.log('1');
 })
 .load(() =&gt; {
@@ -348,7 +350,7 @@ CompC.ok.then((r) =&gt; {
 })
 .catch((e) =&gt; {
     console.error('Error C:', e);
-});</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
+});</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
                                         </div>
                                         <span>And the "Asynchronous Proxy-Based Synchronization" pattern used where components are declared in HTML index via <code>data-*</code> attributes, and automatically fetched on demand from self-hosted endpoints or CDNs, structured in dedicated directories (<code>name/style.css</code>, <code>name/component.html</code>, <code>name/functionality.js</code>), and automatically synchronized, orchestrated and injected by the prototype framework implemented in <a class="no-default-arrow" rel="noopener noreferrer" target="_blank" href="https://github.com/okzgn/componentes-prototype-2025-js"><strong>Components Prototype</strong></a> (PoC, ES6+). Or explore advanced patterns with another implementation in <a class="no-default-arrow" rel="noopener noreferrer" target="_blank" href="https://estructura.okzgn.com/extensions/components/"><strong>Components</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> (RC2, ES6+).</span>
                                         <br>
@@ -364,7 +366,7 @@ CompC.ok.then((r) =&gt; {
                                         <h5>Minimal implementation:</h5>
                                         <strong>Observable deep state tree with granular mutation hooks and identity preservation.</strong>
                                         <div class="rounded-box">
-<pre><code class="language-javascript">const Handlers = (options, path, cache) =&gt; {
+<pre tabindex="0"><code class="language-javascript">const Handlers = (options, path, cache) =&gt; {
   return {
     get: (_data, property, receiver) =&gt; {
       const value = Reflect.get(_data, property, receiver);
@@ -417,11 +419,11 @@ function State(options = {}, path = [], cache = new WeakMap()) {
     const proxy = new Proxy(data, Handlers(options, path, cache));
     cache.set(data, proxy);
     return proxy;
-}</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
+}</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
                                         </div>
                                         <h5>Usage example:</h5>
                                         <div class="rounded-box">
-<pre><code class="language-javascript">const state = State({
+<pre tabindex="0"><code class="language-javascript">const state = State({
     onSet: (mutation) =&gt; {
         console.log(mutation.type, mutation.path, mutation.value, mutation.oldValue);
     },
@@ -436,7 +438,7 @@ state.name = 'John';
 
 delete state.name;
 // delete (1)["name"] undefined John
-</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
+</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
                                         </div>
                                         <span>Or explore other patterns like "Safe Auto-Vivification", with prototype pollution guards, array mutator tracking, and depth limits implementation in <a class="no-default-arrow" rel="noopener noreferrer" target="_blank" href="https://github.com/okzgn/dx-object-js"><strong>DXObject</strong></a> (RC3, ESM, ES6+), and reactivity store patterns implemented in <a class="no-default-arrow" rel="noopener noreferrer" target="_blank" href="https://estructura.okzgn.com/extensions/reactive/"><strong>Reactive</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> (RC1, ES6+).</span>
                                     </li>
@@ -451,7 +453,7 @@ delete state.name;
                                         <h5>Minimal implementation:</h5>
                                         <strong>Granular DOM node mapping, state binding, and content updates batching (<a class="no-default-arrow" target="_blank" rel="noopener noreferrer" href="./test.updater.html">view demonstration</a>).</strong>
                                         <div class="rounded-box">
-<pre><code class="language-javascript">const UpdaterExcludedNodes = new Set([
+<pre tabindex="0"><code class="language-javascript">const UpdaterExcludedNodes = new Set([
     '#document-fragment',
 
     'SCRIPT', 'STYLE', 'LINK', 'NOSCRIPT',
@@ -668,12 +670,12 @@ function UpdaterStart(targetNode, handlers) {
     catch (e) {
         throw new Error('UpdaterStart &gt; Observer &gt; Initialization: ' + e.message);
     }
-}</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
+}</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
                                         </div>
                                         <h5>Usage example:</h5>
                                         <div class="rounded-box">
                                             <strong class="auto-x-padding">JavaScript</strong>
-<pre><code class="language-javascript">const XVars_prefix = '${';
+<pre tabindex="0"><code class="language-javascript">const XVars_prefix = '${';
 const XVars_postfix = '}';
 const XVarsNamesRE = /[^a-z_0-9]/i;
 const XVarsNodes = new WeakMap();
@@ -818,11 +820,11 @@ function XStateBatchExecution() {
 
         XStateBatch.clear();
     });
-}</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
+}</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
                                         </div>
                                         <div class="rounded-box">
                                             <strong class="auto-x-padding">HTML</strong>
-<pre><code class="language-html">&lt;head&gt;
+<pre tabindex="0"><code class="language-html">&lt;head&gt;
   &lt;!-- [Previous STATE Minimal Implementation JavaScript Code File] --&gt;
   &lt;script src="./test/State.js"&gt;&lt;/script&gt;
 
@@ -845,7 +847,7 @@ function XStateBatchExecution() {
     &lt;p&gt;&lt;b&gt;Another reactive value:&lt;/b&gt; ${VALUE_3}&lt;/p&gt;
   &lt;/div&gt;
 &lt;/body&gt;
-</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
+</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
                                         </div>
                                     </li>
                                 </ul>
@@ -855,7 +857,7 @@ function XStateBatchExecution() {
                                     <li><strong>Specific context:</strong> <span>Work In Progress ...</span></li>
                                     <li><strong>Bypass:</strong> <span>Work In Progress ...</span>
                                         <div class="rounded-box">
-                                            <pre><code class="language-javascript">// Work In Progress ...</code><button class="cta-button no-default-arrow copy">Copy</button></pre></div>
+                                            <pre tabindex="0"><code class="language-javascript">// Work In Progress ...</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre></div>
                                     </li>
                                 </ul>
                             </li>
@@ -864,7 +866,7 @@ function XStateBatchExecution() {
                                     <li><strong>Specific context:</strong> <span>Work In Progress ...</span></li>
                                     <li><strong>Bypass:</strong> <span>Work In Progress ...</span>
                                         <div class="rounded-box">
-                                            <pre><code class="language-javascript">// Work In Progress ...</code><button class="cta-button no-default-arrow copy">Copy</button></pre></div>
+                                            <pre tabindex="0"><code class="language-javascript">// Work In Progress ...</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre></div>
                                     </li>
                                 </ul>
                             </li>

@@ -323,13 +323,17 @@ document.addEventListener('DOMContentLoaded', function () {
     preCodes[i].addEventListener('click', (function(element) {
       return function (event) {
         event.preventDefault();
-        var code = element.querySelector('code');
+        var code = element.querySelector('code'), btn = element.querySelector('button.copy');
         if (!code) { return; }
 
         console.log('Copy:', code.textContent);
 
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(code.textContent);
+          btn.textContent = 'Copied';
+          setTimeout(function () {
+            btn.textContent = 'Copy';
+          }, 567);
         }
       }
     })(preCodes[i]));
