@@ -1,6 +1,6 @@
 const XVars_prefix = '${';
 const XVars_postfix = '}';
-const XVarsNamesRE = /[^a-z\_0-9]/i;
+const XVarsNamesRE = /[^a-z_0-9]/i;
 const XVarsNodes = new WeakMap();
 const XVarsSuscriptors = new Map();
 const XElementDataStr = 'data-x';
