@@ -126,7 +126,7 @@ h1, h2, h3 {
     text-shadow: 0 0 0.25rem var(--whiteTransparent2), 0 0 0.5rem var(--whiteTransparent2);
     color: var(--blue);
 }
-h4 { color: var(--blueDark); }
+h4, h5 { color: var(--blueDark); }
 
 ::-webkit-scrollbar { width: 0.5rem; height: 0.5rem; }
 ::-webkit-scrollbar-thumb { background: var(--accent); }
@@ -608,8 +608,12 @@ main, .paragraphs {
     display: block;
 }
 
-.paragraphs ul li h4, .paragraphs ul li h5, .paragraphs ul li h6 {
-    display: inline-block !important;
+.paragraphs ul li h4 {
+    display: inline-block;
+}
+
+.paragraphs ul li h5 {
+    margin: 1rem 0 0.5rem 0;
 }
 
 .lines {

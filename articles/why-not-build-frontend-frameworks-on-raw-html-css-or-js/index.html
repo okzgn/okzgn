@@ -169,7 +169,8 @@
                                         </div>
                                         <span>When precise component synchronization is required (such as managing execution order or inter-component dependencies), patterns like "Shared Resource Resolution System with Barrier/Completion Conditions" can be implemented using ES6+:</span>
                                         <div class="rounded-box"><code>class</code>, <code>Promise</code>, <code>Promise.all</code>, <code>Array.prototype.push</code>, <code>Array.prototype.map</code>, <code>Array.prototype.reduce</code>, <code>queueMicrotask</code>, <code>...</code></div>
-                                        <span>Minimal implementation (<strong>Component</strong>):</span>
+                                        <h5>Minimal implementation:</h5>
+                                        <strong>Coordinated asynchronous component execution, dependency chaining, and error propagation (<a class="no-default-arrow" target="_blank" rel="noopener noreferrer" href="./test.component.html">view demonstration</a>).</strong>
                                         <div class="rounded-box">
 <pre><code class="language-javascript">const Queue = {
   state: false,
@@ -300,8 +301,7 @@ class Component {
     }
 }</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
                                         </div>
-                                        <span>Usage example:</span><br><br>
-                                        <strong>Coordinated asynchronous component execution, dependency chaining, and error propagation (<a class="no-default-arrow" target="_blank" rel="noopener noreferrer" href="./test.component.html">view demonstration</a>).</strong>
+                                        <h5>Usage example:</h5>
                                         <div class="rounded-box">
 <pre><code class="language-javascript">const CompA = new Component('CompA', () =&gt; {
     console.log('1');
@@ -361,7 +361,8 @@ CompC.ok.then((r) =&gt; {
                                     <li><strong>Bypass:</strong><br>
                                         <span><code>Proxy</code> provides everything needed to establish a complete, predictable state lifecycle while avoiding unnecessary object recreation during mutations. Deeply observable state trees, lifecycle interceptors (<code>onGet</code>, <code>onSet</code>, <code>onDelete</code>), and reference caching can be implemented natively using ES6+:</span>
                                         <div class="rounded-box"><code>Proxy</code>, <code>Object.create</code>, <code>Reflect.get</code>, <code>Reflect.set</code>, <code>Reflect.deleteProperty</code>, <code>WeakMap</code>, <code>WeakMap.prototype.has</code>, <code>WeakMap.prototype.get</code>, <code>WeakMap.prototype.set</code>, <code>Array.prototype.concat</code>, <code>...</code></div>
-                                        <span>Minimal implementation (<strong>State</strong>):</span>
+                                        <h5>Minimal implementation:</h5>
+                                        <strong>Observable deep state tree with granular mutation hooks and identity preservation.</strong>
                                         <div class="rounded-box">
 <pre><code class="language-javascript">const Handlers = (options, path, cache) =&gt; {
   return {
@@ -418,8 +419,7 @@ function State(options = {}, path = [], cache = new WeakMap()) {
     return proxy;
 }</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
                                         </div>
-                                        <span>Usage example:</span><br><br>
-                                        <strong>Observable deep state tree with granular mutation hooks and identity preservation.</strong>
+                                        <h5>Usage example:</h5>
                                         <div class="rounded-box">
 <pre><code class="language-javascript">const state = State({
     onSet: (mutation) =&gt; {
@@ -448,7 +448,8 @@ delete state.name;
                                     <li><strong>Bypass:</strong>
                                         <span><code>MutationObserver</code> can be used to scan the initial HTML, parse, and map nodes, as it does not rely on <code>DOMContentLoaded</code> and makes it possible to capture the creation phase of all nodes across the <code>document</code>. And with the necessary adjustments and optimizations, it can precisely control everything happening in the DOM asynchronously, yet synchronously for batched updates with <code>queueMicrotask</code> or <code>requestAnimationFrame</code> depending on the type of update. This can be implemented natively (<strong>for HTML only</strong>) using ES6+:</span>
                                         <div class="rounded-box"><code>MutationObserver</code>, <code>Set</code>, <code>Node</code>, <code>Node.prototype</code>, <code>WeakMap</code>, <code>Object.create</code>, <code>Reflect</code>, <code>...</code></div>
-                                        <span>Minimal implementation (<strong>Updater</strong>):</span>
+                                        <h5>Minimal implementation:</h5>
+                                        <strong>Granular DOM node mapping, state binding, and content updates batching (<a class="no-default-arrow" target="_blank" rel="noopener noreferrer" href="./test.updater.html">view demonstration</a>).</strong>
                                         <div class="rounded-box">
 <pre><code class="language-javascript">const UpdaterExcludedNodes = new Set([
     '#document-fragment',
@@ -669,8 +670,7 @@ function UpdaterStart(targetNode, handlers) {
     }
 }</code><button class="cta-button no-default-arrow copy">Copy</button></pre>
                                         </div>
-                                        <span>Usage example:</span><br><br>
-                                        <strong>Granular DOM node mapping, state binding, and requestAnimationFrame batching (<a class="no-default-arrow" target="_blank" rel="noopener noreferrer" href="./test.updater.html">view demonstration</a>).</strong>
+                                        <h5>Usage example:</h5>
                                         <div class="rounded-box">
                                             <strong class="auto-x-padding">JavaScript</strong>
 <pre><code class="language-javascript">const XVars_prefix = '${';
