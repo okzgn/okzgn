@@ -610,6 +610,7 @@ main, .paragraphs {
 
 .paragraphs ul li h4 {
     display: inline-block;
+    font-size: 1.125rem;
 }
 
 .paragraphs ul li h5 {
