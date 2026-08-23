@@ -110,7 +110,7 @@
                         </ul>
                     </div>
                     <h2 class="auto-font-size-2">This article is not:</h2>
-                    <p>A call to switch your framework or dismiss other techniques, after all, today's custom syntaxes may be tomorrow's standards. It also doesn't ignore the massive challenges, serious business and enterprise needs, or the real value of today's tools or methods.</p>
+                    <p>A call to switch your framework or dismiss other techniques; after all, today's custom syntaxes may be tomorrow's standards. It also doesn't ignore the massive challenges, serious business and enterprise needs, or the real value of today's tools or methods.</p>
                     <h2 class="auto-font-size-2">Perspective:</h2>
                     <p>Having written code close to the metal (XDP, shared memory, C), delved into low-level systems (protocol flows, RAM interactions, Go), focused on optimizing core operations and identifying high-performance algorithms (BM25, HNSW, djb2), compared the performance of various runtimes (PHP, Lua, Node, Wasm, Rust), <strong>I analyzed some modern frontend fundamentals from the same viewpoint</strong>.</p>
                     <h2 class="auto-font-size-2">Simplified solution:</h2>
@@ -166,7 +166,7 @@
                                 <ul role="list">
                                     <li>
                                         <strong>Specific context:</strong><br>
-                                        <span>'Well-organized components' is ambiguous and subjective. Many favor precompiled or bundled components merged into a single asset (which optimizes network performance), yet the resulting bundle itself is not reusable on its own (typically due to minification and obfuscation); only the pre-bundled source components are. There are also other factors to consider depending on the complexity of the application these components form, or even the organizational style, such as structuring them so that both AI models/agents and developer teams can leverage them in a consistent, coherent, and scalable manner.<br><strong>The data consumed by components is ultimately more valuable than the components themselves.</strong> Furthermore, components can be fetched on demand via signed or authenticated requests whenever protecting source origins, intellectual property, or assets is required—completely decoupled from how they are organized or reused.<br>While Web Components is a solid solution, it is less flexible than raw HTML. For instance, scoping styles to a single component is not always desirable—often styles need to cascade globally or affect other components (such as wrappers for specific layout areas or residual elements). Standard HTML also has a lower learning curve and is inherently SEO-friendly, avoiding extra prerendering layers or the need to 'teach' web browsers, bots, and scrapers what elements actually mean.</span>
+                                        <span>'Well-organized components' is ambiguous and subjective. Many favor precompiled or bundled components merged into a single asset (which optimizes network performance), yet the resulting bundle itself is not reusable on its own (typically due to minification and obfuscation); only the pre-bundled source components are. There are also other factors to consider depending on the complexity of the application these components form, or even the organizational style, such as structuring them so that both AI models/agents and developer teams can leverage them in a consistent, coherent, and scalable manner.<br><strong>The data consumed by components is ultimately more valuable than the components themselves.</strong> Furthermore, components can be fetched on demand via signed or authenticated requests whenever protecting source origins, intellectual property, or assets is required—completely decoupled from how they are organized or reused.<br>While Web Components are a solid solution, they are less flexible than raw HTML. For instance, scoping styles to a single component is not always desirable—often styles need to cascade globally or affect other components (such as wrappers for specific layout areas or residual elements). Standard HTML also has a lower learning curve and is inherently SEO-friendly, avoiding extra prerendering layers or the need to 'teach' web browsers, bots, and scrapers what elements actually mean.</span>
                                     </li>
                                     <li>
                                         <strong>Bypass:</strong><br>
@@ -873,13 +873,574 @@ function XStateBatchExecution() {
                                 <ul role="list">
                                     <li>
                                         <strong>Specific context:</strong><br>
-                                        <span>'Routing control' core mechanisms enable URL changes without full page reloads, typically by leveraging the <code>History API</code> and intercepting DOM anchor (<code>A</code>) tags to handle navigation within the current <code>location.pathname</code>. Routes are defined via configuration objects, custom syntax, or file-system-based routing (which is transformed into SPA-compatible code at build time). They support nested routes to prevent unnecessary parent re-renders, navigation guards, synchronous or lazy data fetching per route, and optional route caching. Additionally, they enable on-demand module loading, controlled visual transitions, route and data prefetching (triggered by events, <code>viewport</code>/<code>IntersectionObserver</code>), and browser scroll restoration. By not unmounting parent routes, they preserve both the application's logical state and navigation history. Furthermore, they restore the user's location upon page reload, provide independent route-level error handling, manage accessibility (<code>a11y</code>) for visually impaired users, and maintain a synchronized state across routes.</span>
+                                        <span>Core routing control mechanisms enable URL changes without full page reloads, typically by leveraging the <code>History API</code> and intercepting DOM anchor (<code>A</code>) tags to handle navigation within the current <code>location.pathname</code>. Routes are defined via configuration objects, custom syntax, or file-system-based routing (which is transformed into SPA-compatible code at build time). They support nested routes to prevent unnecessary parent re-renders, navigation guards, synchronous or lazy data fetching per route, and optional route caching. Additionally, they enable on-demand module loading, controlled visual transitions, route and data prefetching (triggered by events, <code>viewport</code>/<code>IntersectionObserver</code>), and browser scroll restoration. By not unmounting parent routes, they preserve both the application's logical state and navigation history. Furthermore, they restore the user's location upon page reload, provide independent route-level error handling, manage accessibility (<code>a11y</code>) for visually impaired users, and maintain a synchronized state across routes.</span>
                                     </li>
                                     <li>
                                         <strong>Bypass:</strong><br>
-                                        <span>Work In Progress ...</span>
+                                        <h5>Minimal implementation:</h5>
+                                        <span><strong>(<a class="no-default-arrow" target="_blank" rel="noopener noreferrer" href="./test.router.html">View demonstration</a>)</strong></span>
                                         <div class="rounded-box">
-                                            <pre tabindex="0"><code class="language-javascript">// Work In Progress ...</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
+<pre tabindex="0"><code class="language-javascript">class Router {
+  constructor() {
+    this.routes = [];
+  }
+
+  _safeDecode(val) {
+    if (typeof val !== 'string') {
+      return val;
+    }
+
+    try {
+      return decodeURIComponent(val);
+    }
+    catch (e) {
+      return val;
+    }
+  }
+
+  _flattenCallbacks(callbacks) {
+    const flat = callbacks.reduce((array, fn) =&gt; {
+      return array.concat(Array.isArray(fn) ? this._flattenCallbacks(fn) : [fn]);
+    }, []);
+
+    for (let i = 0; i &lt; flat.length; i++) {
+      if (typeof flat[i] !== 'function') {
+        throw new TypeError('Middleware handlers must be functions');
+      }
+    }
+    return flat;
+  }
+
+  _register(pattern, callbacks, isMiddleware) {
+    if (typeof pattern !== 'string') {
+      throw new TypeError('Route pattern must be a string');
+    }
+
+    const flatCallbacks = this._flattenCallbacks(callbacks);
+    if (flatCallbacks.length === 0) {
+      throw new Error('At least one middleware/handler is required');
+    }
+
+    const cleanPattern = pattern.split(/[?#]/)[0].replace(/\/+/g, '/').replace(/^\/+|\/+$/g, '');
+    const normalizedPattern = '/' + cleanPattern;
+    const segments = (cleanPattern === '' ? [] : cleanPattern.split('/'));
+
+    const score = [];
+    const paramNames = [];
+    let wildcardCount = 0;
+    let regexSource = '^';
+    let hasOptional = false;
+
+    if (segments.length === 0) {
+      regexSource += '\\/?$';
+      score.push(3);
+    }
+    else {
+      for (let i = 0; i &lt; segments.length; i++) {
+        const seg = segments[i];
+        const isLast = i === segments.length - 1;
+        const isOptional = seg.charCodeAt(0) === 58 &amp;&amp; seg.endsWith('?');
+
+        if (hasOptional &amp;&amp; !isOptional) {
+          throw new Error(`Optional parameter in pattern "${pattern}" must be at the end of the route`);
+        }
+
+        if (seg === '*') {
+          const name = wildcardCount === 0 ? 'wildcard' : `wildcard_${wildcardCount}`;
+          paramNames.push(name);
+          wildcardCount++;
+          regexSource += isLast ? '\\/(.*)' : '\\/(.*?)';
+          score.push(1);
+        }
+        else if (isOptional) {
+          hasOptional = true;
+          const paramName = seg.slice(1, -1);
+
+          if (!paramName) {
+            throw new Error(`Invalid optional parameter format in pattern "${pattern}"`);
+          }
+
+          regexSource += '(?:\\/([^\\/]+))?';
+          paramNames.push(paramName);
+          score.push(1.5);
+        }
+        else if (seg.charCodeAt(0) === 58) {
+          const paramName = seg.slice(1);
+          if (!paramName) {
+            throw new Error(`Invalid parameter format in pattern "${pattern}"`);
+          }
+
+          regexSource += '\\/([^\\/]+)';
+          paramNames.push(paramName);
+          score.push(2);
+        }
+        else {
+          regexSource += '\\/' + seg.replace(/[.*+?^${}()|[\]\\]/g, '\\$&amp;');
+          score.push(3);
+        }
+      }
+      regexSource += '\\/?$';
+    }
+
+    this.routes.push({
+      index: this.routes.length,
+      isMiddleware: isMiddleware,
+      pattern: normalizedPattern,
+      regex: new RegExp(regexSource),
+      paramNames: paramNames,
+      score: score,
+      callbacks: flatCallbacks
+    });
+
+    return this;
+  }
+
+  use(...args) {
+    if (args.length === 0) {
+      throw new TypeError('use() requires at least one middleware handler');
+    }
+
+    if (typeof args[0] === 'string') {
+      const pattern = args[0];
+      const callbacks = args.slice(1);
+      const clean = pattern.split(/[?#]/)[0].replace(/\/+/g, '/').replace(/^\/+|\/+$/g, '');
+
+      if (clean === '' || clean === '*') {
+        return this._register('*', callbacks, true);
+      }
+
+      this._register(`/${clean}`, callbacks, true);
+      return this._register(`/${clean}/*`, callbacks, true);
+    }
+
+    return this._register('*', args, true);
+  }
+
+  add(pattern, ...callbacks) {
+    return this._register(pattern, callbacks, false);
+  }
+
+  dispatch(rawPath, contextExtra = {}, options = {}) {
+    if (typeof rawPath !== 'string') {
+      throw new TypeError('The path must be a string');
+    }
+
+    const cleanPath = '/' + rawPath.split(/[?#]/)[0].replace(/\/+/g, '/').replace(/^\/+|\/+$/g, '');
+    const targetPath = cleanPath === '/' ? '/' : cleanPath;
+    const matches = [];
+
+    for (let i = 0; i &lt; this.routes.length; i++) {
+      const route = this.routes[i];
+      const match = route.regex.exec(targetPath);
+
+      if (match) {
+        const params = {};
+
+        for (let j = 0; j &lt; route.paramNames.length; j++) {
+          const rawVal = match[j + 1];
+          params[route.paramNames[j]] = rawVal !== undefined ? this._safeDecode(rawVal) : undefined;
+        }
+
+        matches.push({
+          index: route.index,
+          isMiddleware: route.isMiddleware,
+          pattern: route.pattern,
+          score: route.score,
+          params: params,
+          callbacks: route.callbacks
+        });
+      }
+    }
+
+    matches.sort((a, b) =&gt; {
+      if (a.isMiddleware &amp;&amp; !b.isMiddleware) {
+        return -1;
+      }
+
+      if (!a.isMiddleware &amp;&amp; b.isMiddleware) {
+        return 1;
+      }
+
+      if (a.isMiddleware &amp;&amp; b.isMiddleware) {
+        return a.index - b.index;
+      }
+
+      const minLen = Math.min(a.score.length, b.score.length);
+      for (let i = 0; i &lt; minLen; i++) {
+        if (b.score[i] !== a.score[i]) {
+          return b.score[i] - a.score[i];
+        }
+      }
+
+      if (a.score.length !== b.score.length) {
+        return a.score.length - b.score.length;
+      }
+
+      return a.index - b.index;
+    });
+
+
+    const pipeline = [];
+    for (let i = 0; i &lt; matches.length; i++) {
+      const match = matches[i];
+      for (let j = 0; j &lt; match.callbacks.length; j++) {
+        pipeline.push({
+          fn: match.callbacks[j],
+          params: match.params,
+          pattern: match.pattern
+        });
+      }
+    }
+
+    const initialParams = (contextExtra &amp;&amp; typeof contextExtra.params === 'object' &amp;&amp; contextExtra.params !== null) ? Object.assign({}, contextExtra.params) : {};
+    const initialRoutePath = (contextExtra &amp;&amp; contextExtra.routePath !== undefined) ? contextExtra.routePath : '';
+
+    const ctx = Object.assign({
+        pathname: cleanPath,
+        rawPath: rawPath,
+        params: Object.assign({}, initialParams),
+        routePath: initialRoutePath
+      },
+      contextExtra
+    );
+
+    const isAsync = Boolean((options &amp;&amp; options.async === true) || (contextExtra &amp;&amp; contextExtra.async === true));
+
+    let lastIndex = -1;
+
+    if (isAsync) {
+      const runAsync = (index) =&gt; {
+        if (index &lt;= lastIndex) {
+          return Promise.reject(new Error('next() called multiple times within the same middleware'));
+        }
+        lastIndex = index;
+
+        if (index &gt;= pipeline.length) {
+          return Promise.resolve();
+        }
+
+        const current = pipeline[index];
+        const prevParams = ctx.params;
+        const prevRoutePath = ctx.routePath;
+
+        ctx.params = Object.assign({}, current.params);
+        ctx.routePath = current.pattern;
+
+        try {
+          const result = current.fn(ctx, () =&gt; runAsync(index + 1));
+
+          return Promise.resolve(result).then(
+            (val) =&gt; {
+              ctx.params = prevParams;
+              ctx.routePath = prevRoutePath;
+              return val;
+            },
+            (e) =&gt; {
+              ctx.params = prevParams;
+              ctx.routePath = prevRoutePath;
+              return Promise.reject(e);
+            }
+          );
+        }
+        catch (e) {
+          ctx.params = prevParams;
+          ctx.routePath = prevRoutePath;
+          return Promise.reject(e);
+        }
+      };
+
+      return runAsync(0).then(
+        (finalVal) =&gt; {
+          ctx.params = initialParams;
+          ctx.routePath = initialRoutePath;
+          return finalVal;
+        },
+        (e) =&gt; {
+          ctx.params = initialParams;
+          ctx.routePath = initialRoutePath;
+          return Promise.reject(e);
+        }
+      );
+    }
+
+    const runSync = (index) =&gt; {
+      if (index &lt;= lastIndex) {
+        throw new Error('next() called multiple times within the same middleware');
+      }
+
+      lastIndex = index;
+
+      if (index &gt;= pipeline.length) {
+        return;
+      }
+
+      const current = pipeline[index];
+      const prevParams = ctx.params;
+      const prevRoutePath = ctx.routePath;
+
+      ctx.params = Object.assign({}, current.params);
+      ctx.routePath = current.pattern;
+
+      try {
+        return current.fn(ctx, () =&gt; runSync(index + 1));
+      }
+      finally {
+        ctx.params = prevParams;
+        ctx.routePath = prevRoutePath;
+      }
+    };
+
+    try {
+      return runSync(0);
+    }
+    finally {
+      ctx.params = initialParams;
+      ctx.routePath = initialRoutePath;
+    }
+  }
+}
+
+function RouterStart(options = {}) {
+  const router = new Router();
+
+  const normalizeBase = (base) =&gt; {
+    if (!base || typeof base !== 'string'){
+      return '';
+    }
+
+    const clean = base.split(/[?#]/)[0].replace(/\/+/g, '/').replace(/^\/+|\/+$/g, '');
+    return clean ? '/' + clean : '';
+  };
+
+  let basePath = normalizeBase(options.basePath);
+
+  const extractInternalPath = (fullPath) =&gt; {
+    if (!fullPath || typeof fullPath !== 'string') return '/';
+
+    let path = fullPath;
+
+    try {
+      if (path.startsWith('http://') || path.startsWith('https://')) {
+        const urlObj = new URL(path);
+        path = urlObj.pathname + urlObj.search + urlObj.hash;
+      }
+    }
+    catch (e) {}
+
+    if (!path.startsWith('/')) {
+      path = '/' + path;
+    }
+
+    if (basePath) {
+      if (path === basePath || path === basePath + '/') {
+        path = '/';
+      }
+      else if (path.startsWith(basePath + '/') || path.startsWith(basePath + '?') || path.startsWith(basePath + '#')) {
+        path = path.slice(basePath.length);
+      }
+    }
+
+    return path.startsWith('/') ? path : '/' + path;
+  };
+
+  const toBrowserUrl = (internalPath) =&gt; {
+    const clean = internalPath.startsWith('/') ? internalPath : '/' + internalPath;
+
+    if (!basePath){
+      return clean;
+    }
+
+    if (clean === basePath || clean.startsWith(basePath + '/') || clean.startsWith(basePath + '?') || clean.startsWith(basePath + '#')) {
+      return clean;
+    }
+
+    return basePath + clean;
+  };
+
+
+  const executeDispatch = (internalPath, extraContext = {}) =&gt; {
+    let redirectedTo = null;
+
+    const extendedContext = Object.assign({}, extraContext, {
+      basePath: basePath,
+      redirect: (targetUrl) =&gt; {
+        redirectedTo = targetUrl;
+      }
+    });
+
+    const result = router.dispatch(internalPath, extendedContext, options);
+
+    if (result &amp;&amp; typeof result.then === 'function') {
+      return result.then((val) =&gt; {
+        if (redirectedTo) {
+          return router.go(redirectedTo, true, extraContext);
+        }
+
+        return val;
+      });
+    }
+
+    if (redirectedTo) {
+      return router.go(redirectedTo, true, extraContext);
+    }
+
+    return result;
+  };
+
+  router.go = (url, replace = false, extraContext = {}) =&gt; {
+    const internalPath = extractInternalPath(url);
+    const browserUrl = toBrowserUrl(internalPath);
+
+    if (replace) {
+      window.history.replaceState({}, '', browserUrl);
+    }
+    else {
+      window.history.pushState({}, '', browserUrl);
+    }
+
+    return executeDispatch(internalPath, extraContext);
+  };
+
+  window.addEventListener('popstate', () =&gt; {
+    const currentInternal = extractInternalPath(window.location.pathname + window.location.search + window.location.hash);
+    executeDispatch(currentInternal);
+  });
+
+  document.addEventListener('click', (e) =&gt; {
+    const link = e.target.closest('a');
+
+    if (
+      link &amp;&amp;
+      link.hasAttribute('href') &amp;&amp;
+      link.target !== '_blank' &amp;&amp;
+      !link.hasAttribute('download') &amp;&amp;
+      link.origin === window.location.origin &amp;&amp;
+      e.button === 0 &amp;&amp;
+      !e.metaKey &amp;&amp; !e.ctrlKey &amp;&amp;
+      !e.shiftKey &amp;&amp; !e.altKey
+    ) {
+      const rawHref = link.getAttribute('href');
+
+      if (link.hasAttribute('data-router-exclude')) {
+        return;
+      }
+
+      if (rawHref.startsWith('mailto:') || rawHref.startsWith('tel:') || rawHref.startsWith('javascript:')) {
+        return;
+      }
+
+      e.preventDefault();
+      const targetPath = link.pathname + link.search + link.hash;
+      router.go(targetPath);
+    }
+  });
+
+  router.listen = (customBase) =&gt; {
+    if (typeof customBase === 'string') {
+      basePath = normalizeBase(customBase);
+    }
+
+    const fullCurrent = window.location.pathname + window.location.search + window.location.hash;
+    const internalPath = extractInternalPath(fullCurrent);
+    const browserUrl = toBrowserUrl(internalPath);
+
+    if (window.location.pathname + window.location.search !== browserUrl.split('#')[0]) {
+      window.history.replaceState({}, '', browserUrl);
+    }
+
+    return executeDispatch(internalPath);
+  };
+
+  return router;
+}</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
+                                        </div>
+                                        <h5>Usage example:</h5>
+                                        <div class="rounded-box">
+                                            <strong class="auto-x-padding">JavaScript</strong>
+<pre tabindex="0"><code class="language-javascript">const app = RouterStart({ async: false/*true*/ });
+
+app.use((ctx, next) =&gt; {
+    console.log('Navigation event:', ctx.pathname);
+    return next();
+});
+
+let isLogged = false;
+app.use('/dashboard', (ctx, next) =&gt; {
+    if (!isLogged) {
+        ctx.redirect('/login');
+        return;
+    }
+    return next();
+});
+
+let viewBox;
+document.addEventListener('DOMContentLoaded', () =&gt; {
+    viewBox = document.getElementById('view');
+});
+
+app.add('/', (ctx) =&gt; {
+    viewBox.innerHTML = '&lt;h2&gt;Home&lt;/h2&gt;';
+});
+
+app.add('/login', (ctx) =&gt; {
+    viewBox.innerHTML = '&lt;h2&gt;Login (click Auth)&lt;/h2&gt;';
+});
+
+app.add('/auth', (ctx) =&gt; {
+    isLogged = !isLogged;
+    viewBox.innerHTML = '&lt;h2&gt;Auth toggle: ' + (isLogged ? 'on' : 'off') + '&lt;/h2&gt;';
+});
+
+app.add('/dashboard', (ctx) =&gt; {
+    viewBox.innerHTML = '&lt;h2&gt;Dashboard&lt;/h2&gt;';
+});
+
+const lastSlash = (window.location.pathname.lastIndexOf('/') + 1);
+const currentPathDirname = (lastSlash ? window.location.pathname.substring(0, lastSlash) : window.location.pathname);
+
+app.listen(currentPathDirname);</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
+                                        </div>
+                                        <div class="rounded-box">
+                                            <strong class="auto-x-padding">HTML</strong>
+<pre tabindex="0"><code class="language-html">&lt;head&gt;
+  &lt;!-- [Previous ROUTER Minimal Implementation JavaScript Code File] --&gt;
+  &lt;script src="./test/Router.js"&gt;&lt;/script&gt;
+
+  &lt;!-- [Previous ROUTER Usage Example JavaScript Code] --&gt;
+  &lt;script src="./test/Router.usage.js"&gt;&lt;/script&gt;
+  &lt;script&gt;
+    // ROUTING TEST
+    setTimeout(() =&gt; {
+      app.go('/dashboard');
+    }, 4567);
+  &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div data-x&gt;
+    &lt;p&gt;Router links:&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="/login"&gt;Login&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="/auth"&gt;Auth&lt;/a&gt; (toggle)&lt;/li&gt;
+      &lt;li&gt;&lt;a href="/dashboard"&gt;Dashboard&lt;/a&gt; (Auth click required first)&lt;/li&gt;
+      &lt;li&gt;&lt;a data-router-exclude href="#last-view"&gt;Anchor Link&lt;/a&gt; ([data-router-exclude])&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;p&gt;Views:&lt;/p&gt;
+    &lt;div id="view" data-x&gt;
+      Start view.
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+  &lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+  &lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+  &lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+  &lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+  &lt;div id="last-view" data-x&gt;
+    Last view.
+  &lt;/div&gt;
+&lt;/body&gt;</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
                                         </div>
                                     </li>
                                 </ul>
