@@ -1367,13 +1367,19 @@ app.use((ctx, next) =&gt; {
 });
 
 let isLogged = false;
-app.use('/dashboard', (ctx, next) =&gt; {
-    if (!isLogged) {
-        ctx.redirect('/login');
-        return;
+app.use('/dashboard',
+    (ctx, next) =&gt; {
+        if (!isLogged) {
+            ctx.redirect('/login');
+            return;
+        }
+        return next();
+    },
+    (ctx, next) =&gt; {
+        console.info('Access granted.');
+        return next();
     }
-    return next();
-});
+);
 
 let viewBox;
 document.addEventListener('DOMContentLoaded', () =&gt; {
