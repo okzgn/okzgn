@@ -229,11 +229,56 @@ document.addEventListener('DOMContentLoaded', function () {
 
   menu.addEventListener('click', menuOperation);
 
+  var
+    preCodes = document.getElementsByTagName('pre'),
+    i = preCodes.length;
+
+  while (i--) {
+    preCodes[i].addEventListener('click', (function(element) {
+      return function (event) {
+        event.preventDefault();
+        var code = element.querySelector('code'), btn = element.querySelector('button.copy');
+        if (!code) { return; }
+
+        console.log('Copy:', code.textContent);
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(code.textContent);
+          btn.textContent = 'Copied';
+          setTimeout(function () {
+            btn.textContent = 'Copy';
+          }, 567);
+        }
+      }
+    })(preCodes[i]));
+  }
+
   function setPoints(point) {
-    var anchor = point.id || point.textContent.replace(/['"\(\)\[\]]/g, '').replace(/[^a-zA-Z0-9]/g, '-').replace(/^\-|\-$/g, '').toLowerCase();
+    this.index = this.index || Object.create(null);
+    this.count = this.count || 1;
+
+    var anchor = point.id || point.textContent.replace(/['"\(\)\[\]]/g, '').replace(/[^a-zA-Z0-9]/g, '-').replace(/^\-|\-$/g, '').replace(/\-+/g, '-').toLowerCase();
     var visibleAnchor = point.textContent.replace(/^[^a-zA-Z0-9]|[^a-zA-Z0-9]$/g, '');
 
+    var upperAnchor;
+    try {
+      upperAnchor = Number(point.tagName.slice(1)) - 1;
+      upperAnchor = isNaN(upperAnchor) ? [] : menuList.querySelectorAll('.H' + upperAnchor);
+      upperAnchor = upperAnchor.length ? upperAnchor[upperAnchor.length - 1].getAttribute('href').replace(/\#/g, '') : '';
+    }
+    catch(e) {
+      console.error(e.message);
+    }
+
+    anchor = (upperAnchor ? upperAnchor + '-' : '') + anchor;
+
+    this.index[anchor] = (!this.index[anchor] ? anchor : (anchor + '-' + count++));
+    anchor = this.index[anchor];
+
     point.id = anchor;
+    point.addEventListener('click', function () {
+      window.location = '#' + anchor;
+    });
 
     var menuListItem = document.createElement('li');
     var menuListItemLink = document.createElement('a');
@@ -314,28 +359,4 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   goHashLocation();
-
-  var
-    preCodes = document.getElementsByTagName('pre'),
-    i = preCodes.length;
-
-  while (i--) {
-    preCodes[i].addEventListener('click', (function(element) {
-      return function (event) {
-        event.preventDefault();
-        var code = element.querySelector('code'), btn = element.querySelector('button.copy');
-        if (!code) { return; }
-
-        console.log('Copy:', code.textContent);
-
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(code.textContent);
-          btn.textContent = 'Copied';
-          setTimeout(function () {
-            btn.textContent = 'Copy';
-          }, 567);
-        }
-      }
-    })(preCodes[i]));
-  }
 });

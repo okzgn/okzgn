@@ -604,9 +604,27 @@ main, .paragraphs {
     line-height: 1.5;
 }
 
+.paragraphs h2, .paragraphs h3,
 .paragraphs h4, .paragraphs h5, .paragraphs h6 {
     display: block;
+    cursor: pointer;
+    transition: 0.125s all;
 }
+
+.paragraphs h2:hover::after, .paragraphs h3:hover::after,
+.paragraphs h4:hover::after, .paragraphs h5:hover::after, .paragraphs h6:hover::after,
+.paragraphs h2:active::after, .paragraphs h3:active::after,
+.paragraphs h4:active::after, .paragraphs h5:active::after, .paragraphs h6:active::after,
+.paragraphs h2:focus::after, .paragraphs h3:focus::after,
+.paragraphs h4:focus::after, .paragraphs h5:focus::after, .paragraphs h6:focus::after {
+    content: '#';
+    display: inline-block;
+    margin-left: 0.5rem;
+    opacity: 0.5;
+    transform: scale(1.2);
+    text-shadow: 0 0 0.5rem #fff, 0 0 1rem #fff;
+}
+
 
 .paragraphs ul li h4 {
     display: inline-block;

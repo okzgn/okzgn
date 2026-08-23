@@ -166,7 +166,7 @@
                                 <ul role="list">
                                     <li>
                                         <strong>Specific context:</strong><br>
-                                        <span>While Web Components is a solid solution, it is less flexible than raw HTML. For instance, scoping styles to a single component is not always desirable—often styles need to cascade globally or affect other components (such as wrappers for specific layout areas or residual elements). Standard HTML also has a lower learning curve and is inherently SEO-friendly, avoiding extra prerendering layers or the need to 'teach' web browsers, bots, and scrapers what elements actually mean.<br>On the other hand, 'well-organized components' is ambiguous and subjective. Many favor precompiled or bundled components merged into a single asset (which optimizes network performance), yet the resulting bundle itself is not reusable on its own (typically due to minification and obfuscation); only the pre-bundled source components are.<br>There are also other factors to consider depending on the complexity of the application these components form, or even the organizational style, such as structuring them so that both AI models/agents and developer teams can leverage them in a consistent, coherent, and scalable manner.<br><strong>The data consumed by components is ultimately more valuable than the components themselves.</strong> Furthermore, components can be fetched on demand via signed or authenticated requests whenever protecting source origins, intellectual property, or assets is required—completely decoupled from how they are organized or reused.</span>
+                                        <span>'Well-organized components' is ambiguous and subjective. Many favor precompiled or bundled components merged into a single asset (which optimizes network performance), yet the resulting bundle itself is not reusable on its own (typically due to minification and obfuscation); only the pre-bundled source components are. There are also other factors to consider depending on the complexity of the application these components form, or even the organizational style, such as structuring them so that both AI models/agents and developer teams can leverage them in a consistent, coherent, and scalable manner.<br><strong>The data consumed by components is ultimately more valuable than the components themselves.</strong> Furthermore, components can be fetched on demand via signed or authenticated requests whenever protecting source origins, intellectual property, or assets is required—completely decoupled from how they are organized or reused.<br>While Web Components is a solid solution, it is less flexible than raw HTML. For instance, scoping styles to a single component is not always desirable—often styles need to cascade globally or affect other components (such as wrappers for specific layout areas or residual elements). Standard HTML also has a lower learning curve and is inherently SEO-friendly, avoiding extra prerendering layers or the need to 'teach' web browsers, bots, and scrapers what elements actually mean.</span>
                                     </li>
                                     <li>
                                         <strong>Bypass:</strong><br>
@@ -379,7 +379,7 @@ CompC.ok.then((r) =&gt; {
                                         <h5>Minimal implementation:</h5>
                                         <strong>Observable deep state tree with granular mutation hooks and identity preservation.</strong>
                                         <div class="rounded-box">
-<pre tabindex="0"><code class="language-javascript">const Handlers = (options, path, cache) =&gt; {
+<pre tabindex="0"><code class="language-javascript">const StateHandlers = (options, path, cache) =&gt; {
   return {
     get: (_data, property, receiver) =&gt; {
       const value = Reflect.get(_data, property, receiver);
@@ -429,7 +429,7 @@ function State(options = {}, path = [], cache = new WeakMap()) {
         return cache.get(data);
     }
 
-    const proxy = new Proxy(data, Handlers(options, path, cache));
+    const proxy = new Proxy(data, StateHandlers(options, path, cache));
     cache.set(data, proxy);
     return proxy;
 }</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
@@ -873,7 +873,7 @@ function XStateBatchExecution() {
                                 <ul role="list">
                                     <li>
                                         <strong>Specific context:</strong><br>
-                                        <span>Work In Progress ...</span>
+                                        <span>'Routing control' core mechanisms enable URL changes without full page reloads, typically by leveraging the <code>History API</code> and intercepting DOM anchor (<code>A</code>) tags to handle navigation within the current <code>location.pathname</code>. Routes are defined via configuration objects, custom syntax, or file-system-based routing (which is transformed into SPA-compatible code at build time). They support nested routes to prevent unnecessary parent re-renders, navigation guards, synchronous or lazy data fetching per route, and optional route caching. Additionally, they enable on-demand module loading, controlled visual transitions, route and data prefetching (triggered by events, <code>viewport</code>/<code>IntersectionObserver</code>), and browser scroll restoration. By not unmounting parent routes, they preserve both the application's logical state and navigation history. Furthermore, they restore the user's location upon page reload, provide independent route-level error handling, manage accessibility (<code>a11y</code>) for visually impaired users, and maintain a synchronized state across routes.</span>
                                     </li>
                                     <li>
                                         <strong>Bypass:</strong><br>

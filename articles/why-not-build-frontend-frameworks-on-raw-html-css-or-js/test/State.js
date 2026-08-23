@@ -1,4 +1,4 @@
-const Handlers = (options, path, cache) => {
+const StateHandlers = (options, path, cache) => {
   return {
     get: (_data, property, receiver) => {
       const value = Reflect.get(_data, property, receiver);
@@ -48,7 +48,7 @@ function State(options = {}, path = [], cache = new WeakMap()) {
         return cache.get(data);
     }
 
-    const proxy = new Proxy(data, Handlers(options, path, cache));
+    const proxy = new Proxy(data, StateHandlers(options, path, cache));
     cache.set(data, proxy);
     return proxy;
 }
