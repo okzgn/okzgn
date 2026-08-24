@@ -1379,6 +1379,7 @@ function RouterStart(options = {}) {
   return router;
 }</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
                                         </div>
+                                        <span>Note that <strong>the previous minimal implementation relies on regular expressions for route matching</strong>, which is well-suited for most SPAs. However, when registering over 250 routes, implementing route-matching patterns such as a <code>Radix Tree (Trie)</code> inside the <code>find()</code> function and omitting properties like <code>route.regex</code> and <code>regexSource</code> from <code>_register()</code> (or using alternative algorithms) is recommended to ensure maximum performance.</span>
                                         <h5>Usage example:</h5>
                                         <div class="rounded-box">
                                             <strong class="auto-x-padding">JavaScript</strong>
