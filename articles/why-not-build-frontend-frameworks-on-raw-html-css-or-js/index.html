@@ -384,7 +384,7 @@ CompC.ok.then((r) =&gt; {
                                         <span><code>Proxy</code> provides everything needed to establish a complete, predictable state lifecycle while avoiding unnecessary object recreation during mutations. Deeply observable state trees, lifecycle interceptors (<code>onGet</code>, <code>onSet</code>, <code>onDelete</code>), and reference caching can be implemented natively using ES6+:</span>
                                         <div class="rounded-box"><code>Proxy</code>, <code>Reflect</code>, <code>WeakMap</code>, <code>Object.create</code>, <code>Object.assign</code>, <code>Symbol</code>, <code>...</code></div>
                                         <h5>Minimal implementation:</h5>
-                                        <strong>Observable deep state tree with granular mutation hooks and identity preservation.</strong>
+                                        <strong>Observable deep state tree with granular mutation hooks and identity preservation (<a class="no-default-arrow" rel="noopener noreferrer" href="#steps-to-bypass-between-point-2-and-3-synchronized-granular-dom-updates-minimal-implementation">view demonstration combined with synchronized DOM updates</a>).</strong>
                                         <div class="rounded-box">
 <pre tabindex="0"><code class="language-javascript">const StateHandlers = (options, path, cache) =&gt; {
   return {
@@ -441,6 +441,7 @@ function State(options = {}, path = [], cache = new WeakMap()) {
     return proxy;
 }</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
                                         </div>
+                                        <span>Combining this previous minimal implementation with <code>CustomEvent</code>, <code>EventTarget</code>, and <code>dispatchEvent()</code> in the state-change hooks natively achieves the Publisher/Subscriber pattern in modern JavaScript.</span>
                                         <h5>Usage example:</h5>
                                         <div class="rounded-box">
 <pre tabindex="0"><code class="language-javascript">const state = State({
@@ -699,6 +700,7 @@ function UpdaterStart(targetNode, handlers) {
     }
 }</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
                                         </div>
+                                        <span>Note that <strong>the previous minimal implementation is mainly intended for initial DOM parsing, mapping, and binding</strong>, followed by a <code>disconnect()</code> call upon full application load. If handling tens of thousands of node-bound reactive variables, <strong>refer to these other demos to evaluate its viability: <a class="no-default-arrow" target="_blank" rel="noopener noreferrer" href="./test.updater.x100.html">x100</a>, <a class="no-default-arrow" target="_blank" rel="noopener noreferrer" href="./test.updater.x1000.html">x1000</a>, <a class="no-default-arrow" target="_blank" rel="noopener noreferrer" href="./test.updater.x5000.html">x5000</a>, <a class="no-default-arrow" target="_blank" rel="noopener noreferrer" href="./test.updater.x10000.html">x10000</a>.</strong></span>
                                         <h5>Usage example:</h5>
                                         <div class="rounded-box">
                                             <strong class="auto-x-padding">JavaScript</strong>
