@@ -138,13 +138,7 @@ class Router {
     return this._register(pattern, callbacks, false);
   }
 
-  dispatch(rawPath, contextExtra = {}, options = {}) {
-    if (typeof rawPath !== 'string') {
-      throw new TypeError('The path must be a string');
-    }
-
-    const cleanPath = '/' + rawPath.split(/[?#]/)[0].replace(/\/+/g, '/').replace(/^\/+|\/+$/g, '');
-    const targetPath = cleanPath === '/' ? '/' : cleanPath;
+  find(targetPath) {
     const matches = [];
 
     for (let i = 0; i < this.routes.length; i++) {
@@ -170,6 +164,10 @@ class Router {
       }
     }
 
+    return matches;
+  }
+
+  score(matches) {
     matches.sort((a, b) => {
       if (a.isMiddleware && !b.isMiddleware) {
         return -1;
@@ -197,6 +195,18 @@ class Router {
       return a.index - b.index;
     });
 
+    return matches;
+  }
+
+  dispatch(rawPath, contextExtra = {}, options = {}) {
+    if (typeof rawPath !== 'string') {
+      throw new TypeError('The path must be a string');
+    }
+
+    const cleanPath = '/' + rawPath.split(/[?#]/)[0].replace(/\/+/g, '/').replace(/^\/+|\/+$/g, '');
+    const targetPath = cleanPath === '/' ? '/' : cleanPath;
+
+    const matches = this.score(this.find(targetPath));
 
     const pipeline = [];
     for (let i = 0; i < matches.length; i++) {

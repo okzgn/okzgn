@@ -1035,13 +1035,7 @@ function XStateBatchExecution() {
     return this._register(pattern, callbacks, false);
   }
 
-  dispatch(rawPath, contextExtra = {}, options = {}) {
-    if (typeof rawPath !== 'string') {
-      throw new TypeError('The path must be a string');
-    }
-
-    const cleanPath = '/' + rawPath.split(/[?#]/)[0].replace(/\/+/g, '/').replace(/^\/+|\/+$/g, '');
-    const targetPath = cleanPath === '/' ? '/' : cleanPath;
+  find(targetPath) {
     const matches = [];
 
     for (let i = 0; i &lt; this.routes.length; i++) {
@@ -1067,6 +1061,10 @@ function XStateBatchExecution() {
       }
     }
 
+    return matches;
+  }
+
+  score(matches) {
     matches.sort((a, b) =&gt; {
       if (a.isMiddleware &amp;&amp; !b.isMiddleware) {
         return -1;
@@ -1094,6 +1092,18 @@ function XStateBatchExecution() {
       return a.index - b.index;
     });
 
+    return matches;
+  }
+
+  dispatch(rawPath, contextExtra = {}, options = {}) {
+    if (typeof rawPath !== 'string') {
+      throw new TypeError('The path must be a string');
+    }
+
+    const cleanPath = '/' + rawPath.split(/[?#]/)[0].replace(/\/+/g, '/').replace(/^\/+|\/+$/g, '');
+    const targetPath = cleanPath === '/' ? '/' : cleanPath;
+
+    const matches = this.score(this.find(targetPath));
 
     const pipeline = [];
     for (let i = 0; i &lt; matches.length; i++) {
