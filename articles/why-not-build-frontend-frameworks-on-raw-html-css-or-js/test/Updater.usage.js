@@ -6,7 +6,7 @@ const XVarsSuscriptors = new Map();
 const XElementDataStr = 'data-x';
 const XElements = new WeakSet();
 
-UpdaterStart(document, {
+const UpdaterObserver = UpdaterStart(document, {
     childList: {
         [Node.ELEMENT_NODE]: {
             added: (elementNode, parentNode) => {
