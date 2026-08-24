@@ -181,6 +181,8 @@ button, input[type="submit"] { cursor: pointer; }
 .auto-font-size-2 { font-size: clamp(1.125rem, 1vw + 1.125rem, 1.5rem); }
 .auto-font-size-3 { font-size: clamp(1rem, 1vw + 1rem, 1.25rem); }
 .auto-font-size-4 { font-size: clamp(0.875rem, 1vw + 0.875rem, 1rem); }
+.auto-font-size-5 { font-size: clamp(0.75rem, 1vw + 0.75rem, 0.875rem); }
+.auto-font-size-6 { font-size: clamp(0.625rem, 1vw + 0.625rem, 0.75rem); }
 
 .bg {
     animation: slide 3s ease-in-out infinite alternate;
