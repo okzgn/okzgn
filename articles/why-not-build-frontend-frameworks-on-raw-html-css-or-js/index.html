@@ -13,7 +13,7 @@
 	<meta name="robots" content="index, follow, max-image-preview:large">
 	<meta name="author" content="OKZGN">
 
-	<meta property="article:published_time" content="2026-08-23T12:00:00Z">
+	<meta property="article:published_time" content="2026-08-24T12:00:00Z">
 	<meta property="article:author" content="Elías Francisco Alvarado Soshina">
 
 	<meta name="theme-color" content="#ffdbb8" media="(prefers-color-scheme: light)">
@@ -55,8 +55,8 @@
   "description": "It is possible: No endless dependencies, no dev environment setup, no build step, no Web Components required, minimal boilerplate, minimal lock-in. Raw HTML, CSS and JS have everything needed and are web standards, unlike custom syntaxes.",
   "image": "https://okzgn.com/landscape.png",
   "url": "https://okzgn.com/articles/why-not-build-frontend-frameworks-on-raw-html-css-or-js/",
-  "datePublished": "2026-08-23T12:00:00Z",
-  "dateModified": "2026-08-23T12:00:00Z",
+  "datePublished": "2026-08-24T12:00:00Z",
+  "dateModified": "2026-08-24T12:00:00Z",
   "inLanguage": "en",
   "author": {
     "@type": "Person",
@@ -161,7 +161,7 @@
                     <h3 class="auto-font-size-3">Between Point 2 and 3</h3>
                     <div>
                         <ul role="list" class="lines">
-                            <li><strong>Context:</strong><br> Recurring UI development problems are solved through well-organized, reusable components (no Web Components required); efficient centralized or decentralized state management; synchronized, granular DOM updates; routing control without page reloads, coordinated with the UI; and conventions that facilitate interoperable collaboration.<br><strong>That can be achieved seamlessly using:</strong> native HTML, in-memory JS-scoped data, batched event-based DOM reactivity, isolated and complete routing lifecycle interfaces, and standards-compliant HTML, CSS, and JS conventions with minimal guidelines.</li>
+                            <li><strong>Context:</strong><br> Recurring UI development problems are solved through well-organized, reusable components; efficient centralized or decentralized state management; synchronized, granular DOM updates; routing control without page reloads, coordinated with the UI; and conventions that facilitate interoperable collaboration.<br><strong>That can be achieved seamlessly using:</strong> native HTML, in-memory JS-scoped data, batched event-based DOM reactivity, isolated and complete routing lifecycle interfaces, and standards-compliant HTML, CSS, and JS conventions with minimal guidelines.</li>
                             <li><h4>Well-organized, reusable components:</h4><br>
                                 <ul role="list">
                                     <li>
@@ -317,6 +317,8 @@ class Component {
     }
 }</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
                                         </div>
+                                        <span>Note that the previous minimal implementation resolves the asynchronous dependency synchronization problem, since each component typically requires logic (JS), markup (HTML), and styling (CSS), which can be loaded via <code>import()</code>, <code>fetch()</code>, or <code>XMLHttpRequest</code> inside of <code>new Component()</code> logic and then wrapped in a <code>Web Component</code> to inject the HTML and CSS via <code>&lt;template&gt;</code> and <code>&lt;style&gt;</code> with <code>Shadow DOM</code> in modern JavaScript.</span>
+                                        <strong>Although this can be achieved just as well with ES6, see the additional patterns at the end of the following usage examples.</strong>
                                         <h5>Usage example:</h5>
                                         <div class="rounded-box">
 <pre tabindex="0"><code class="language-javascript">const CompA = new Component('CompA', () =&gt; {
