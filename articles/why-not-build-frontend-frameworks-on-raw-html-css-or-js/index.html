@@ -650,19 +650,22 @@ function UpdaterStart(targetNode, handlers) {
         ObserverConfig.subtree = true;
 
         try {
-            if (ObserverConfig.attributes = !!handlers.attributes) {
+            ObserverConfig.attributes = !!handlers.attributes;
+            if (ObserverConfig.attributes) {
                 if(!(handlers.attributes.added &amp;&amp; handlers.attributes.removed &amp;&amp; handlers.attributes.modified)) {
                     throw new Error('attributes: added, removed, modified required functions.');
                 }
             }
 
-            if (ObserverConfig.characterData = !!handlers.characterData) {
+            ObserverConfig.characterData = !!handlers.characterData;
+            if (ObserverConfig.characterData) {
                 if (!(handlers.characterData[Node.COMMENT_NODE].modified &amp;&amp; handlers.characterData[Node.TEXT_NODE].modified)) {
                     throw new Error('characterData: [Node.COMMENT_NODE].modified &amp;&amp; [Node.TEXT_NODE].modified required functions.');
                 }
             }
 
-            if (ObserverConfig.childList = !!handlers.childList) {
+            ObserverConfig.childList = !!handlers.childList;
+            if (ObserverConfig.childList) {
                 if (!(handlers.childList[Node.COMMENT_NODE].added &amp;&amp; handlers.childList[Node.COMMENT_NODE].removed &amp;&amp;
                     handlers.childList[Node.TEXT_NODE].added &amp;&amp; handlers.childList[Node.TEXT_NODE].removed &amp;&amp;
                     handlers.childList[Node.ELEMENT_NODE].added &amp;&amp; handlers.childList[Node.ELEMENT_NODE].removed)
@@ -1464,13 +1467,62 @@ app.listen(currentPathDirname);</code><button class="cta-button no-default-arrow
                                 <ul role="list">
                                     <li>
                                         <strong>Specific context:</strong><br>
-                                        <span>Work In Progress ...</span>
+                                        <span>Interoperable collaboration in the frontend is grounded in a set of architectural standards and technical contracts that enable different teams to integrate heterogeneous modules and frameworks within a single interface in a predictable and conflict-free manner. This model is articulated through design systems based on Design Tokens, Headless components, and native Web Components, which guarantee visual consistency and strict style isolation through Shadow DOM or CSS Modules, all centralized in living catalogs like Storybook. At the runtime integration level, it relies on Micro-frontend architectures orchestrated by Module Federation, with defined lifecycle contracts and decoupled communication leveraging the URL, the Broadcast Channel API, and CustomEvents as neutral channels. This entire structure is governed by the Feature-Sliced Design (FSD) architectural methodology and strictly typed TypeScript contracts for Props and events, synchronizing reactivity through framework-agnostic state primitives (such as Signals or Nanostores), and consolidating quality via reusable UI packages along with automated accessibility (a11y) and linting rules within unified monorepos.<br>Complementarily, the durability of this interoperability is enforced through Semantic Versioning (SemVer) across internally published UI packages, allowing consumer teams to anticipate breaking changes without inspecting implementation details. Visual integrity is safeguarded through automated Visual Regression Testing using tools such as Chromatic or Playwright snapshots, which catches unintended style drift that type contracts and Storybook cataloging alone cannot guarantee. Cross-team consistency extends into internationalization through a shared i18n layer, preventing each micro-frontend from fragmenting translation logic independently. At the security boundary, third-party or untrusted Web Components are constrained through sandboxing techniques, including iframe isolation, restricted Custom Elements registries, and Shadow DOM encapsulation, to prevent global DOM or style pollution. Finally, organizational scalability is sustained through independent CI/CD pipelines per micro-frontend, enabling isolated deployment and rollback of a single module without redeploying the orchestrating shell.</span>
                                     </li>
                                     <li>
                                         <strong>Bypass:</strong><br>
-                                        <span>Work In Progress ...</span>
-                                        <div class="rounded-box">
-                                            <pre tabindex="0"><code class="language-javascript">// Work In Progress ...</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre></div>
+                                        <span>Some of the widely available Baseline features used to decouple components and eliminate unnecessary complexity include:</span>
+                                        <div class="auto-x-small-padding">
+                                            <h5>CSS</h5>
+                                            <ul role="list" class="lines lines-condensed">
+                                                <li><code>min()</code> (2020, Safe)</li>
+                                                <li><code>max()</code> (2020, Safe)</li>
+                                                <li><code>clamp()</code> (2020, Safe)</li>
+                                                <li><code>::part()</code> (2020, Safe)</li>
+                                                <li><code>::slotted()</code> (2020, Safe)</li>
+                                                <li><code>aspect-ratio</code> (2021, Safe)</li>
+                                                <li><code>:is()</code> (2021, Safe)</li>
+                                                <li><code>:where()</code> (2021, Safe)</li>
+                                                <li><code>@layer</code> (2022, Safe)</li>
+                                                <li><code>CSS Nesting</code> (2023)</li>
+                                                <li><code>@container</code> (2023)</li>
+                                                <li><code>subgrid</code> (2023)</li>
+                                                <li><code>color-mix()</code> (2023)</li>
+                                                <li><code>:has()</code> (2023)</li>
+                                                <li><code>@starting-style</code> (2024)</li>
+                                                <li><code>transition-behavior</code> (2024)</li>
+                                            </ul>
+
+                                            <h5>JavaScript &amp; Web APIs</h5>
+                                            <ul role="list" class="lines lines-condensed">
+                                                <li><code>CustomEvent</code> (2015, Safe)</li>
+                                                <li><code>Intl</code> (2015, Safe)</li>
+                                                <li><code>import()</code> (2020, Safe)</li>
+                                                <li><code>ResizeObserver</code> (2020, Safe)</li>
+                                                <li><code>Clipboard API</code> (2020, Safe)</li>
+                                                <li><code>writeText()</code> (2020, Safe)</li>
+                                                <li><code>matchMedia</code> (with addEventListener: 2020, Safe)</li>
+                                                <li><code>EventTarget</code> (standalone constructor: 2021, Safe)</li>
+                                                <li><code>AbortController</code> (event listener signal support: 2021, Safe)</li>
+                                                <li><code>structuredClone()</code> (2022, Safe)</li>
+                                                <li><code>showModal()</code> (2022, Safe)</li>
+                                                <li><code>Array.toSorted()</code> (2023)</li>
+                                                <li><code>Array.toReversed()</code> (2023)</li>
+                                                <li><code>Intl.Segmenter</code> (2024)</li>
+                                                <li><code>URL.canParse()</code> (2024)</li>
+                                            </ul>
+
+                                            <h5>HTML &amp; Web Components</h5>
+                                            <ul role="list" class="lines lines-condensed">
+                                                <li><code>Shadow DOM</code> (v1 standard: 2020, Safe)</li>
+                                                <li><code>Web Components</code> (Custom Elements v1: 2020, Safe)</li>
+                                                <li><code>&lt;dialog&gt;</code> (2022, Safe)</li>
+                                                <li><code>&lt;img loading="lazy"&gt;</code> (2022, Safe)</li>
+                                                <li><code>inert</code> (2023)</li>
+                                                <li><code>Popover API</code> (2024)</li>
+                                            </ul>
+                                        </div><br>
+                                        <strong>Work in progress: additional content for this section.</strong>
                                     </li>
                                 </ul>
                             </li>

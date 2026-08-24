@@ -173,19 +173,22 @@ function UpdaterStart(targetNode, handlers) {
         ObserverConfig.subtree = true;
 
         try {
-            if (ObserverConfig.attributes = !!handlers.attributes) {
+            ObserverConfig.attributes = !!handlers.attributes
+            if (ObserverConfig.attributes) {
                 if(!(handlers.attributes.added && handlers.attributes.removed && handlers.attributes.modified)) {
                     throw new Error('attributes: added, removed, modified required functions.');
                 }
             }
 
-            if (ObserverConfig.characterData = !!handlers.characterData) {
+            ObserverConfig.characterData = !!handlers.characterData
+            if (ObserverConfig.characterData) {
                 if (!(handlers.characterData[Node.COMMENT_NODE].modified && handlers.characterData[Node.TEXT_NODE].modified)) {
                     throw new Error('characterData: [Node.COMMENT_NODE].modified && [Node.TEXT_NODE].modified required functions.');
                 }
             }
 
-            if (ObserverConfig.childList = !!handlers.childList) {
+            ObserverConfig.childList = !!handlers.childList
+            if (ObserverConfig.childList) {
                 if (!(handlers.childList[Node.COMMENT_NODE].added && handlers.childList[Node.COMMENT_NODE].removed &&
                     handlers.childList[Node.TEXT_NODE].added && handlers.childList[Node.TEXT_NODE].removed &&
                     handlers.childList[Node.ELEMENT_NODE].added && handlers.childList[Node.ELEMENT_NODE].removed)
