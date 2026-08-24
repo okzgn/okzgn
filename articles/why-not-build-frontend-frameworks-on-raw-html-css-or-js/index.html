@@ -127,7 +127,7 @@
                         </ul>
                     </div>
                     <h2 class="auto-font-size-2">Steps to bypass:</h2>
-                    <i class="auto-font-size-5"><strong>Note:</strong> links marked <sup>EXT</sup>, along with the GitHub repositories referenced throughout, point to implementations shown as evidence the approach works rather than endorsements of third-party tools, all developed by this article's author.</i>
+                    <i class="auto-font-size-5"><strong>Note:</strong> links marked <a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a>, along with the GitHub repositories referenced throughout as <a class="no-default-arrow" href="#POC"><sup>POC</sup></a> or <a class="no-default-arrow" href="#GIT"><sup>GIT</sup></a>, point to implementations shown as evidence the approach works rather than endorsements of third-party tools, all developed by this article's author.</i>
                     <h3 class="auto-font-size-3">Between Point 1 and 2</h3>
                     <div>
                         <ul role="list" class="lines">
@@ -369,7 +369,7 @@ CompC.ok.then((r) =&gt; {
     console.error('Error C:', e);
 });</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
                                         </div>
-                                        <span>Optionally, view the "Asynchronous Proxy-Based Synchronization" pattern used where components are declared in HTML index via <code>data-*</code> attributes, and automatically fetched on demand from self-hosted endpoints or CDNs, structured in dedicated directories (<code>name/style.css</code>, <code>name/component.html</code>, <code>name/functionality.js</code>), and automatically synchronized, orchestrated and injected by the prototype framework implemented in <a class="no-default-arrow" rel="noopener noreferrer" target="_blank" href="https://github.com/okzgn/componentes-prototype-2025-js"><strong>Components Prototype</strong></a> (PoC, ES6+). Or explore advanced patterns with another implementation in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/components/"><strong>Components</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> (RC2, ES6+).</span>
+                                        <span>Optionally, view the "Asynchronous Proxy-Based Synchronization" pattern used where components are declared in HTML index via <code>data-*</code> attributes, and automatically fetched on demand from self-hosted endpoints or CDNs, structured in dedicated directories (<code>name/style.css</code>, <code>name/component.html</code>, <code>name/functionality.js</code>), and automatically synchronized, orchestrated and injected by the prototype framework implemented in <a class="no-default-arrow" rel="noopener noreferrer" target="_blank" href="https://github.com/okzgn/componentes-prototype-2025-js"><strong>Components Prototype</strong></a><a class="no-default-arrow" href="#POC"><sup>POC</sup></a> (ES6+). Or explore advanced patterns with another implementation in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/components/"><strong>Components</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> (RC2, ES6+).</span>
                                         <br>
                                     </li>
                                 </ul>
@@ -462,7 +462,7 @@ delete state.name;
 // delete (1)["name"] undefined John
 </code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
                                         </div>
-                                        <span>Or explore other patterns like "Safe Auto-Vivification", with prototype pollution guards, array mutator tracking, and depth limits implementation in <a class="no-default-arrow" rel="noopener noreferrer" target="_blank" href="https://github.com/okzgn/dx-object-js"><strong>DXObject</strong></a> (RC3, ESM, ES6+), and reactivity store patterns implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/reactive/"><strong>Reactive</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> (RC1, ES6+).</span>
+                                        <span>Or explore other patterns like "Safe Auto-Vivification", with prototype pollution guards, array mutator tracking, and depth limits implementation in <a class="no-default-arrow" rel="noopener noreferrer" target="_blank" href="https://github.com/okzgn/dx-object-js"><strong>DXObject</strong></a><a class="no-default-arrow" href="#GIT"><sup>GIT</sup></a> (RC3, ESM, ES6+), and reactivity store patterns implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/reactive/"><strong>Reactive</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> (RC1, ES6+).</span>
                                     </li>
                                 </ul>
                             </li>
@@ -1551,6 +1551,8 @@ app.listen(currentPathDirname);</code><button class="cta-button no-default-arrow
                     <p><strong>Key points and bypasses covered in the next article:</strong> bundling (point 4), the interpreter (point 5), and the end user (point 6), where additional tooling is optional.</p>
                     <hr>
                     <em id="EXT" aria-label="Extension footnote"><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a><strong>AN EXTENSION</strong> of the main <a class="no-default-arrow" href="https://estructura.okzgn.com/">Runtime-Type-Driven Multiple Dispatch JS Framework</a> implementation as a TypeScript compile-time alternative using ES3+, maintained by this article's author.</em>
+                    <em id="POC" aria-label="Proof of Concept footnote"><a class="no-default-arrow" href="#POC"><sup>POC</sup></a><strong>PROOF OF CONCEPT</strong>, a small-scale demonstration designed to verify that a specific technical idea or theory is feasible and actually works in real life.</em>
+                    <em id="GIT" aria-label="GitHub footnote"><a class="no-default-arrow" href="#GIT"><sup>GIT</sup></a><strong>GITHUB</strong> public repository of implementation shown as demonstration.</em>
                 </div>
             </article>
 		</div>
