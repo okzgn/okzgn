@@ -14,7 +14,12 @@ const Queue = {
   flushLoad: () => {
     const gates = Queue.load.splice(0);
     for (const loadFn of gates) {
-      Queue.pending.push(loadFn());
+      try {
+        Queue.pending.push(loadFn());
+      }
+      catch (e) {
+        console.error('Component error:', e);
+      }
     }
   },
 

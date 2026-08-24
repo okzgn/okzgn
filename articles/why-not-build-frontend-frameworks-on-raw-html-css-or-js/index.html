@@ -13,7 +13,7 @@
 	<meta name="robots" content="index, follow, max-image-preview:large">
 	<meta name="author" content="OKZGN">
 
-	<meta property="article:published_time" content="2026-08-22T12:00:00Z">
+	<meta property="article:published_time" content="2026-08-23T12:00:00Z">
 	<meta property="article:author" content="Elías Francisco Alvarado Soshina">
 
 	<meta name="theme-color" content="#ffdbb8" media="(prefers-color-scheme: light)">
@@ -55,8 +55,8 @@
   "description": "It is possible: No endless dependencies, no dev environment setup, no build step, no Web Components required, minimal boilerplate, minimal lock-in. Raw HTML, CSS and JS have everything needed and are web standards, unlike custom syntaxes.",
   "image": "https://okzgn.com/landscape.png",
   "url": "https://okzgn.com/articles/why-not-build-frontend-frameworks-on-raw-html-css-or-js/",
-  "datePublished": "2026-08-22T12:00:00Z",
-  "dateModified": "2026-08-22T12:00:00Z",
+  "datePublished": "2026-08-23T12:00:00Z",
+  "dateModified": "2026-08-23T12:00:00Z",
   "inLanguage": "en",
   "author": {
     "@type": "Person",
@@ -114,7 +114,7 @@
                     <h2 class="auto-font-size-2">Perspective:</h2>
                     <p>Having written code close to the metal (XDP, shared memory, C), delved into low-level systems (protocol flows, RAM interactions, Go), focused on optimizing core operations and identifying high-performance algorithms (BM25, HNSW, djb2), compared the performance of various runtimes (PHP, Lua, Node, Wasm, Rust), <strong>I analyzed some modern frontend fundamentals from the same viewpoint</strong>.</p>
                     <h2 class="auto-font-size-2">Simplified solution:</h2>
-                    <p>What was mentioned in the first line (regarding what is possible) could be solved if most modern browsers or JavaScript engines updated to a recent ECMAScript specification with native Type Annotations and backward compatibility support.<br> But the proprietary or custom syntaxes that have been invented are not standard JS or TS; they require transpilers, optimizers, compilers, bundlers, and so on (understanding their inner workings and mechanisms is indeed fascinating).</p>
+                    <p>What was mentioned at the beginning (regarding what is possible) could be solved if most modern browsers or JavaScript engines updated to a recent ECMAScript specification with native Type Annotations and backward compatibility support.<br> But the proprietary or custom syntaxes that have been invented are not standard JS or TS; they require transpilers, optimizers, compilers, bundlers, and so on (understanding their inner workings and mechanisms is indeed fascinating).</p>
                     <h2 class="auto-font-size-2">Proposition:</h2>
                     <p><strong>There are several steps that can be bypassed between the scripting language, the framework, and development</strong> (covered up to here in this article, without requiring any updates to ES/TS specifications), and bundling, the interpreter, and the end user (which follow in an upcoming article, where additional tooling is optional).</p>
                     <h2 class="auto-font-size-2">Focus points:</h2>
@@ -199,7 +199,12 @@
   flushLoad: () =&gt; {
     const gates = Queue.load.splice(0);
     for (const loadFn of gates) {
-      Queue.pending.push(loadFn());
+      try {
+        Queue.pending.push(loadFn());
+      }
+      catch (e) {
+        console.error('Component error:', e);
+      }
     }
   },
 
