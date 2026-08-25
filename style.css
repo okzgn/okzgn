@@ -694,7 +694,7 @@ main {
     padding: 0.5rem 1rem;
 }
 #main a, #services.card li .price {
-    box-shadow: 0 0.125rem 0.25rem var(--shadow);
+    box-shadow: 0 0.125rem 0.25rem var(--shadow), inset 0 -0.25rem 0.5rem 0 var(--softShadow0);
 }
 #services.card li > a:hover .price,
 #services.card li > a:active .price,
@@ -1191,6 +1191,10 @@ footer {
     #services.card li .price {
         color: var(--accent2);
         background: var(--realBlack);
+    }
+
+    #main a, #services.card li .price {
+        box-shadow:  inset 0 -0.25rem 0.5rem 0 var(--realBlueDark);
     }
 
     #main a::before {
