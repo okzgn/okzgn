@@ -256,6 +256,7 @@ code strong {
     font-size: 1.25rem;
     color: var(--blue);
 }
+code a { color: var(--blueDark); }
 
 a, input, textarea, button, input[type="submit"] {
     transition: all 0.25s;
