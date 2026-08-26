@@ -1,5 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
-    <style>.ic{fill:none;stroke:#004e9b;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}.ic2{stroke-width:1.125;}</style>
+    <style>
+    .ic{fill:none;stroke:#004e9b;stroke-width:2.987654321;stroke-linecap:round;stroke-linejoin:round}
+    .ic2{stroke-width:calc(2.987654321 * 0.5);}
+    </style>
     <g transform="translate(-35, 0) scale(1.68, 2.2)">
         <g>
             <path d="M 32 22 C 24 22 22 19 22 15 C 22 9 30 7 35 10 C 38 2 52 2 55 10 C 60 7 68 9 68 15 C 68 19 66 22 58 22 Z" class="ic ic2"/>

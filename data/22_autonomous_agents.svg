@@ -1,11 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
-  <style>.ic{fill:none;stroke:#004e9b;stroke-width:2.987654321;stroke-linecap:round;stroke-linejoin:round}.ic2{stroke-width:calc(2.987654321 * 1.4);}</style>
+  <style>
+  .ic{fill:none;stroke:#004e9b;stroke-width:2.987654321;stroke-linecap:round;stroke-linejoin:round}
+  .ic2{stroke-width:calc(2.987654321 * 1.4);}
+  </style>
 
   <line x1="40" y1="0" x2="40" y2="10" class="ic" stroke-dasharray="3,3"/>
-
   <circle cx="40" cy="17" r="4" class="ic"/>
 
-  <!--<circle cx="40" cy="40" r="16" class="ic"/>-->
   <g transform="translate(16, 16) scale(0.6)">
     <path d="M40 12 C24 12 12 22 12 36 C12 46 18 54 28 58 L28 68 L52 68 L52 58 C62 54 68 46 68 36 C68 22 56 12 40 12 Z" class="ic ic2"/>
   </g>
