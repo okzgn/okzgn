@@ -2,7 +2,7 @@
   <style>
   .ic{fill:none;stroke:#004e9b;stroke-width:calc(2.987654321 * 0.995);stroke-linecap:round;stroke-linejoin:round}
   </style>
-  <g transform="translate(-0.2367,5.7988) scale(1.005)">
+  <g transform="translate(-0.2367, 8.5988) scale(1.005)">
     <path d="M8 13 Q8 7 14 7 L66 7 Q72 7 72 13 L72 43 Q72 49 66 49 L36 49 L24 61 L24 49 L14 49 Q8 49 8 43 Z" class="ic"/>
     <polyline points="26,30 34,38 54,18" class="ic" />
   </g>

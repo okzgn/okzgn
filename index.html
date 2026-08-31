@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html spellcheck="false" lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -138,6 +138,7 @@
 
 		<article id="articles" class="card">
 			<h2 class="auto-font-size-2">Articles</h2>
+			<p>In-depth engineering notes on standards-first, dependency-free web architecture.</p>
 			<section>
 				<div class="category">
 					<ul class="list relate">
@@ -165,11 +166,13 @@
 		</article>
 
 		<article id="services" class="card">
-			<h2 class="auto-font-size-2">Services</h2>
+			<h2 class="auto-font-size-2">Services, On Demand</h2>
+			<p>Select the services you need and acquire them on demand, each with transparent pricing.</p>
 
 			<section>
 				<div class="category">
 					<h3 class="auto-font-size-3">Applied Artificial Intelligence</h3>
+					<p>Production-grade AI: from advanced prompting to autonomous agents and custom model deployment. <span>Select to add to cart.</span></p>
 					<ul class="list">
 						<li>
 							<a href="javascript:void(0)">
@@ -211,6 +214,7 @@
 				</div>
 				<div class="category">
 					<h3 class="auto-font-size-3">Platform Development & Architecture</h3>
+					<p>System design, technical audits, CI/CD pipelines, and internal tooling, engineered per engagement. <span>Select to add to cart.</span></p>
 					<ul class="list">
 						<li><a href="javascript:void(0)"><div class="icon"><img src="./data/01_system_design.svg" width="80" height="80" alt="" aria-hidden="true" loading="lazy" decoding="async"></div><div class="description"><b>System Design</b><span>Architecture planning for scalable, maintainable platforms — from monoliths to microservices.</span></div><div class="price">From $130/hr</div></a></li>
 						<li><a href="javascript:void(0)"><div class="icon"><img src="./data/02_technical_audits.svg" width="80" height="80" alt="" aria-hidden="true" loading="lazy" decoding="async"></div><div class="description"><b>Technical Audits</b><span>Assessment of existing codebases, infrastructure, and workflows to identify bottlenecks and risks.</span></div><div class="price">From $500</div></a></li>
@@ -224,6 +228,7 @@
 			<section>
 				<div class="category">
 					<h3 class="auto-font-size-3">Web & Mobile Development</h3>
+					<p>Custom interfaces and scalable backends, delivered for every screen and load condition. <span>Select to add to cart.</span></p>
 					<ul class="list">
 						<li><a href="javascript:void(0)"><div class="icon"><img src="./data/06_custom_web_design.svg" width="80" height="80" alt="" aria-hidden="true" loading="lazy" decoding="async"></div><div class="description"><b>Custom Web Design</b><span>Modern, consistent, and user-centric interfaces built from scratch, using frameworks or utilities like Tailwind.</span></div><div class="price">From $300</div></a></li>
 						<li><a href="javascript:void(0)"><div class="icon"><img src="./data/07_high_performance_frontend.svg" width="80" height="80" alt="" aria-hidden="true" loading="lazy" decoding="async"></div><div class="description"><b>High-Performance Frontend</b><span>Fast, lightweight, and responsive interfaces (HTML5, CSS3, JavaScript, Angular).</span></div><div class="price">From $85/hr</div></a></li>
@@ -237,6 +242,7 @@
 
 				<div class="category">
 					<h3 class="auto-font-size-3">Infrastructure & Hosting</h3>
+					<p>Domains, SSL, DNS, and high-performance servers, managed with security-first protection. <span>Select to add to cart.</span></p>
 					<ul class="list">
 						<li><a href="javascript:void(0)"><div class="icon"><img src="./data/12_domain_management.svg" width="80" height="80" alt="" aria-hidden="true" loading="lazy" decoding="async"></div><div class="description"><b>Domain Management</b><span>Full registration and configuration of your web address.</span></div><div class="price">From $150/yr</div></a></li>
 						<li><a href="javascript:void(0)"><div class="icon"><img src="./data/13_high_performance_hosting.svg" width="80" height="80" alt="" aria-hidden="true" loading="lazy" decoding="async"></div><div class="description"><b>High-Performance Hosting</b><span>Secure, fast, and reliable hosting for systems, applications, and websites.</span></div><div class="price">From $100/mo</div></a></li>
@@ -249,6 +255,7 @@
 
 				<div class="category">
 					<h3 class="auto-font-size-3">Optimization, DevOps & FinOps</h3>
+					<p>Server administration, access control, and continuous optimization of operations and costs. <span>Select to add to cart.</span></p>
 					<ul class="list">
 						<li><a href="javascript:void(0)"><div class="icon"><img src="./data/17_server_administration.svg" width="80" height="80" alt="" aria-hidden="true" loading="lazy" decoding="async"></div><div class="description"><b>Server Administration</b><span>End-to-end maintenance of Linux environments (Bash, SSH, K8s, Docker, Express, Echo, Nginx).</span></div><div class="price">From $90/hr</div></a></li>
 						<li><a href="javascript:void(0)"><div class="icon"><img src="./data/18_data_access_control.svg" width="80" height="80" alt="" aria-hidden="true" loading="lazy" decoding="async"></div><div class="description"><b>Data Access Control</b><span>Secure management and access control for your servers, applications, and content.</span></div><div class="price">From $100/hr</div></a></li>
@@ -262,6 +269,7 @@
 
 		<article id="projects" class="card">
 			<h2 class="auto-font-size-2">Projects, Open Source</h2>
+			<p>Open-source software engineered for performance, reliability, and real-world use.</p>
 
 			<section>
 				<div class="category">
@@ -309,16 +317,41 @@
 	</main>
 	<footer>&copy; 2026  OKZGN</footer>
 
-	<button id="menu" aria-label="Back to top">
+	<button data-nosnippet id="checkout" type="button" aria-label="Checkout" aria-controls="cart" aria-expanded="false" data-count="0">
+        <svg class="i-cart" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="8" cy="21" r="1.2"></circle>
+            <circle cx="18" cy="21" r="1.2"></circle>
+            <path d="M2 3h2.4l2.3 11.2a1.6 1.6 0 0 0 1.6 1.3h8.4a1.6 1.6 0 0 0 1.6-1.25l1.5-7.05H5.6"></path>
+        </svg>
+        <svg class="i-close" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+        </svg>
+    </button>
+
+	<section data-nosnippet id="cart" role="region" aria-label="Cart summary" aria-hidden="true">
+		<header><h2>Cart Summary</h2><div id="cart-order"></div></header>
+		<ul id="cart-list" aria-label="Selected services"></ul>
+		<div class="cart-client">
+			<label for="cart-client-name">Your name</label>
+			<input id="cart-client-name" type="text" placeholder="Full name" autocomplete="name" maxlength="48" spellcheck="false">
+		</div>
+		<footer>
+			<span id="cart-total">0 services</span>
+			<a href="https://wa.me/593980670720" target="_blank" rel="noopener noreferrer" class="cta-button" id="cart-contact" aria-label="Checkout selected services on WhatsApp"><span>Checkout</span></a>
+		</footer>
+	</section>
+
+	<button data-nosnippet id="menu" aria-label="Back to top">
         <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <line x1="12" y1="19" x2="12" y2="5"></line>
             <polyline points="5 12 12 5 19 12"></polyline>
         </svg>
     </button>
 
-	<div class="bg"></div>
-	<div class="bg bg-2"></div>
-	<div class="bg bg-3"></div>
+	<div data-nosnippet class="bg"></div>
+	<div data-nosnippet class="bg bg-2"></div>
+	<div data-nosnippet class="bg bg-3"></div>
 
 	<script src="main.js"></script>
 </body>

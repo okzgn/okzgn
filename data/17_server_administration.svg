@@ -3,13 +3,13 @@
   .ic{fill:none;stroke:#004e9b;stroke-width:calc(2.987654321 * 1.11);stroke-linecap:round;stroke-linejoin:round}
   .ic2{fill:none;stroke:#004e9b;stroke-width:calc(2.987654321 * (1.45 + 0.11));stroke-linecap:round;stroke-linejoin:round}
   </style>
-  <g transform="translate(4.0212,7.6190) scale(0.89)">
+  <g transform="translate(4.0212, 9.0190) scale(0.89)">
     <rect x="4" y="4" width="72" height="60" rx="6" class="ic"/>
     <line x1="4" y1="18" x2="76" y2="18" class="ic"/>
     <circle cx="14" cy="11" r="3" class="ic"/>
     <circle cx="24" cy="11" r="3" class="ic"/>
 
-    <g transform="translate(19, 20) scale(0.55)">
+    <g transform="translate(19, 21) scale(0.55)">
         <rect x="28" y="4" width="24" height="18" rx="4" class="ic2"/>
         <line x1="40" y1="22" x2="40" y2="38" class="ic2"/>
         <line x1="16" y1="38" x2="64" y2="38" class="ic2"/>

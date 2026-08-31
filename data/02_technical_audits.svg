@@ -2,7 +2,7 @@
   <style>
   .ic{fill:none;stroke:#004e9b;stroke-width:2.987654321;stroke-linecap:round;stroke-linejoin:round}
   </style>
-  <g transform="">
+  <g transform="translate(0.5,1.5)">
     <circle cx="34" cy="34" r="24" class="ic"/>
     <circle cx="34" cy="34" r="0" class="ic"/>
     <line x1="51" y1="52" x2="67" y2="67" class="ic" stroke-width="3"/>
