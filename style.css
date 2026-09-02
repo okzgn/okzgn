@@ -560,7 +560,7 @@ main {
 }
 .card li { color: var(--blueDark); }
 .card h3 {
-    min-height: 4rem;
+    min-height: 5rem;
     display: flex;
     flex-flow: column;
     justify-content: center;
@@ -693,6 +693,7 @@ main {
 #services .category > p,
 #articles > p,
 #projects > p {
+    color: var(--gray);
     opacity: 0;
     transform: translateY(0.5rem);
     transition: opacity 0.5s ease, transform 0.5s ease;
@@ -707,7 +708,7 @@ main {
 #services .category > p {
     padding: 0 1rem;
     margin-top: -0.75rem;
-    color: var(--gray);
+    font-size: 0.8rem;
 }
 #services .category > p span {
     color: var(--blue);
