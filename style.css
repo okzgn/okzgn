@@ -268,6 +268,18 @@ a:focus::after {
         font-size: 1rem;
     }
 }
+
+.no-default-arrow {
+    background: none;
+    padding: 0;
+    display: inline-block;
+}
+
+.no-default-arrow::before, .no-default-arrow::after {
+    display: none;
+}
+
+
 .container {
     padding: 0;
     margin: 0;
