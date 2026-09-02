@@ -10,10 +10,10 @@
     </g>
 
     <line x1="41" y1="30" x2="41" y2="54" class="ic" />
-    <polyline points="30,40 41,30 54,40" class="ic"/>
+    <polyline points="31, 40 41, 30 51,40" class="ic"/>
 
-    <line x1="18" y1="55" x2="65" y2="55" class="ic ic2" stroke-dasharray="5,5" />
-    <line x1="16" y1="60" x2="67" y2="60" class="ic ic2" stroke-dasharray="6,5" />
-    <line x1="14" y1="65" x2="69" y2="65" class="ic ic2" stroke-dasharray="7,5" />
-    <line x1="12" y1="70" x2="71" y2="70" class="ic ic2" stroke-dasharray="8,5" />
+    <line x1="18" y1="57" x2="65" y2="57" class="ic ic2" stroke-dasharray="5,5" />
+    <line x1="16" y1="62" x2="67" y2="62" class="ic ic2" stroke-dasharray="6,5" />
+    <line x1="14" y1="67" x2="69" y2="67" class="ic ic2" stroke-dasharray="7,5" />
+    <line x1="12" y1="72" x2="71" y2="72" class="ic ic2" stroke-dasharray="8,5" />
 </svg>
