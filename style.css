@@ -1433,7 +1433,7 @@ footer {
 #cart .cta-button:focus,
 #cart .cta-button:active {
     background: linear-gradient(to right, var(--blueDark3), var(--blueDark3) 50%, var(--blue));
-    box-shadow: 0 0.25rem 0.5rem var(--softSilver), inset -2.75rem 0 0.25rem var(--blue);
+    box-shadow: 0 0.25rem 0.5rem var(--softSilver), inset 0 -0.375rem 0.75rem 0 var(--softSilver), inset -2.75rem 0 0.25rem var(--blue);
 }
 #cart .cta-button::before { margin-left: 0.75rem; }
 #cart .cta-button::after { margin-right: 0.75rem; }
@@ -1496,20 +1496,24 @@ footer {
         border-color: var(--blueLight2);
         box-shadow: 0 0.5rem 1.5rem var(--realBlack);
     }
+
     #cart-list .cart-ico {
         background: linear-gradient(to bottom, var(--themeColor3), var(--themeColor0));
     }
+
     #cart-list .cart-ico img {
         filter: brightness(33%) drop-shadow(0 0px var(--softShadow)) drop-shadow(0 1px var(--whiteTransparent));
     }
+
     #cart .cta-button {
         background: linear-gradient(to right, var(--accentDark2) 50%, var(--accentDark));
     }
+
     #cart .cta-button:hover,
     #cart .cta-button:focus,
     #cart .cta-button:active {
         background: linear-gradient(to right, var(--accentDark2), var(--accentDark2) 50%, var(--accentDark));
-        box-shadow: 0 0.25rem 0.5rem var(--realSoftSilver), inset -2.75rem 0 0.25rem var(--accentDark);
+        box-shadow: 0 0.25rem 0.5rem var(--realSoftSilver), inset 0 -0.375rem 0.75rem 0 var(--realSoftSilver), inset -2.75rem 0 0.25rem var(--accentDark);
     }
 
     .bg {
