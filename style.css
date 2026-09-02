@@ -262,7 +262,7 @@ a:focus::after {
 .cta-blue-button:hover,
 .cta-blue-button:active,
 .cta-blue-button:focus {
-    box-shadow: 0 0.25rem 0.5rem var(--softSilver), inset -2.75rem 0 0.25rem var(--blue);
+    box-shadow: 0 0.25rem 0.5rem var(--shadow2), inset 0 -0.375rem 0.75rem 0 var(--shadow2), inset -2.75rem 0 0.25rem var(--blue);
     background: linear-gradient(to right, var(--blueDark3) 50%, var(--blue));
 }
 @media screen and (max-width: 640px) {
@@ -747,9 +747,6 @@ main {
         max-width: 0;
     }
 }
-/*#services.card li .price {
-    transition: all 0.125s;
-}*/
 #services.card li > a {
     padding: 0.5rem 1rem;
     justify-content: center;
@@ -1599,18 +1596,10 @@ footer {
 
     #main p i { color: var(--white); }
 
-    #main a {
+    #main a, #services.card li .price {
         color: var(--accent2);
         background: var(--realGray);
-    }
-
-    #services.card li .price {
-        color: var(--accent2);
-        background: var(--realBlack);
-    }
-
-    #main a, #services.card li .price {
-        box-shadow: 0 0.125rem 0.25rem var(--realGray), inset 0 -0.375rem 0.75rem 0 var(--realBlueDark);
+        box-shadow: 0 0.125rem 0.25rem var(--silver), inset 0 0.375rem 0.75rem 0 var(--realBlueDark);
     }
 
     #main a::before {
@@ -1624,7 +1613,7 @@ footer {
     #services.card li a:active .price,
     #services.card li a:focus .price {
         color: var(--themeColor);
-        box-shadow: 0 0.25rem 0.5rem var(--realBlack), inset 0 -0.375rem 0.75rem 0 var(--blueDark3);
+        box-shadow: 0 0.25rem 0.5rem var(--silver), inset 0 0.375rem 0.75rem 0 var(--realBlueDark);
     }
 
     #main a:focus {
@@ -1726,7 +1715,7 @@ footer {
     .cta-blue-button:active,
     .cta-blue-button:focus {
         background: linear-gradient(to right, var(--blueDark3), var(--blueDark2) 50%, var(--realBlueLight));
-        box-shadow: 0 0.25rem 0.5rem var(--realSoftSilver), inset 0 -0.375rem 0.75rem 0 var(--blueDark2), inset -2.75rem 0 0.25rem var(--realBlueLight);
+        box-shadow: 0 0.25rem 0.5rem var(--realSoftSilver), inset 0 -0.375rem 0.75rem 0 var(--realSoftSilver), inset -2.75rem 0 0.25rem var(--realBlueLight);
     }
 }
 @supports (backdrop-filter: blur(1px)){
