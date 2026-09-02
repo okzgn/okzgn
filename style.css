@@ -605,6 +605,12 @@ main {
 .category .price {
     align-self: center;
 }
+.category .price sub {
+    font-size: 0.8rem;
+    opacity: 0.75;
+    letter-spacing: 1px;
+    align-self: flex-end;
+}
 .category .icon img {
     padding: 0.5rem;
     object-fit: cover;
@@ -787,7 +793,8 @@ main {
     background: var(--almostWhite);
     border-radius: 0.5rem;
     display: flex;
-    flex-flow: column;
+    flex-flow: row;
+    align-items: center;
     justify-content: center;
     padding: 0.5rem 1rem;
 }
