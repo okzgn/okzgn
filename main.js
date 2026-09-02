@@ -290,7 +290,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape' && isCartOpen()) { closeCart(); }
+        var link = event.target.closest('#services .list li > a');
+        if (link && (event.key === 'Enter' || event.key === ' ')) {
+          event.preventDefault();
+          link.click();
+        }
+        else if (event.key === 'Escape' && isCartOpen()) { closeCart(); }
     });
 
     syncCount();
