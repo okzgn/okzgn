@@ -13,7 +13,7 @@
 	<meta name="robots" content="index, follow, max-image-preview:large">
 	<meta name="author" content="OKZGN">
 
-	<meta property="article:published_time" content="2026-08-24T12:00:00Z">
+	<meta property="article:published_time" content="2026-09-01T12:00:00Z">
 	<meta property="article:author" content="Elías Francisco Alvarado Soshina">
 
 	<meta name="theme-color" content="#ffdbb8" media="(prefers-color-scheme: light)">
@@ -55,8 +55,8 @@
   "description": "It is possible: No endless dependencies, no dev environment setup, no build step, no Web Components required, minimal boilerplate, minimal lock-in. Raw HTML, CSS and JS have everything needed and are web standards, unlike custom syntaxes.",
   "image": "https://okzgn.com/landscape.png",
   "url": "https://okzgn.com/articles/why-not-build-frontend-frameworks-on-raw-html-css-or-js/",
-  "datePublished": "2026-08-24T12:00:00Z",
-  "dateModified": "2026-08-24T12:00:00Z",
+  "datePublished": "2026-09-01T12:00:00Z",
+  "dateModified": "2026-09-01T12:00:00Z",
   "inLanguage": "en",
   "author": {
     "@type": "Person",
@@ -93,10 +93,10 @@
 		    <h1 class="main-title auto-font-size auto-padding">Why not build frontend frameworks on raw HTML, CSS or JS?</h1>
             <article class="card">
                 <div class="auto-x-padding paragraphs">
-                    <h2 class="auto-font-size-2">It is possible:</h2>
+                    <h2 class="auto-font-size-2">It Is Possible</h2>
                     <p>No endless dependencies, no dev environment setup, no build step, no Web Components required, minimal boilerplate, minimal lock-in.</p>
                     <p><strong>Raw HTML, CSS and JS have everything needed and are web standards, unlike custom syntaxes.</strong></p>
-                    <h2 class="auto-font-size-2">Key benefits:</h2>
+                    <h2 class="auto-font-size-2">Key Benefits</h2>
                     <div>
                         <ul role="list" class="lines lines-condensed">
                             <li>Bundle size proportional to the logic.</li>
@@ -109,15 +109,15 @@
                             <li>No niches, transferable web standards learned.</li>
                         </ul>
                     </div>
-                    <h2 class="auto-font-size-2">This article is not:</h2>
+                    <h2 class="auto-font-size-2">What This Article Is Not</h2>
                     <p>A call to switch your framework or dismiss other techniques; after all, today's custom syntaxes may be tomorrow's standards. It also doesn't ignore the massive challenges, serious business and enterprise needs, or the real value of today's tools or methods.</p>
-                    <h2 class="auto-font-size-2">Perspective:</h2>
+                    <h2 class="auto-font-size-2">Perspective</h2>
                     <p><strong>Modern frontend fundamentals were analyzed from this viewpoint:</strong> having written code close to the metal (XDP, shared memory, C), delved into low-level systems (protocol flows, RAM interactions, Go), focused on optimizing core operations and identifying high-performance algorithms (BM25, HNSW, djb2), and compared the performance of various runtimes (PHP, Lua, Node, Wasm, Rust).</p>
-                    <h2 class="auto-font-size-2">Simplified solution:</h2>
+                    <h2 class="auto-font-size-2">Simplified Solution</h2>
                     <p>What was mentioned at the beginning (regarding what is possible) could be solved if most modern browsers or JavaScript engines updated to a recent ECMAScript specification with native Type Annotations and backward compatibility support.<br> But the proprietary or custom syntaxes that have been invented are not standard JS or TS; they require transpilers, optimizers, compilers, bundlers, and so on (understanding their inner workings and mechanisms is indeed fascinating).</p>
-                    <h2 class="auto-font-size-2">Proposition:</h2>
+                    <h2 class="auto-font-size-2">The Proposition</h2>
                     <p><strong>There are several steps that can be bypassed between the scripting language, the framework, and development</strong> (covered up to here in this article, without requiring any updates to ES/TS specifications), and bundling, the interpreter, and the end user (which follow in an upcoming article, where additional tooling is optional).</p>
-                    <h2 class="auto-font-size-2">Focus points:</h2>
+                    <h2 class="auto-font-size-2">Focus Points</h2>
                     <div>
                         <ul role="list" class="lines">
                             <li><strong>Point 1:</strong> JavaScript/TypeScript as the scripting language that does the actual work and creates the upper framework.</li>
@@ -126,9 +126,9 @@
                             <li><strong>Point 4:</strong> Preparation and bundling of frontend assets into optimized output for production.</li>
                         </ul>
                     </div>
-                    <h2 class="auto-font-size-2">Steps to bypass:</h2>
+                    <h2 class="auto-font-size-2">Steps to Bypass</h2>
                     <i class="auto-font-size-5"><strong>Note:</strong> links marked <a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a>, along with the GitHub repositories referenced throughout as <a class="no-default-arrow" href="#POC"><sup>POC</sup></a> or <a class="no-default-arrow" href="#GIT"><sup>GIT</sup></a>, point to implementations shown as evidence the approach works rather than endorsements of third-party tools, all developed by this article's author.</i>
-                    <h3 class="auto-font-size-3">Between Point 1 and 2</h3>
+                    <h3 class="auto-font-size-3">Between Points 1 and 2</h3>
                     <div>
                         <ul role="list" class="lines">
                             <li>
@@ -139,7 +139,7 @@
                                 <strong>Bypass:</strong><br>
                                 <span>Advanced usage of native primitives, baseline widely available features/functions, and APIs, such as the following.</span>
                                 <ul role="list">
-                                    <li><h4>State & Reactivity:</h4><br>
+                                    <li><h4>State & Reactivity</h4><br>
                                         <div class="rounded-box">
                                             <code><a class="no-default-arrow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy" target="_blank" rel="noopener noreferrer">Proxy</a></code>,
                                             <code><a class="no-default-arrow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect" target="_blank" rel="noopener noreferrer">Reflect</a></code>,
@@ -154,7 +154,7 @@
                                         </div>
                                         <em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/reactive/"><strong>Reactive</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> using ES6+.</em>
                                     </li>
-                                    <li><h4>DOM, Events & Templating:</h4><br>
+                                    <li><h4>DOM, Events & Templating</h4><br>
                                         <div class="rounded-box">
                                             <code><a class="no-default-arrow" href="https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver" target="_blank" rel="noopener noreferrer">MutationObserver</a></code>,
                                             <code><a class="no-default-arrow" href="https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver" target="_blank" rel="noopener noreferrer">IntersectionObserver</a></code>,
@@ -169,7 +169,7 @@
                                         </div>
                                         <em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/dom/"><strong>DOM</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a>, <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/events/"><strong>Events</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> & <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/handlers/"><strong>Handlers</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> using ES6+.</em>
                                     </li>
-                                    <li><h4>Routing & Navigation:</h4><br>
+                                    <li><h4>Routing & Navigation</h4><br>
                                         <div class="rounded-box">
                                             <code><a class="no-default-arrow" href="https://developer.mozilla.org/en-US/docs/Web/API/History_API" target="_blank" rel="noopener noreferrer">History API</a></code>,
                                             <code><a class="no-default-arrow" href="https://developer.mozilla.org/en-US/docs/Web/API/Location" target="_blank" rel="noopener noreferrer">Location</a></code>,
@@ -182,7 +182,7 @@
                                         </div>
                                         <em>Implemented in <a class="no-default-arrow" href="https://estructura.okzgn.com/extensions/routing/"><strong>Routing</strong></a><a class="no-default-arrow" href="#EXT"><sup>EXT</sup></a> using ES6+.</em>
                                     </li>
-                                    <li><h4>Asynchronous & Orchestration:</h4><br>
+                                    <li><h4>Asynchronous & Orchestration</h4><br>
                                         <div class="rounded-box">
                                             <code><a class="no-default-arrow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank" rel="noopener noreferrer">Promise</a></code>,
                                             <code><a class="no-default-arrow" href="https://developer.mozilla.org/en-US/docs/Web/API/queueMicrotask" target="_blank" rel="noopener noreferrer">queueMicrotask</a></code>,
@@ -200,11 +200,11 @@
                             </li>
                         </ul>
                     </div>
-                    <h3 class="auto-font-size-3">Between Point 2 and 3</h3>
+                    <h3 class="auto-font-size-3">Between Points 2 and 3</h3>
                     <div>
                         <ul role="list" class="lines">
                             <li><strong>Context:</strong><br> Recurring UI development problems are solved through well-organized, reusable components; efficient centralized or decentralized state management; synchronized, granular DOM updates; routing control without page reloads, coordinated with the UI; and conventions that facilitate interoperable collaboration.<br><strong>That can be achieved seamlessly using:</strong> native HTML, in-memory JS-scoped data, batched event-based DOM reactivity, isolated and complete routing lifecycle interfaces, and standards-compliant HTML, CSS, and JS conventions with minimal guidelines.</li>
-                            <li><h4>Well-organized, reusable components:</h4><br>
+                            <li><h4>Well-Organized, Reusable Components</h4><br>
                                 <ul role="list">
                                     <li>
                                         <strong>Specific context:</strong><br>
@@ -230,7 +230,7 @@
                                           <code><a class="no-default-arrow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank" rel="noopener noreferrer">Object.defineProperty</a></code>,
                                           <code>...</code>
                                         </div>
-                                        <h5>Minimal implementation:</h5>
+                                        <h5>Minimal Implementation</h5>
                                         <strong>Coordinated asynchronous component execution, dependency chaining, and error propagation (<a class="no-default-arrow" target="_blank" rel="noopener noreferrer" href="./test.component.html">view demonstration</a>).</strong>
                                         <div class="rounded-box">
 <pre tabindex="0"><code class="language-javascript">const Queue = {
@@ -369,7 +369,7 @@ class Component {
                                         </div>
                                         <span>Note that the previous minimal implementation resolves the asynchronous dependency synchronization problem, since each component typically requires logic (JS), markup (HTML), and styling (CSS), which can be loaded via <code>import()</code>, <code>fetch()</code>, or <code>XMLHttpRequest</code> inside of <code>new Component()</code> logic and then wrapped in a <code>Web Component</code> to inject the HTML and CSS via <code>&lt;template&gt;</code> and <code>&lt;style&gt;</code> with <code>Shadow DOM</code> in modern JavaScript.</span>
                                         <strong>Although this can be achieved just as well with ES6, see the additional patterns at the end of the following usage examples.</strong>
-                                        <h5>Usage example:</h5>
+                                        <h5>Usage Example</h5>
                                         <div class="rounded-box">
 <pre tabindex="0"><code class="language-javascript">const CompA = new Component('CompA', () =&gt; {
     console.log('1');
@@ -423,7 +423,7 @@ CompC.ok.then((r) =&gt; {
                                     </li>
                                 </ul>
                             </li>
-                            <li><h4>Efficient centralized or decentralized state management:</h4><br>
+                            <li><h4>Efficient Centralized or Decentralized State Management</h4><br>
                                 <ul role="list">
                                     <li>
                                         <strong>Specific context:</strong><br>
@@ -441,7 +441,7 @@ CompC.ok.then((r) =&gt; {
                                           <code><a class="no-default-arrow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol" target="_blank" rel="noopener noreferrer">Symbol</a></code>,
                                           <code>...</code>
                                         </div>
-                                        <h5>Minimal implementation:</h5>
+                                        <h5>Minimal Implementation</h5>
                                         <strong>Observable deep state tree with granular mutation hooks and identity preservation (<a class="no-default-arrow" rel="noopener noreferrer" href="#steps-to-bypass-between-point-2-and-3-synchronized-granular-dom-updates-minimal-implementation">view demonstration combined with synchronized DOM updates</a>).</strong>
                                         <div class="rounded-box">
 <pre tabindex="0"><code class="language-javascript">const StateHandlers = (options, path, cache) =&gt; {
@@ -500,7 +500,7 @@ function State(options = {}, path = [], cache = new WeakMap()) {
 }</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
                                         </div>
                                         <span>Combining this previous minimal implementation with <code>CustomEvent</code>, <code>EventTarget</code>, and <code>dispatchEvent()</code> in the state-change hooks natively achieves the Publisher/Subscriber pattern in modern JavaScript.</span>
-                                        <h5>Usage example:</h5>
+                                        <h5>Usage Example</h5>
                                         <div class="rounded-box">
 <pre tabindex="0"><code class="language-javascript">const state = State({
     onSet: (mutation) =&gt; {
@@ -523,7 +523,7 @@ delete state.name;
                                     </li>
                                 </ul>
                             </li>
-                            <li><h4>Synchronized, granular DOM updates:</h4><br>
+                            <li><h4>Synchronized, Granular DOM Updates</h4><br>
                                 <ul role="list">
                                     <li>
                                         <strong>Specific context:</strong><br>
@@ -544,7 +544,7 @@ delete state.name;
                                           <code><a class="no-default-arrow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set" target="_blank" rel="noopener noreferrer">Set</a></code>,
                                           <code>...</code>
                                         </div>
-                                        <h5>Minimal implementation:</h5>
+                                        <h5>Minimal Implementation</h5>
                                         <strong>Granular DOM node mapping, state binding, and content updates batching (<a class="no-default-arrow" target="_blank" rel="noopener noreferrer" href="./test.updater.html">view demonstration</a>).</strong>
                                         <div class="rounded-box">
 <pre tabindex="0"><code class="language-javascript">const UpdaterExcludedNodes = new Set([
@@ -770,7 +770,7 @@ function UpdaterStart(targetNode, handlers) {
 }</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
                                         </div>
                                         <span>Note that <strong>the previous minimal implementation is mainly intended for initial DOM parsing, mapping, and binding</strong>, followed by a <code>disconnect()</code> call upon full application load. If handling tens of thousands of node-bound reactive variables, <strong>refer to these other demos to evaluate its viability: <a class="no-default-arrow" target="_blank" rel="noopener noreferrer" href="./test.updater.x100.html">x100</a>, <a class="no-default-arrow" target="_blank" rel="noopener noreferrer" href="./test.updater.x1000.html">x1000</a>, <a class="no-default-arrow" target="_blank" rel="noopener noreferrer" href="./test.updater.x5000.html">x5000</a>, <a class="no-default-arrow" target="_blank" rel="noopener noreferrer" href="./test.updater.x10000.html">x10000</a>, <a class="no-default-arrow" target="_blank" rel="noopener noreferrer" href="./test.updater.x50000.html">x50000</a>.</strong> <strong>Successfully tested up to x10000 without UI jank</strong> on entry-level and legacy hardware (e.g., Samsung A12 and AMD A8 APU notebooks).</span>
-                                        <h5>Usage example:</h5>
+                                        <h5>Usage Example</h5>
                                         <div class="rounded-box">
                                             <strong class="auto-x-padding">JavaScript</strong>
 <pre tabindex="0"><code class="language-javascript">const XVars_prefix = '${';
@@ -951,7 +951,7 @@ function XStateBatchExecution() {
                                     </li>
                                 </ul>
                             </li>
-                            <li><h4>Routing control without page reloads, coordinated with the UI:</h4><br>
+                            <li><h4>Routing Control Without Page Reloads, Coordinated With the UI</h4><br>
                                 <ul role="list">
                                     <li>
                                         <strong>Specific context:</strong><br>
@@ -970,7 +970,7 @@ function XStateBatchExecution() {
                                           <code><a class="no-default-arrow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign" target="_blank" rel="noopener noreferrer">Object.assign</a></code>,
                                           <code>...</code>
                                         </div>
-                                        <h5>Minimal implementation:</h5>
+                                        <h5>Minimal Implementation</h5>
                                         <strong>Prioritized route matching, sync/async middleware pipelines, History API orchestration, and native link interception (<a class="no-default-arrow" target="_blank" rel="noopener noreferrer" href="./test.router.html">view demonstration</a>)</strong>
                                         <div class="rounded-box">
 <pre tabindex="0"><code class="language-javascript">class Router {
@@ -1458,7 +1458,7 @@ function RouterStart(options = {}) {
 }</code><button class="cta-button no-default-arrow copy" aria-live="polite">Copy</button></pre>
                                         </div>
                                         <span>Note that <strong>the previous minimal implementation relies on regular expressions for route matching</strong>, which is well-suited for most SPAs. However, when registering over 250 routes, implementing route-matching patterns such as a <code>Radix Tree (Trie)</code> inside the <code>find()</code> function and omitting properties like <code>route.regex</code> and <code>regexSource</code> from <code>_register()</code> (or using alternative algorithms) is recommended to ensure maximum performance.</span>
-                                        <h5>Usage example:</h5>
+                                        <h5>Usage Example</h5>
                                         <div class="rounded-box">
                                             <strong class="auto-x-padding">JavaScript</strong>
 <pre tabindex="0"><code class="language-javascript">const app = RouterStart({ async: false/*true*/ });
@@ -1556,7 +1556,7 @@ app.listen(currentPathDirname);</code><button class="cta-button no-default-arrow
                                     </li>
                                 </ul>
                             </li>
-                            <li><h4>Conventions that facilitate interoperable collaboration:</h4><br>
+                            <li><h4>Conventions That Facilitate Interoperable Collaboration</h4><br>
                                 <ul role="list">
                                     <li>
                                         <strong>Specific context:</strong><br>
@@ -1576,7 +1576,7 @@ app.listen(currentPathDirname);</code><button class="cta-button no-default-arrow
                     <div class="auto-x-small-padding">
                         <ul role="list" class="lines-condensed">
                             <li>
-                                <h3 class="auto-font-size-3">CSS</h3>
+                                <h3 class="auto-font-size-3">CSS Baseline</h3>
                                 <ul role="list" class="lines lines-condensed">
                                     <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/min" target="_blank" rel="noopener noreferrer" class="no-default-arrow"><code>min()</code></a> (2020, Safe)<br><i>Sets the smallest value from a comma-separated list of expressions.</i></li>
                                     <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/max" target="_blank" rel="noopener noreferrer" class="no-default-arrow"><code>max()</code></a> (2020, Safe)<br><i>Sets the largest value from a comma-separated list of expressions.</i></li>
@@ -1636,8 +1636,8 @@ app.listen(currentPathDirname);</code><button class="cta-button no-default-arrow
                             <strong>Together, aforementioned native primitives close the gap between what frameworks traditionally abstract and what the browser already provides, <i>without a single dependency, build step, or bundler</i>.</strong>
                         </div>
                     </div>
-                    <h2 class="auto-font-size-2">Upcoming article:</h2>
-                    <h3 class="auto-font-size-3">Steps to bypass / Between Point 3 and 4:</h3>
+                    <h2 class="auto-font-size-2">Upcoming Article</h2>
+                    <h3 class="auto-font-size-3">Steps to Bypass / Between Points 3 and 4</h3>
                     <p>Point 3 bridges development with bundling (Point 4) — covered in the upcoming article, since it depends on that transition.</p>
                     <p><strong>Key points and bypasses covered in the next article</strong> are bundling (point 4), the interpreter (point 5), and the end user (point 6), where additional tooling is optional.</p>
                     <hr>
