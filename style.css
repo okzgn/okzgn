@@ -164,7 +164,7 @@ body {
     animation-duration: 7s;
 }
 hr {
-    border: 1px solid var(--shadow);
+    border: 1px solid var(--white);
     margin: 1rem 0;
 }
 h1, h2, h3 { text-shadow: 0 0 0.25rem var(--whiteTransparent2), 0 0 0.5rem var(--whiteTransparent2); }
@@ -182,11 +182,8 @@ a, a * {
 }
 ul, ol { list-style: none; }
 address { font-style: normal; }
-.auto-y-padding {
-    padding: 0 clamp(1rem, 1vw + 1rem, 3rem);
-    font-style: normal;
-}
-.auto-padding { padding: clamp(1rem, 1vw + 1rem, 3rem); }
+.auto-y-padding { padding: 0 clamp(1rem, 1vw + 1rem, 3rem) !important; }
+.auto-padding { padding: clamp(1rem, 1vw + 1rem, 3rem) !important; }
 .auto-font-size { font-size: clamp(1.25rem, 1vw + 1.25rem, 2rem); }
 .auto-font-size-2 { font-size: clamp(1.125rem, 1vw + 1.125rem, 1.5rem); }
 .auto-font-size-3 { font-size: clamp(1rem, 1vw + 1rem, 1.25rem); }
@@ -569,7 +566,7 @@ main {
 .card h2 { padding: 0; }
 .card h2, .card h3, .card > p { text-align: center; }
 .card > p {
-    margin-top: 1rem;
+
     padding: 0 1rem;
     color: var(--gray);
 }
@@ -685,8 +682,7 @@ main {
 #services.card li a,
 #services.card li b,
 #services.card li span,
-#services.card li .icon/*,
-#services.card li .description*/ {
+#services.card li .icon {
     transition: all 0.5s;
 }
 #services > p,
