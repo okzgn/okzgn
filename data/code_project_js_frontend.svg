@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
   <style>
-    .ic  { fill:none; stroke:#c6460c; stroke-width:2.987654321; stroke-linecap:round; stroke-linejoin:round }
+    .ic  { fill:none; stroke:#c6460c; stroke-width:3.876543210; stroke-linecap:round; stroke-linejoin:round }
     .icl { fill:none; stroke:#c6460c; stroke-linecap:round; stroke-linejoin:round }
     .lbl {
       font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;

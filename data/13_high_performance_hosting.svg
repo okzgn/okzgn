@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
   <style>
-    .ic{fill:none;stroke:#004e9b;stroke-width:2.987654321;stroke-linecap:round;stroke-linejoin:round}
+    .ic{fill:none;stroke:#004e9b;stroke-width:3.876543210;stroke-linecap:round;stroke-linejoin:round}
   </style>
   <g transform="translate(0.3499,-1.1370)">
     <path d="M40 57 L32 41 L36 25 Q40 -7 44 25 L48 41 Z" class="ic"/>

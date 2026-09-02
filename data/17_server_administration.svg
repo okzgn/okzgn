@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
   <style>
-  .ic{fill:none;stroke:#004e9b;stroke-width:calc(2.987654321 * 1.11);stroke-linecap:round;stroke-linejoin:round}
-  .ic2{fill:none;stroke:#004e9b;stroke-width:calc(2.987654321 * (1.45 + 0.11));stroke-linecap:round;stroke-linejoin:round}
+  .ic{fill:none;stroke:#004e9b;stroke-width:calc(3.876543210 * 1.11);stroke-linecap:round;stroke-linejoin:round}
+  .ic2{fill:none;stroke:#004e9b;stroke-width:calc(3.876543210 * (1.45 + 0.11));stroke-linecap:round;stroke-linejoin:round}
   </style>
   <g transform="translate(4.0212, 9.0190) scale(0.89)">
     <rect x="4" y="4" width="72" height="60" rx="6" class="ic"/>

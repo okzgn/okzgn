@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
   <style>
-    .ic  { fill:none; stroke:#c6460c; stroke-width:2.987654321; stroke-linecap:round; stroke-linejoin:round }
-    .ic2 { /*fill:#c6460c;*/stroke-width: calc(2.987654321 * 9.93); }
+    .ic  { fill:none; stroke:#c6460c; stroke-width:3.876543210; stroke-linecap:round; stroke-linejoin:round }
+    .ic2 { /*fill:#c6460c;*/stroke-width: calc(3.876543210 * 9.93); }
     .lbl {
       font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
       font-weight:700; fill:#c6460c; text-anchor:middle; dominant-baseline:central; letter-spacing:-0.5px

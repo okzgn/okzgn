@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
   <style>
-  .ic{fill:none;stroke:#004e9b;stroke-width:calc(2.987654321 * 1.11);stroke-linecap:round;stroke-linejoin:round}
+  .ic{fill:none;stroke:#004e9b;stroke-width:calc(3.876543210 * 1.11);stroke-linecap:round;stroke-linejoin:round}
   </style>
 
   <g transform="translate(4.5, 4.5693) scale(0.89)"><rect x="8" y="58" width="64" height="14" rx="3" class="ic"/>
