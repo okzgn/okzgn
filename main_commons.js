@@ -244,10 +244,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(code.textContent);
-          btn.textContent = 'Copied';
-          setTimeout(function () {
-            btn.textContent = 'Copy';
-          }, 567);
+          if (btn) {
+            btn.textContent = 'Copied';
+            setTimeout(function () {
+              btn.textContent = 'Copy';
+            }, 567);
+          }
         }
       }
     })(preCodes[i]));
@@ -272,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     anchor = (upperAnchor ? upperAnchor + '-' : '') + anchor;
 
-    this.index[anchor] = (!this.index[anchor] ? anchor : (anchor + '-' + count++));
+    this.index[anchor] = (!this.index[anchor] ? anchor : (anchor + '-' + this.count++));
     anchor = this.index[anchor];
 
     point.id = anchor;
