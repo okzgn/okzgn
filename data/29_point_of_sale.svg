@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1040px" height="1040px" viewBox="0 0 1040 1040">
 <style>
-.ic{fill:#004e9b;stroke:#004e9b;stroke-width:calc(3.876543210 * 5);stroke-linecap:round;stroke-linejoin:round}
+.ic{fill:#004e9b;stroke:#004e9b;stroke-width:calc(3.876543210 * 4.5);stroke-linecap:round;stroke-linejoin:round}
 .ic3{ stroke-width:calc(3.876543210 * 10);}
 .op{ opacity: 0.5; }
 </style>
